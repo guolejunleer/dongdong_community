@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_video"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:src="#FFFDEF">
+
+        <SurfaceView
+            android:id="@+id/sv_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_dong_sign"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:background="#FF000000"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/dongdongicon" />
+
+        <include
+            layout="@layout/monitor_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/openLock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:src="@mipmap/openlock"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/space_8"
+        android:paddingRight="@dimen/space_8">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_unlock"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/unlock_background"
+                android:text="@string/lock" />
+
+            <TextView
+                android:id="@+id/tv_take_picture"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/take_picture_background"
+                android:text="@string/picture" />
+
+            <TextView
+                android:id="@+id/tv_hand_free"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/hand_free_background"
+                android:text="@string/handsFree" />
+
+            <TextView
+                android:id="@+id/tv_audio"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/audio_background"
+                android:text="@string/spk" />
+
+            <TextView
+                android:id="@+id/tv_video"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/video_background"
+                android:text="@string/video"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_8"
+            android:layout_marginTop="@dimen/space_8"
+            android:baselineAligned="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_hang_up"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/hangup_background"
+                android:text="@string/stop" />
+
+            <TextView
+                android:id="@+id/tv_accept"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/accept_background"
+                android:text="@string/start" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
