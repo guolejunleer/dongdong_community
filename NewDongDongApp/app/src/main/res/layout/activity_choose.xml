@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.dongdong.app.widget.TitleBar
+        android:id="@+id/tb_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.dongdong.app.widget.TitleBar>
+
+    <ListView
+        android:id="@+id/mlvInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:cacheColorHint="#00000000"
+        android:choiceMode="singleChoice"
+        android:divider="@null"
+        android:drawSelectorOnTop="false"
+        android:footerDividersEnabled="false" >
+    </ListView>
+
+</LinearLayout>

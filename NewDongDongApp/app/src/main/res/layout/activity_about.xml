@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.dongdong.app.widget.TitleBar
+        android:id="@+id/tb_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/app_name"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/currentversion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_16" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/versionupdate"
+        style="@style/option_item_rl">
+
+        <TextView
+            style="@style/option_item_text"
+            android:text="@string/versionupdate" />
+    </RelativeLayout>
+
+    <View style="@style/h_line" />
+
+    <RelativeLayout
+        android:id="@+id/functionintroduction"
+        style="@style/option_item_rl">
+
+        <TextView
+            style="@style/option_item_text"
+            android:text="@string/functionintroduction" />
+    </RelativeLayout>
+
+    <View style="@style/h_line" />
+
+    <RelativeLayout
+        android:id="@+id/help"
+        style="@style/option_item_rl">
+
+        <TextView
+            style="@style/option_item_text"
+            android:text="@string/help" />
+    </RelativeLayout>
+
+</LinearLayout>

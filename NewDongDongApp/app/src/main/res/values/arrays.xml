@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string-array name="gender">
+        <item>男</item>
+        <item>女</item>
+    </string-array>
+    <string-array name="events">
+        <item>近期活动</item>
+        <item>我的活动</item>
+    </string-array>
+    <string-array name="avatar_option">
+        <item>更换头像</item>
+        <item>查看大头像</item>
+    </string-array>
+    <string-array name="font_size">
+        <item>特大号字</item>
+        <item>大号字</item>
+        <item>中号字</item>
+        <item>小号字</item>
+    </string-array>
+
+</resources>

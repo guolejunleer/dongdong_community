@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.dongdong.app.widget.TitleBar
+        android:id="@+id/tb_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/rootview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/my_information_head" />
+
+            <View style="@style/h_line" />
+
+            <LinearLayout
+                android:id="@+id/ll_myfamily"
+                style="@style/option_item_rl">
+
+                <ImageView
+                    style="@style/option_item_img"
+                    android:background="@mipmap/myfamily"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    style="@style/option_item_text"
+                    android:text="@string/myfamily" />
+            </LinearLayout>
+
+            <View style="@style/h_line" />
+
+            <LinearLayout
+                android:id="@+id/ll_myhouse"
+                style="@style/option_item_rl">
+
+                <ImageView
+                    style="@style/option_item_img"
+                    android:background="@mipmap/myhome"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    style="@style/option_item_text"
+                    android:text="@string/myhouse" />
+            </LinearLayout>
+
+            <View style="@style/h_line" />
+
+            <LinearLayout
+                android:id="@+id/ll_myvillage"
+                style="@style/option_item_rl">
+
+                <ImageView
+                    style="@style/option_item_img"
+                    android:background="@mipmap/myvillage"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    style="@style/option_item_text"
+                    android:text="@string/myvillage" />
+            </LinearLayout>
+
+            <View style="@style/h_line" />
+
+            <LinearLayout
+                android:id="@+id/ll_mycaller"
+                style="@style/option_item_rl">
+
+                <ImageView
+                    style="@style/option_item_img"
+                    android:background="@mipmap/myvisitors"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    style="@style/option_item_text"
+                    android:text="@string/mycaller" />
+            </LinearLayout>
+
+            <View style="@style/h_line" />
+
+            <LinearLayout
+                android:id="@+id/ll_mypicture"
+                style="@style/option_item_rl">
+
+                <ImageView
+                    style="@style/option_item_img"
+                    android:background="@mipmap/myalbum"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    style="@style/option_item_text"
+                    android:text="@string/mypicture" />
+            </LinearLayout>
+
+            <View style="@style/h_line" />
+
+            <LinearLayout
+                android:id="@+id/ll_settings"
+                style="@style/option_item_rl">
+
+                <ImageView
+                    style="@style/option_item_img"
+                    android:background="@mipmap/settings"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    style="@style/option_item_text"
+                    android:text="@string/settings" />
+            </LinearLayout>
+
+            <View style="@style/h_line" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

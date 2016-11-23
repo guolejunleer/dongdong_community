@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:background="#00a2e9"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll_user_container"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <RelativeLayout
+            android:id="@+id/rl_user_center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clickable="true" >
+
+            <com.dongdong.app.widget.AvatarView
+                android:id="@+id/iv_avatar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/space_20"
+                android:contentDescription="@null"
+                android:src="@mipmap/widget_dface"
+                app:border_color="@color/white"
+                app:border_width="2dip" />
+
+            <ImageView
+                android:id="@+id/iv_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iv_avatar"
+                android:layout_alignRight="@id/iv_avatar" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_avatar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/space_5"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_18" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_user_unlogin"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <com.dongdong.app.widget.CircleImageView
+                android:id="@+id/iv_avatar1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/space_20"
+                android:contentDescription="@null"
+                android:src="@mipmap/widget_dface"
+                app:border_color="@color/white"
+                app:border_width="3dip" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_avatar1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/space_5"
+                android:text="@string/my_information_unlogin_tips"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_18" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_hight_definition"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fps_ebtn"
+        android:gravity="center"
+        android:text="@string/video3"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#50ffffff" />
+
+    <TextView
+        android:id="@+id/tv_standard_definition"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fps_ebtn"
+        android:gravity="center"
+        android:text="@string/video2"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#50ffffff" />
+
+    <TextView
+        android:id="@+id/tv_fluency_definition"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fps_ebtn"
+        android:gravity="center"
+        android:text="@string/video1"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+</LinearLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@color/status_color"
+    android:paddingRight="@dimen/space_10">
+
+    <LinearLayout
+        android:id="@+id/ll_back"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/back_click"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/space_10"
+            android:contentDescription="@null"
+            android:src="@mipmap/back_arrow" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/space_8"
+            android:layout_marginTop="@dimen/space_8"
+            android:background="#1bb6ed" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_title_info"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/title_info"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_19" />
+
+    <TextView
+        android:id="@+id/tv_add"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="@string/add"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_14" />
+
+</RelativeLayout>
