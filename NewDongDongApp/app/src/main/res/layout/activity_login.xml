@@ -28,6 +28,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/space_10"
@@ -37,28 +38,40 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ll_login_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_5"
+                android:background="@drawable/background_write_drawable"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/et_name"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="@dimen/space_44"
-                    android:background="@drawable/backgroud_write_drawable"
+                    android:layout_weight="8"
+                    android:background="@android:color/transparent"
                     android:gravity="center_vertical"
                     android:hint="@string/pleaseInputUsernmae"
-                    android:inputType="numberSigned"
-                    android:paddingLeft="@dimen/space_15"
+                    android:maxLength="32"
+                    android:paddingLeft="@dimen/space_49"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_15" />
+
+                <ImageButton
+                    android:id="@+id/bt_select_user"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@mipmap/historydown"
+                    android:contentDescription="@null"
+                    android:padding="@dimen/space_5"
+                    android:scaleType="fitXY" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_5"
                 android:layout_marginTop="@dimen/space_10"
                 android:orientation="horizontal">
 
@@ -66,11 +79,11 @@
                     android:id="@+id/et_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/space_44"
-                    android:background="@drawable/backgroud_write_drawable"
+                    android:background="@drawable/background_write_drawable"
                     android:gravity="center_vertical"
                     android:hint="@string/pleaseInputPassword"
                     android:inputType="textPassword"
-                    android:paddingLeft="@dimen/space_15"
+                    android:paddingLeft="@dimen/space_49"
                     android:textColor="@color/black"
                     android:textCursorDrawable="@null"
                     android:textSize="@dimen/text_size_15" />
@@ -123,7 +136,7 @@
                 android:textSize="@dimen/text_size_18" />
 
             <TextView
-                android:id="@+id/tv_regeist"
+                android:id="@+id/tv_register"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/space_20"
