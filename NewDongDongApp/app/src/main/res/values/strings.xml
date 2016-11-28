@@ -73,7 +73,7 @@
     <string name="lijiamode">Patterns_from_home</string>
     <string name="sleepmode">Sleep_patterns</string>
     <string name="userinfo">user_information</string>
-    <string name="username">Please input username</string>
+    <string name="userName">Please input userName</string>
     <string name="man">man</string>
     <string name="woman">woman</string>
     <string name="phonenumber">Please input phonenumber</string>
@@ -164,7 +164,7 @@
     <string name="relogin">relogin</string>
     <string name="loginSucc">Login successful！</string>
     <string name="my_information_unlogin_tips">not logini</string>
-    <string name="myuname">username</string>
+    <string name="myuname">userName</string>
     <string name="mypsw">userpsw</string>
     <string name="server_connection_failed">serverconnectionFaliled</string>
     <string name="device_connection_failed">serverconnectionFaliled</string>

@@ -135,11 +135,11 @@ public class TipDialogManager {
 
     public static void showNormalTipDialog(final Context context,
                                            final OnTipDialogButtonClick callback, int titleResId,
-                                           int msgResId, int posiResId, int negaResId) {
+                                           int msgResId, int positiveResId, int negativeResId) {
         final CommonDialog tipDialog = new CommonDialog(context);
         tipDialog.setTitle(titleResId);
         tipDialog.setMessage(msgResId);
-        tipDialog.setPositiveButton(posiResId, new OnClickListener() {
+        tipDialog.setPositiveButton(positiveResId, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (callback != null) {
@@ -148,7 +148,34 @@ public class TipDialogManager {
                 tipDialog.dismiss();
             }
         });
-        tipDialog.setNegativeButton(negaResId, new OnClickListener() {
+        tipDialog.setNegativeButton(negativeResId, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (callback != null) {
+                    callback.onNegativeButtonClick();
+                }
+                tipDialog.dismiss();
+            }
+        });
+        tipDialog.show();
+    }
+
+    public static void showNormalTipDialog(final Context context,
+                                           final OnTipDialogButtonClick callback, String titleRes,
+                                           String msgRes, String positiveRes, String negativeRes) {
+        final CommonDialog tipDialog = new CommonDialog(context);
+        tipDialog.setTitle(titleRes);
+        tipDialog.setMessage(msgRes);
+        tipDialog.setPositiveButton(positiveRes, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (callback != null) {
+                    callback.onPositiveButtonClick();
+                }
+                tipDialog.dismiss();
+            }
+        });
+        tipDialog.setNegativeButton(negativeRes, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (callback != null) {
