@@ -27,14 +27,14 @@
 
     <!-- 横向线条 -->
     <style name="h_line">
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dip</item>
         <item name="android:background">?attr/lineColor</item>
     </style>
     <!-- 纵向线条 -->
     <style name="v_line">
         <item name="android:layout_width">1dip</item>
-        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:background">?attr/lineColor</item>
     </style>
 

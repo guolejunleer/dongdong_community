@@ -37,6 +37,8 @@ public class AppConfig {
 
 	public static final String COMPANY_PHONE = "057158111836";
 	public static final String CACH_IMAGE_PATH = "temp";
+	//DES Key
+	public static final String DES_KEY = "DONGDONG";
 
 	private Context mContext;
 	private static AppConfig mAppConfig;

@@ -244,5 +244,6 @@
     <string name="video_connect_quality_error">当前视频连接质量不佳,(%1$ds)后关闭此界面</string>
     <string name="audio_busy">音频已经被其他用户占用</string>
     <string name="please_talking">请通话</string>
+    <string name="tip_delete_user">你确定删除账号:%s?</string>
 
 </resources>
