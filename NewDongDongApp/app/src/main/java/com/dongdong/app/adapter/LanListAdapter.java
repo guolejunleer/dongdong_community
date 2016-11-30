@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.dongsdk.DeviceInfo;
 
 public class LanListAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
-	private ArrayList<DeviceInfo> list = new ArrayList<DeviceInfo>();
+	private ArrayList<DeviceInfo> list = new ArrayList<>();
 
 	public LanListAdapter(Context context) {
 		inflater = LayoutInflater.from(context);
@@ -24,8 +24,7 @@ public class LanListAdapter extends BaseAdapter {
 
 	public void setData(ArrayList<DeviceInfo> deviceList) {
 		this.list = deviceList;
-
-	};
+	}
 
 	public ArrayList<DeviceInfo> getData() {
 		return list;
@@ -48,7 +47,7 @@ public class LanListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Holder hold = null;
+		Holder hold;
 		if (convertView == null) {
 			hold = new Holder();
 			convertView = inflater.inflate(R.layout.lanitem, null);
@@ -58,12 +57,12 @@ public class LanListAdapter extends BaseAdapter {
 			hold = (Holder) convertView.getTag();
 
 		}
-		hold.deviceName = (TextView) convertView.findViewById(R.id.deviceName);
-		hold.deviceName.setText(getData().get(position).deviceName.toString());
+		hold.deviceName = (TextView) convertView.findViewById(R.id.tv_deviceName);
+		hold.deviceName.setText(getData().get(position).deviceName);
 		return convertView;
 	}
 
-	class Holder {
+	private class Holder {
 		TextView deviceName;
 	}
 }

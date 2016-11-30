@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.dongdong.app.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.dongdong.app.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_container"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
@@ -8,7 +8,6 @@
     <ListView
         android:id="@+id/opendoorrecordListView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_height="wrap_content" />
 
 </com.dongdong.app.widget.SwipeRefreshLayout>

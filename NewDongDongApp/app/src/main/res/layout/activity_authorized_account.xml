@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff0f0f3"
@@ -12,23 +11,23 @@
     </com.dongdong.app.widget.TitleBar>
 
     <LinearLayout
-        android:id="@+id/home_setting_reward_n_balance_layout3"
+        android:id="@+id/ll_home_setting_reward_n_balance_layout3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="34.0dip"
+        android:layout_marginBottom="@dimen/space_5"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_marginRight="@dimen/space_10"
+        android:layout_marginTop="@dimen/space_35"
         android:background="@drawable/widget_list_item_bg" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/space_50"
             android:background="@drawable/widget_list_item_bg_selector"
-            android:paddingBottom="6.0dip"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:paddingTop="6.0dip" >
+            android:paddingBottom="@dimen/space_6"
+            android:paddingLeft="@dimen/space_10"
+            android:paddingRight="@dimen/space_10"
+            android:paddingTop="@dimen/space_6" >
 
             <EditText
                 android:id="@+id/et_account"
@@ -37,9 +36,9 @@
                 android:layout_centerVertical="true"
                 android:background="@color/white"
                 android:hint="@string/authorizationSer"
-                android:paddingLeft="12.0dip"
+                android:paddingLeft="@dimen/space_12"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_18" />
 
             <Button
                 android:id="@+id/bt_auth"
@@ -54,13 +53,13 @@
         android:id="@+id/lv_list_account"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_margin="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_margin="@dimen/space_10"
+        android:layout_marginTop="@dimen/space_5"
         android:background="#FFFFFF"
         android:cacheColorHint="#00000000"
         android:choiceMode="singleChoice"
         android:divider="#AAAAAA"
-        android:dividerHeight="1dp"
+        android:dividerHeight="@dimen/space_1"
         android:drawSelectorOnTop="false"
         android:footerDividersEnabled="false" >
     </ListView>

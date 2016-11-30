@@ -38,7 +38,7 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.dongsdk.DeviceInfo;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.base.BaseApplication;
@@ -974,7 +974,7 @@ public class TDevice {
     public static String getLoginMessage(int code, Context context) {
         switch (code) {
             case 0:// 登录超时
-                return context.getString(R.string.overtime);
+                return context.getString(R.string.login_overtime);
             case 10002:// 服务器连接失败
                 return context.getString(R.string.server_connection_failed);
             case 10003:// 设备连接失败

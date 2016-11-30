@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 
 public class DialogTitleView extends FrameLayout {
 
@@ -35,10 +35,10 @@ public class DialogTitleView extends FrameLayout {
 
 	private void init() {
 		inflate(getContext(), R.layout.view_dialog_header, this);
-		titleTv = (TextView) findViewById(R.id.title_tv);
-		subTitleTv = (TextView) findViewById(R.id.subtitle_tv);
-		buttonWell = (LinearLayout) findViewById(R.id.button_well);
-		titleDivider = findViewById(R.id.title_divder);
+		titleTv = (TextView) findViewById(R.id.tv_title);
+		subTitleTv = (TextView) findViewById(R.id.tv_subtitle);
+		buttonWell = (LinearLayout) findViewById(R.id.ll_button_well);
+		titleDivider = findViewById(R.id.view_title_divder);
 	}
 
 	public void addAction(View view, OnClickListener listener) {

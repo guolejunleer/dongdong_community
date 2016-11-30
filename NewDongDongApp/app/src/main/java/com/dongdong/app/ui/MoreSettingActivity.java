@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.ui.dialog.CommonDialog;
 import com.dongdong.app.widget.TitleBar;
@@ -37,8 +37,7 @@ public class MoreSettingActivity extends BaseActivity implements OnClickListener
 	public void initData() {
 		mTitleBar.setTitleBarContent(getString(R.string.deviceMessage));
 		mTitleBar.setAddArrowShowing(false);
-		mTitleBar
-				.setOnTitleBarClickListener(new TitleBar.OnTitleBarClickListener() {
+		mTitleBar.setOnTitleBarClickListener(new TitleBar.OnTitleBarClickListener() {
 
 					@Override
 					public void onTitleClick() {
@@ -54,6 +53,9 @@ public class MoreSettingActivity extends BaseActivity implements OnClickListener
 					public void onAddClick() {
 
 					}
+					@Override
+					public void onFinishClick() {
+					}
 				});
 		mRlWifiSetting.setOnClickListener(this);
 		mRlDeviceMessage.setOnClickListener(this);
@@ -66,7 +68,7 @@ public class MoreSettingActivity extends BaseActivity implements OnClickListener
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.rl_wifisetting:
-			startActivity(new Intent(MoreSettingActivity.this, WifiListActivity.class));
+//			startActivity(new Intent(MoreSettingActivity.this, WifiListActivity.class));
 			break;
 		case R.id.rl_devicemessage:
 			// DeviceInfo deviceInfo = MonitorActivity.mMonitorActivityInstance

@@ -16,7 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 
 /**
  * 圆形ImageView组件

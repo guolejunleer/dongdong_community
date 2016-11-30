@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.MobileClientLib.InfoUser;
 import com.ddclient.configuration.DongConfiguration;
 import com.ddclient.dongsdk.AbstractDongSDKProxy.DongAccountCallbackImp;
@@ -126,6 +126,11 @@ public class LoginActivity extends BaseActivity implements
     }
 
     @Override
+    public void onFinishClick() {
+
+    }
+
+    @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
@@ -136,7 +141,7 @@ public class LoginActivity extends BaseActivity implements
                 startActivity(new Intent(this, RegeistActivity.class));
                 break;
             case R.id.tv_local:
-                startActivity(new Intent(this, LocalDeviceActivity.class));
+//                startActivity(new Intent(this, LocalDeviceActivity.class));
                 break;
             case R.id.iv_login:
                 if (TDevice.getNetworkType() == 0) {

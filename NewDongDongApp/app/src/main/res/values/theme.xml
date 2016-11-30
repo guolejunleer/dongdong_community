@@ -12,7 +12,8 @@
     <style name="AppTheme" parent="@style/BaseAppTheme"></style>
     <!-- Application theme. -->
     <!--<style name="AppTheme" parent="AppBaseTheme">-->
-    <!--&lt;!&ndash; All customizations that are NOT specific to a particular API-level can go here. &ndash;&gt;-->
+    <!--&lt;!&ndash; All customizations that are NOT specific to a particular API-level can go
+     here. &ndash;&gt;-->
     <!--</style>-->
     <!-- 日间模式 -->
     <style name="AppBaseTheme_Light" parent="@style/AppTheme">
@@ -48,6 +49,11 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <!-- 解决启动页白屏问题 -->
+    <style name="Launcher_Activity_Theme" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
 </resources>

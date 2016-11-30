@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.UserBean;
 import com.dongdong.app.db.UserOpe;

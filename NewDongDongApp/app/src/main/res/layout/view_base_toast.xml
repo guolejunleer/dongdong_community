@@ -8,14 +8,14 @@
         android:layout_height="wrap_content"
         android:background="@drawable/toast_background"
         android:paddingBottom="@dimen/global_padding"
-        android:paddingLeft="16.0dip"
-        android:paddingRight="16.0dip"
+        android:paddingLeft="@dimen/space_16"
+        android:paddingRight="@dimen/space_16"
         android:paddingTop="@dimen/global_padding" >
 
         <ImageView
             android:id="@+id/icon_iv"
             android:layout_width="wrap_content"
-            android:layout_height="40.0dip"
+            android:layout_height="@dimen/space_40"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/global_padding"
             android:scaleType="fitCenter"
@@ -32,12 +32,12 @@
             android:shadowDy="-1.0"
             android:shadowRadius="1.0"
             android:textColor="@android:color/white"
-            android:textSize="14.0dip"
+            android:textSize="@dimen/space_14"
             android:textStyle="bold"
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/title_tv"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignWithParentIfMissing="true"
@@ -49,7 +49,7 @@
             android:shadowDy="-1.0"
             android:shadowRadius="1.0"
             android:textColor="@android:color/white"
-            android:textSize="14.0dip"
+            android:textSize="@dimen/space_14"
             android:textStyle="bold" />
     </RelativeLayout>
 

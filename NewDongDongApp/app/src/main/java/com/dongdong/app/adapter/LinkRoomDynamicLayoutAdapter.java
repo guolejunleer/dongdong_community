@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.FunctionBean;
 import com.dongdong.app.widget.AdViewPager;
@@ -18,10 +18,11 @@ import com.dongdong.app.widget.DynamicItemContainView;
 
 public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 
+	private static final int FUNCTION_TEMP_COUNT=14;
 	public static final int COMMON_VIEWPAGER = 100;
-	public static final int AD_VIEWPAGER = 101;
+	private static final int AD_VIEWPAGER = 101;
 
-	private static final int TYPE_DRAGVIEW = 0;
+	private static final int TYPE_DRAG_VIEW = 0;
 	private static final int TYPE_FIXEDVIEW_ITEM = 1;
 	private static final int TYPE_MAX_COUNT = 2;
 
@@ -30,8 +31,8 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
 
-	public LinkRoomDynamicLayoutAdapter(Context context) {
-	}
+//	public LinkRoomDynamicLayoutAdapter(Context context) {
+//	}
 
 	public LinkRoomDynamicLayoutAdapter(Context context, List<FunctionBean> funcs) {
 		mContext = context;
@@ -39,11 +40,10 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mFuncs = funcs;
 		// LogUtils.v("LinkRoomDynamicLayoutAdapter size:" + mFuncs.size());
-		int needView = mFuncs.size() % 18;
-		// LogUtils.v("LinkRoomDynamicLayoutAdapter size:" + mFuncs.size()
-		// + "; needView:" + needView);
+		int needView = mFuncs.size() % FUNCTION_TEMP_COUNT;
+		// LogUtils.v("LinkRoomDynamicLayoutAdapter size:" + mFuncs.size()+ "; needView:" + needView);
 		if (needView != 0) {
-			for (int i = 0; i < 18 - needView; i++) {
+			for (int i = 0; i < FUNCTION_TEMP_COUNT - needView; i++) {
 				mFuncs.add(new FunctionBean("transprent", 0, Integer.MAX_VALUE));
 			}
 		}
@@ -72,37 +72,34 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 	@Override
 	public int getItemViewType(int position) {
 		return (position == 0 || position == 9) ? TYPE_FIXEDVIEW_ITEM
-				: TYPE_DRAGVIEW;
+				: TYPE_DRAG_VIEW;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder = null;
+		ViewHolder holder;
 		int type = getItemViewType(position);
 		if (convertView == null) {
 			holder = new ViewHolder();
 			switch (type) {
-			case TYPE_DRAGVIEW:
+			case TYPE_DRAG_VIEW:
 				convertView = mInflater.inflate(R.layout.dragview_item, null);
-				holder.name = (TextView) convertView
-						.findViewById(R.id.tv_func_name);
-				holder.icon = (ImageView) convertView
-						.findViewById(R.id.iv_func_icon);
+				holder.name = (TextView) convertView.findViewById(R.id.tv_func_name);
+				holder.icon = (ImageView) convertView.findViewById(R.id.iv_func_icon);
 				convertView.setTag(holder);
 				break;
 			case TYPE_FIXEDVIEW_ITEM:
-				convertView = mInflater.inflate(
-						R.layout.dragview_viewpager_item, null);
+				convertView = mInflater.inflate(R.layout.dragview_viewpager_item, null);
+				convertView.setTag(holder);
 				break;
 			}
-			convertView.setTag(holder);
 
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
 		switch (type) {
-		case TYPE_DRAGVIEW:
+		case TYPE_DRAG_VIEW:
 			FunctionBean function = mFuncs.get(position < 9 ? (position - 1)
 					: (position - 2));
 			int funcId = function.getFuncId();
@@ -199,7 +196,7 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 		return R.string.dd_function_more;
 	}
 
-	static class ViewHolder {
+	private static class ViewHolder {
 		TextView name;
 		ImageView icon;
 	}

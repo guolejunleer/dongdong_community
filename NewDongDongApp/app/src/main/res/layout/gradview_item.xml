@@ -5,12 +5,12 @@
     android:background="@drawable/select_item_entry"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="8dp" >
+    android:padding="@dimen/space_8" >
 
     <ImageView
         android:id="@+id/iv_icon"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/space_60"
         android:layout_gravity="center_horizontal" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:lines="1"
-        android:textSize="14sp" />
+        android:textSize="@dimen/text_size_14" />
 
     <TextView
         android:id="@+id/phone"
@@ -27,6 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:lines="1"
-        android:textSize="14sp" />
+        android:textSize="@dimen/text_size_14" />
 
 </LinearLayout>

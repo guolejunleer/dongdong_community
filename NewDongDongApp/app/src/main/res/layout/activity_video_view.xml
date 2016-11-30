@@ -8,7 +8,7 @@
     <FrameLayout
         android:id="@+id/fl_video"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/space_0"
         android:layout_weight="1"
         android:orientation="vertical"
         android:src="#FFFDEF">
@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/iv_dong_sign"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="#FF000000"
             android:contentDescription="@null"
@@ -31,7 +31,7 @@
         <include
             layout="@layout/monitor_data_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <ImageView
             android:id="@+id/openLock"

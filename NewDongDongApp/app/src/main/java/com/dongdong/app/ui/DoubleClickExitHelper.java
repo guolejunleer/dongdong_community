@@ -6,16 +6,9 @@ import android.os.Looper;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.AppManager;
 
-/***
- * 双击退出
- * 
- * @author leer(http://www.dd121.com)
- * @created 2016年06月15日 下午7:07:44
- * 
- */
 public class DoubleClickExitHelper {
 
 	private final Activity mActivity;
@@ -30,8 +23,11 @@ public class DoubleClickExitHelper {
 	}
 
 	/**
-	 * Activity onKeyDown事件
-	 * */
+	 *
+	 * @param keyCode
+	 * @param event
+     * @return
+     */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode != KeyEvent.KEYCODE_BACK) {
 			return false;

@@ -15,12 +15,12 @@
         android:id="@+id/lv_wifi_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/space_5"
         android:background="#FFFFFF"
         android:cacheColorHint="#00000000"
         android:choiceMode="singleChoice"
         android:divider="#AAAAAA"
-        android:dividerHeight="1dp"
+        android:dividerHeight="@dimen/space_1"
         android:drawSelectorOnTop="false"
         android:footerDividersEnabled="false" >
     </ListView>

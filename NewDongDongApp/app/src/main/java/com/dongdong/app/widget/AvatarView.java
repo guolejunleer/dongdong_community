@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 
 public class AvatarView extends CircleImageView {
 	public static final String AVATAR_SIZE_REG = "_[0-9]{1,3}";

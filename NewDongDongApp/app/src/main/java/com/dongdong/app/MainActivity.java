@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.configuration.DongConfiguration;
 import com.ddclient.dongsdk.DongSDK;
 import com.ddclient.dongsdk.DongSDKProxy;
@@ -26,8 +26,9 @@ import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.StatusBarCompatUtils;
 import com.dongdong.app.util.TDevice;
+import com.dongdong.app.ui.dialog.TipDialogManager.OnTipDialogButtonClick;
 
-public class MainActivity extends FragmentActivity implements OnClickListener {
+public class MainActivity extends FragmentActivity implements OnClickListener,OnTipDialogButtonClick{
 
     public static boolean mIsPushStarted = false;
     private DoubleClickExitHelper mDoubleClickExit;
@@ -83,17 +84,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         }
         if (!mHomeFragment.isAdded()) {
             // 提交事务
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.realtabcontent, mHomeFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fl_realtabcontent, mHomeFragment).commit();
             // 记录当前Fragment
             mCurrentFragment = mHomeFragment;
             // 设置图片文本的变化
             mHomeImg.setImageResource(R.mipmap.btn_know_pre);
-            mHomeTv.setTextColor(getResources().getColor(
-                    R.color.bottomtab_press));
+            mHomeTv.setTextColor(getResources().getColor(R.color.bottomtab_press));
             mMyImg.setImageResource(R.mipmap.btn_my_nor);
-            mMyTv.setTextColor(getResources()
-                    .getColor(R.color.bottomtab_normal));
+            mMyTv.setTextColor(getResources().getColor(R.color.bottomtab_normal));
         }
         LogUtils.i("MainActivity.clazz--->>>onCreate......");
     }
@@ -103,6 +101,16 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         super.onResume();
         checkContacts();// 检查手机是否有公司电话
         LogUtils.i("MainActivity.clazz--->>>onResume......");
+
+        int networkType = TDevice.getNetworkType();
+        if (networkType == 0) {
+            TipDialogManager.showWithoutNetworDialog(this, this);
+        } else if (networkType == 2 || networkType == 3) {
+            TipDialogManager.showNormalTipDialog(this, this,
+                    R.string.tip, R.string.tip_choose_net,
+                    R.string.continues, R.string.cancel);
+        }
+        LogUtils.i("LoadActivity.clazz--->>>onResume......networkType:" + networkType);
     }
 
     @Override
@@ -117,13 +125,20 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         mIsPushStarted = false;
     }
 
+    @Override
+    public void onPositiveButtonClick() {
+    }
+
+    @Override
+    public void onNegativeButtonClick() {
+
+    }
+
     private void checkContacts() {
-        String contactName = TDevice.getContactFromPhone(
-                BaseApplication.context(), AppConfig.COMPANY_PHONE);
+        String contactName = TDevice.getContactFromPhone(BaseApplication.context(), AppConfig.COMPANY_PHONE);
         String nickName = getString(R.string.linkman);
         if (!contactName.equals(nickName)) {
-            TDevice.insertContact2Phone(BaseApplication.context(), nickName,
-                    AppConfig.COMPANY_PHONE);
+            TDevice.insertContact2Phone(BaseApplication.context(), nickName, AppConfig.COMPANY_PHONE);
         }
     }
 
@@ -175,8 +190,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                         DongSDKProxy.requestUnlock(deviced);
                         BaseApplication.showToastShortInCenter(R.string.openlock);
                     } else {
-                        BaseApplication
-                                .showToastShortInCenter(R.string.device_offline);
+                        BaseApplication.showToastShortInCenter(R.string.device_offline);
                     }
                 }
                 mLastTime = System.currentTimeMillis();
@@ -192,14 +206,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
      * @param transaction
      * @param fragment
      */
-    private void addOrShowFragment(FragmentTransaction transaction,
-                                   Fragment fragment) {
+    private void addOrShowFragment(FragmentTransaction transaction, Fragment fragment) {
         if (mCurrentFragment == fragment)
             return;
 
         if (!fragment.isAdded()) { // 如果当前fragment未被添加，则添加到Fragment管理器中
-            transaction.hide(mCurrentFragment)
-                    .add(R.id.realtabcontent, fragment).commit();
+            transaction.hide(mCurrentFragment).add(R.id.fl_realtabcontent, fragment).commit();
         } else {
             transaction.hide(mCurrentFragment).show(fragment).commit();
         }
@@ -224,7 +236,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // 当 API Level > 11 调用这个方法可能导致奔溃（android.os.Build.VERSION.SDK_INT > 11）
+        // 当 API Level > 11 调用这个方法可能导致崩溃（android.os.Build.VERSION.SDK_INT > 11）
     }
 
 }

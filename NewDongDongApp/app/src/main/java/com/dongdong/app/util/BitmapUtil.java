@@ -200,7 +200,7 @@ public class BitmapUtil {
 	 *            圆角大小
 	 * @return 期望Bitmap
 	 */
-	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
+	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap,int roundPx) {
 
 		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
 				bitmap.getHeight(), Config.ARGB_8888);

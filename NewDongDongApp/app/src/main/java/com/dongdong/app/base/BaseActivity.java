@@ -1,9 +1,13 @@
 package com.dongdong.app.base;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.dongdong.app.AppManager;
 import com.dongdong.app.interf.BaseViewInterface;
@@ -20,19 +24,25 @@ public abstract class BaseActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppManager.getAppManager().addActivity(this);
         onBeforeSetContentLayout();
         if (getLayoutId() != 0) {
             setContentView(getLayoutId());
         }
-        if (this instanceof VideoViewActivity || this instanceof LoadActivity) {
+        if (this instanceof VideoViewActivity) {
             LogUtils.i("BaseActivity.clazz--->>> we don't compat status color");
+        } else if (this instanceof LoadActivity) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            StatusBarCompatUtils.compat(this, Color.parseColor("#00000000"));
+            LogUtils.i("BaseActivity.clazz--->>> we don't compat status color and " +
+                    "set navigation bar transparent");
         } else {
             StatusBarCompatUtils.compat(this);
         }
         init(savedInstanceState);
         initView();
         initData();
+        AppManager.getAppManager().addActivity(this);
     }
 
     protected void onBeforeSetContentLayout() {

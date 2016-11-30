@@ -14,7 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.TDevice;
 
@@ -53,7 +53,7 @@ public class CommonToast {
 		_toastVw.actionTv.setText(s);
 	}
 
-	public void setActionIc(int i) {
+	private void setActionIc(int i) {
 		_toastVw.actionIv.setImageResource(i);
 	}
 
@@ -61,7 +61,7 @@ public class CommonToast {
 		_duration = l;
 	}
 
-	public void setLayoutGravity(int i) {
+	private void setLayoutGravity(int i) {
 		if (i != 0) {
 			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(-2,
 					-2);
@@ -76,7 +76,7 @@ public class CommonToast {
 		_toastVw.messageTv.setText(s);
 	}
 
-	public void setMessageIc(int i) {
+	private void setMessageIc(int i) {
 		_toastVw.messageIc.setImageResource(i);
 	}
 
@@ -100,12 +100,10 @@ public class CommonToast {
 
 						@Override
 						public void onAnimationStart(Animator animation) {
-							// TODO Auto-generated method stub
 						}
 
 						@Override
 						public void onAnimationRepeat(Animator animation) {
-							// TODO Auto-generated method stub
 						}
 
 						@Override
@@ -147,11 +145,10 @@ public class CommonToast {
 		}
 
 		private void init() {
-			LayoutInflater.from(getContext()).inflate(R.layout.view_base_toast,
-					this, true);
-			messageTv = (TextView) findViewById(R.id.title_tv);
+			LayoutInflater.from(getContext()).inflate(R.layout.view_base_toast, this, true);
+			messageTv = (TextView) findViewById(R.id.tv_title);
 			messageIc = (ImageView) findViewById(R.id.icon_iv);
-			actionTv = (TextView) findViewById(R.id.title_tv);
+			actionTv = (TextView) findViewById(R.id.tv_title);
 			actionIv = (ImageView) findViewById(R.id.icon_iv);
 		}
 	}

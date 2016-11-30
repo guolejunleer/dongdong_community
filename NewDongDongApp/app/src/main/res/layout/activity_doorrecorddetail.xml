@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -8,8 +8,7 @@
     <com.dongdong.app.widget.TitleBar
         android:id="@+id/tb_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </com.dongdong.app.widget.TitleBar>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -20,15 +19,14 @@
         <RelativeLayout
             style="@style/option_item_ro"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/space_0"
             android:layout_weight="1"
             android:clickable="false" >
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="房号：" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_roomnumber"
@@ -44,23 +42,21 @@
         <RelativeLayout
             style="@style/option_item_ro"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/space_0"
             android:layout_weight="1"
             android:clickable="false" >
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="类 型：" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_type"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="1" />
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -68,15 +64,14 @@
         <RelativeLayout
             style="@style/option_item_ro"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/space_0"
             android:layout_weight="1"
             android:clickable="false" >
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="开门时间：" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/tv_timestamp"
@@ -92,23 +87,21 @@
         <RelativeLayout
             style="@style/option_item_ro"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/space_0"
             android:layout_weight="1"
             android:clickable="false" >
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="设备名称：" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_devicename"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="1" />
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -116,23 +109,21 @@
         <RelativeLayout
             style="@style/option_item_ro"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/space_0"
             android:layout_weight="1"
             android:clickable="false" >
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="物业名称：" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/tv_membername"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="1" />
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -147,16 +138,14 @@
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="门禁卡号：" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/tv_comnumber"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="1" />
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -171,16 +160,14 @@
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="身份证号：" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/tv_idnumber"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="1" />
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -195,16 +182,14 @@
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="手机：" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/tv_mobilephone"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="1" />
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </LinearLayout>
 

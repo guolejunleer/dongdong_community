@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.MobileClientLib.InfoUser;
 import com.ddclient.dongsdk.AbstractDongSDKProxy.DongAccountCallbackImp;
 import com.ddclient.dongsdk.DeviceInfo;
@@ -42,7 +42,6 @@ public class AuthAccountActivity extends BaseActivity implements
 	private ArrayList<InfoUser> mUserList;
 	private UserInfoBean mUserInfoBean;
 	private String mAccountName;
-	private int mUserid = 0;
 	private CommonDialog mDialog, mDialog2;
 
 	private PhoneMessUtils mPhoneMess;
@@ -88,7 +87,7 @@ public class AuthAccountActivity extends BaseActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				mUserInfoBean = (UserInfoBean) mListAdapter.getItem(arg2);
+				mUserInfoBean =mListAdapter.getItem(arg2);
 				mDialog.setMessage(R.string.deleteAuthorization);
 				mDialog.setPositiveButton(R.string.ok,
 						new DialogInterface.OnClickListener() {
@@ -169,6 +168,10 @@ public class AuthAccountActivity extends BaseActivity implements
 	}
 
 	@Override
+	public void onFinishClick() {
+	}
+
+	@Override
 	public void onClick(View v) {
 		int id = v.getId();
 		switch (id) {
@@ -207,7 +210,6 @@ public class AuthAccountActivity extends BaseActivity implements
 
 		@Override
 		public int OnAddDeviceUser(int result, int userid) {
-			mUserid = userid;
 			if (mDialog != null) {
 				mDialog.dismiss();
 			}
@@ -215,7 +217,7 @@ public class AuthAccountActivity extends BaseActivity implements
 				mDialog2.dismiss();
 			}
 			if (result == 0) {
-				mUserList.add(new InfoUser(mUserid, mAccountName, new byte[1],
+				mUserList.add(new InfoUser(userid, mAccountName, new byte[1],
 						""));
 				mListAdapter.setData(mUserList);
 				mListAdapter.notifyDataSetChanged();
@@ -266,8 +268,7 @@ public class AuthAccountActivity extends BaseActivity implements
 			mListAdapter.setData(mUserList);
 			mListAdapter.notifyDataSetChanged();
 			new CheckPhoneMessThread().start();// 查找手机上存在手机号的人的名称
-			LogUtils.i("AuthAccountActivity.clazz--->>>OnGetDeviceUserInfo........infoUsers:"
-					+ infoUsers);
+			LogUtils.i("AuthAccountActivity.clazz--->>>OnGetDeviceUserInfo........infoUsers:" + infoUsers);
 			return 0;
 		}
 

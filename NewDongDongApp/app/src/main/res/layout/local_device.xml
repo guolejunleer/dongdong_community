@@ -17,10 +17,10 @@
     </com.dongdong.app.widget.TitleBar>
 
     <TextView
-        android:id="@+id/wifiname"
+        android:id="@+id/tv_wifiname"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/space_5"
         android:gravity="center"
         android:text="@string/wifi"
         android:textColor="@android:color/black" />
@@ -29,13 +29,13 @@
          android:id="@+id/lv_list_account"
          android:layout_width="fill_parent"
          android:layout_height="fill_parent"
-         android:layout_marginTop="5dp"
-         android:layout_margin="10dp"
+         android:layout_marginTop="@dimen/space_5"
+         android:layout_margin="@dimen/space_10"
          android:background="#FFFFFF"
          android:cacheColorHint="#00000000"
          android:choiceMode="singleChoice"
          android:divider="#AAAAAA"
-         android:dividerHeight="1dp"
+         android:dividerHeight="@dimen/space_1"
          android:drawSelectorOnTop="false"
          android:footerDividersEnabled="false" >
      </ListView>

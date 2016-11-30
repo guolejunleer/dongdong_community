@@ -13,21 +13,21 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="230dp"
+        android:layout_height="@dimen/space_230"
         android:background="@mipmap/phone_head" >
     </LinearLayout>
 
     <GridView
-        android:id="@+id/grid_view1"
+        android:id="@+id/gv_grid_view1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/space_30"
         android:gravity="center"
-        android:horizontalSpacing="14dip"
+        android:horizontalSpacing="@dimen/space_14"
         android:listSelector="#0000"
         android:numColumns="4"
         android:scrollbars="vertical"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="14.0px" />
+        android:verticalSpacing="@dimen/space_14" />
 
 </LinearLayout>

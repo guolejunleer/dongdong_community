@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/space_5"
         android:gravity="center" >
 
         <ImageView
@@ -20,11 +20,11 @@
         <TextView
             android:id="@+id/tv_func_name"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="@dimen/space_20"
             android:layout_below="@id/iv_func_icon"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="@dimen/space_2"
             android:gravity="center"
             android:textSize="@dimen/text_size_14" >
         </TextView>
@@ -34,24 +34,23 @@
         android:layout_width="1px"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:background="@color/light_gray" />
+        android:background="#f3f3f3" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentTop="true"
-        android:background="@color/light_gray" />
-
+        android:background="#f3f3f3" />
     <View
         android:layout_width="1px"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="@color/light_gray" />
+        android:background="#f3f3f3" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
-        android:background="@color/light_gray" />
+        android:background="#f3f3f3" />
 
 </com.dongdong.app.widget.DynamicItemContainView>

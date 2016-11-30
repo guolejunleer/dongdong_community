@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.bean.PhoneBean;
 
 public class CommonPhoneGridViewAdapter extends BaseAdapter {
@@ -38,7 +38,7 @@ public class CommonPhoneGridViewAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder viewHolder = null;
+		ViewHolder viewHolder;
 		if (convertView == null) {
 			convertView = View.inflate(context, R.layout.gradview_item, null);
 			viewHolder = new ViewHolder();
@@ -59,7 +59,7 @@ public class CommonPhoneGridViewAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	public class ViewHolder {
+	private class ViewHolder {
 		private ImageView iv_cmimg;
 		private TextView tv_cmname;
 		private TextView tv_cmphone;

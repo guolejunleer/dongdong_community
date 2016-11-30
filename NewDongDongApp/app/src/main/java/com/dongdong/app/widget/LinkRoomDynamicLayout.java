@@ -25,7 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.FrameLayout;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 
 public class LinkRoomDynamicLayout extends FrameLayout {
 
@@ -35,6 +35,7 @@ public class LinkRoomDynamicLayout extends FrameLayout {
 	/*
 	 * 默认4列
 	 */
+	private static final int DEFAULT_RAW_COUNT=6;
 	private static final int DEFAULT_COLUMN_COUNT = 4;
 
 	private static final int INVALID_POINTER = -1;
@@ -201,10 +202,8 @@ public class LinkRoomDynamicLayout extends FrameLayout {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int expandSpec = MeasureSpec
-				.makeMeasureSpec(
-						(int) (mNormalViewWidth * (7 + FIXED_VIEW_ROW_POSITION_TWO_HEIGHT_FACTOR)),
-						MeasureSpec.EXACTLY);
+		int expandSpec = MeasureSpec.makeMeasureSpec((int) (mNormalViewWidth * (DEFAULT_RAW_COUNT +
+								FIXED_VIEW_ROW_POSITION_TWO_HEIGHT_FACTOR)), MeasureSpec.EXACTLY);
 		super.onMeasure(widthMeasureSpec, expandSpec);
 	}
 

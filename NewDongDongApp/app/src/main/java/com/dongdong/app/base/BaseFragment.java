@@ -23,8 +23,7 @@ public class BaseFragment extends Fragment implements OnClickListener,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		this.mInflater = inflater;
-		View view = super.onCreateView(inflater, container, savedInstanceState);
-		return view;
+		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	@Override
