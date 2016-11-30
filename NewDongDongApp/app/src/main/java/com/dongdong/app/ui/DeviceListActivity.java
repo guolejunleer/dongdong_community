@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.MobileClientLib.InfoUser;
 import com.ddclient.configuration.DongConfiguration;
 import com.ddclient.dongsdk.AbstractDongSDKProxy.DongAccountCallbackImp;
@@ -42,9 +42,9 @@ public class DeviceListActivity extends BaseActivity implements
 
     @Override
     public void initView() {
-        mLvInfo = (ListView) findViewById(R.id.mlvInfo);
+        mLvInfo = (ListView) findViewById(R.id.lv_mlvInfo);
         mTitleBar = (TitleBar) findViewById(R.id.tb_title);
-        mInfoAdapter = new DeviceInfoAdapter(this);
+        mInfoAdapter = new DeviceInfoAdapter(DeviceListActivity.this);
         mLvInfo.setAdapter(mInfoAdapter);
     }
 
@@ -52,6 +52,8 @@ public class DeviceListActivity extends BaseActivity implements
     public void initData() {
         mAccountProxy = new DeviceListActivityDongAccountProxy();
         mTitleBar.setTitleBarContent(getString(R.string.list));
+        mTitleBar.setBackArrowShowing(true);
+        mTitleBar.setFinishShowing(false);
         mTitleBar.setOnTitleBarClickListener(this);
         mLvInfo.setOnItemClickListener(new OnItemClickListener() {
 
@@ -82,8 +84,7 @@ public class DeviceListActivity extends BaseActivity implements
     protected void onResume() {
         super.onResume();
         DongSDKProxy.registerAccountCallback(mAccountProxy);
-        ArrayList<DeviceInfo> deviceList = DongSDKProxy
-                .requestGetDeviceListFromCache();
+        ArrayList<DeviceInfo> deviceList = DongSDKProxy.requestGetDeviceListFromCache();
         mInfoAdapter.setData(deviceList);
         mInfoAdapter.notifyDataSetChanged();
     }
@@ -111,7 +112,9 @@ public class DeviceListActivity extends BaseActivity implements
     @Override
     public void onAddClick() {
         startActivity(new Intent(this, AddDeviceActivity.class));
-        finish();
+    }
+    @Override
+    public void onFinishClick() {
     }
 
     private class DeviceListActivityDongAccountProxy extends
@@ -119,8 +122,7 @@ public class DeviceListActivity extends BaseActivity implements
 
         @Override
         public int OnAuthenticate(InfoUser infoUser) {
-            LogUtils.i("DeviceListActivity.clazz -->>> OnAuthenticate infoUser:"
-                    + infoUser);
+            LogUtils.i("DeviceListActivity.clazz -->>> OnAuthenticate infoUser:" + infoUser);
             return 0;
         }
 
@@ -148,19 +150,16 @@ public class DeviceListActivity extends BaseActivity implements
 
         @Override
         public int OnNewListInfo() {
-            ArrayList<DeviceInfo> deviceList = DongSDKProxy
-                    .requestGetDeviceListFromCache();
+            ArrayList<DeviceInfo> deviceList = DongSDKProxy.requestGetDeviceListFromCache();
             mInfoAdapter.setData(deviceList);
             mInfoAdapter.notifyDataSetChanged();
-            LogUtils.i("DeviceListActivity.clazz -->>>OnNewListInfo deviceList.size:"
-                    + deviceList.size());
+            LogUtils.i("DeviceListActivity.clazz -->>>OnNewListInfo deviceList.size:" + deviceList.size());
             return 0;
         }
 
         @Override
         public int OnUserError(int error) {
-            LogUtils.i("DeviceListActivity.clazz -->>> OnUserError error:"
-                    + error);
+            LogUtils.i("DeviceListActivity.clazz -->>> OnUserError error:" + error);
             return 0;
         }
     }

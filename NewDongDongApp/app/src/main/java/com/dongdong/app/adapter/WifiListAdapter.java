@@ -10,13 +10,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.MobileClientLib.InfoWifi;
 
 public class WifiListAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
-	private ArrayList<InfoWifi> list = new ArrayList<InfoWifi>();
+	private ArrayList<InfoWifi> list = new ArrayList<>();
 
 	public WifiListAdapter(Context context) {
 		inflater = LayoutInflater.from(context);
@@ -26,7 +26,7 @@ public class WifiListAdapter extends BaseAdapter {
 	public void setData(ArrayList<InfoWifi> wifilist) {
 		this.list = wifilist;
 
-	};
+	}
 
 	public ArrayList<InfoWifi> getData() {
 		return list;
@@ -49,7 +49,7 @@ public class WifiListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Holder hold = null;
+		Holder hold;
 		if (convertView == null) {
 			hold = new Holder();
 			convertView = inflater.inflate(R.layout.wifi_list_item, null);
@@ -57,11 +57,11 @@ public class WifiListAdapter extends BaseAdapter {
 		} else {
 			hold = (Holder) convertView.getTag();
 		}
-		hold.wifi_name = (TextView) convertView.findViewById(R.id.wifi_name);
+		hold.wifi_name = (TextView) convertView.findViewById(R.id.tv_wifi_name);
 		hold.wifi_static = (TextView) convertView
-				.findViewById(R.id.wifi_static);
-		hold.wifi_level = (ImageView) convertView.findViewById(R.id.wifi_level);
-		hold.wifipwd = (ImageView) convertView.findViewById(R.id.wifiPwd);
+				.findViewById(R.id.tv_wifi_static);
+		hold.wifi_level = (ImageView) convertView.findViewById(R.id.tv_wifi_level);
+		hold.wifipwd = (ImageView) convertView.findViewById(R.id.tv_wifiPwd);
 
 		InfoWifi wifiObject = getData().get(position);
 
@@ -76,7 +76,7 @@ public class WifiListAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	public void setWifiIcon(ImageView imageView1, ImageView imageView2,
+	private void setWifiIcon(ImageView imageView1, ImageView imageView2,
 			InfoWifi wifiObject) {
 		if (wifiObject.nSignalLevel == 0) {
 			imageView1.setImageResource(R.mipmap.wifi05);
@@ -97,7 +97,7 @@ public class WifiListAdapter extends BaseAdapter {
 		}
 	}
 
-	class Holder {
+	private class Holder {
 		TextView wifi_name;
 		TextView wifi_static;
 		ImageView wifipwd;

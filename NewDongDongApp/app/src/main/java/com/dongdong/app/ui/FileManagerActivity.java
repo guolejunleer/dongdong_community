@@ -12,7 +12,8 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.ListView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
+import com.dongdong.app.AppConfig;
 import com.dongdong.app.adapter.OpenFileAdapter;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.StatusBarCompatUtils;
@@ -39,8 +40,8 @@ public class FileManagerActivity extends ListActivity {
         mTitleBar.setTitleBarContent(getString(R.string.mypicture));
         mTitleBar.setAddArrowShowing(false);
 
-        mRootPath = Environment.getExternalStorageDirectory().getPath()
-                + "/Takepicture";
+        mRootPath = Environment.getExternalStorageDirectory().getPath() +"/"+
+                AppConfig.SD_TAKE_PICTURE_PATH+"/image/";
     }
 
     public void initData() {
@@ -58,6 +59,9 @@ public class FileManagerActivity extends ListActivity {
             @Override
             public void onAddClick() {
 
+            }
+            @Override
+            public void onFinishClick() {
             }
         });
 
@@ -81,13 +85,12 @@ public class FileManagerActivity extends ListActivity {
         File rootfile = new File(filePath);
         if (!rootfile.exists()) {
             if (!rootfile.mkdirs()) {
-                TipDialogManager.showTipDialog(this, R.string.warn,
-                        R.string.OPENFILE_ERROR);
+                TipDialogManager.showTipDialog(this, R.string.warn, R.string.OPENFILE_ERROR);
                 return;
             }
         }
-        List<String> items = new ArrayList<String>();
-        List<String> paths = new ArrayList<String>();
+        List<String> items = new ArrayList<>();
+        List<String> paths = new ArrayList<>();
         if (!filePath.equals(mRootPath)) {
             items.add("rootPath");
             paths.add(mRootPath);
@@ -96,8 +99,7 @@ public class FileManagerActivity extends ListActivity {
         }
 
         File[] files = rootfile.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            File subfile = files[i];
+        for (File subfile:files) {
             items.add(subfile.getName());
             paths.add(subfile.getPath());
         }

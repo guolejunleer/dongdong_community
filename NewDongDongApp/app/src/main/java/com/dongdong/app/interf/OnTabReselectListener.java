@@ -9,5 +9,5 @@ package com.dongdong.app.interf;
  */
 public interface OnTabReselectListener {
 
-	public void onTabReselect();
+	void onTabReselect();
 }

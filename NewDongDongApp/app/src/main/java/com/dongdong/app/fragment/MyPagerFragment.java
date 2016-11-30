@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.dongsdk.DongSDKProxy;
 import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
@@ -19,13 +19,12 @@ import com.dongdong.app.ui.LoginActivity;
 import com.dongdong.app.ui.SettingsActivity;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.LogUtils;
+import com.dongdong.app.util.TDevice;
 import com.dongdong.app.widget.AvatarView;
 import com.dongdong.app.widget.TitleBar;
 
 public class MyPagerFragment extends BaseFragment {
 
-	private TitleBar mTitleBar;
-	private AvatarView mIvAvatar;
 	private TextView mTvName;
 
 	@Override
@@ -57,8 +56,7 @@ public class MyPagerFragment extends BaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(getLayoutId(), container, false);
-		return view;
+		return inflater.inflate(getLayoutId(), container, false);
 	}
 
 	@Override
@@ -68,14 +66,14 @@ public class MyPagerFragment extends BaseFragment {
 	}
 
 	public void initView(View view) {
-		mTitleBar = (TitleBar) view.findViewById(R.id.tb_title);
-		mIvAvatar = (AvatarView) view.findViewById(R.id.iv_avatar);
+		TitleBar titleBar = (TitleBar) view.findViewById(R.id.tb_title);
+		AvatarView ivAvatar = (AvatarView) view.findViewById(R.id.iv_avatar);
 		mTvName = (TextView) view.findViewById(R.id.tv_name);
 
-		mTitleBar.setBackArrowShowing(false);
-		mTitleBar.setAddArrowShowing(false);
-		mTitleBar.setTitleBarContent(getString(R.string.main_tab_name_my));
-		mIvAvatar.setOnClickListener(this);
+		titleBar.setBackArrowShowing(false);
+		titleBar.setAddArrowShowing(false);
+		titleBar.setTitleBarContent("");
+		ivAvatar.setOnClickListener(this);
 		view.findViewById(R.id.ll_myfamily).setOnClickListener(this);
 		view.findViewById(R.id.ll_myhouse).setOnClickListener(this);
 		view.findViewById(R.id.ll_myvillage).setOnClickListener(this);
@@ -96,6 +94,16 @@ public class MyPagerFragment extends BaseFragment {
 	}
 
 	public void onClick(View v) {
+
+		if (TDevice.getNetworkType() == 0) {
+			TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+			return;
+		}
+		if (!DongSDKProxy.isInitedDongAccount()) {
+			startActivity(new Intent(getActivity(), LoginActivity.class));
+			return;
+		}
+
 		switch (v.getId()) {
 		case R.id.iv_avatar:
 			if (!DongSDKProxy.isInitedDongAccount()) {
@@ -115,10 +123,8 @@ public class MyPagerFragment extends BaseFragment {
 			BaseApplication.showToastShortInCenter(R.string.building);
 			break;
 		case R.id.ll_mypicture:
-			if (Environment.MEDIA_REMOVED.equals(Environment
-					.getExternalStorageState())) {
-				TipDialogManager.showTipDialog(getActivity(), R.string.warn,
-						R.string.OPENFILE_ERROR);
+			if (Environment.MEDIA_REMOVED.equals(Environment.getExternalStorageState())) {
+				TipDialogManager.showTipDialog(getActivity(), R.string.warn, R.string.OPENFILE_ERROR);
 				return;
 			}
 			startActivity(new Intent(getActivity(), FileManagerActivity.class));
@@ -129,5 +135,5 @@ public class MyPagerFragment extends BaseFragment {
 		default:
 			break;
 		}
-	};
+	}
 }

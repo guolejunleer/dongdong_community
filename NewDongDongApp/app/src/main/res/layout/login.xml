@@ -4,39 +4,39 @@
     android:layout_height="wrap_content"
     android:background="#80FFFFFF"
     android:orientation="vertical"
-    android:padding="15dp" >
+    android:padding="@dimen/space_15" >
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_marginTop="10dip"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_marginRight="@dimen/space_10"
+        android:layout_marginTop="@dimen/space_10"
         android:background="@drawable/ellipse_shape"
-        android:paddingTop="3.0dip" >
+        android:paddingTop="@dimen/space_3" >
 
         <TableLayout
             android:layout_width="fill_parent"
-            android:layout_height="380.0dip"
+            android:layout_height="@dimen/space_380"
             android:stretchColumns="1" >
 
             <TableRow>
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/tv_textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dip"
+                    android:layout_marginLeft="@dimen/space_10"
                     android:gravity="left"
                     android:textColor="#000000"
-                    android:textSize="18.0dip"
+                    android:textSize="@dimen/space_18"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/et_password"
-                    android:layout_width="160.0dip"
-                    android:layout_height="43dip"
-                    android:layout_marginLeft="5dip"
+                    android:layout_width="@dimen/space_160"
+                    android:layout_height="@dimen/space_44"
+                    android:layout_marginLeft="@dimen/space_5"
                     android:hint="@string/pleaseInputPassword"
                     android:background="@android:color/transparent"
                     android:inputType="textPassword"
@@ -49,35 +49,35 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/space_5"
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/cancel"
+            android:id="@+id/tv_cancel"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/space_30"
             android:layout_weight="1"
             android:background="#00000000"
             android:gravity="center"
             android:text="@string/cancel"
             android:textColor="#000000"
-            android:textSize="18dp"
+            android:textSize="@dimen/text_size_18"
             android:textStyle="bold" />
 
         <View
-            android:layout_width="2dp"
+            android:layout_width="@dimen/space_2"
             android:layout_height="fill_parent"
             android:background="#FFFFFF" />
 
         <TextView
-            android:id="@+id/login"
+            android:id="@+id/tv_login"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/space_30"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/loginup"
             android:textColor="#000000"
-            android:textSize="18dp"
+            android:textSize="@dimen/text_size_18"
             android:textStyle="bold" />
     </LinearLayout>
 

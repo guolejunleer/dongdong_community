@@ -4,25 +4,23 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="5dp" >
+    android:padding="@dimen/space_5" >
 
     <TextView
-        android:id="@+id/wifi_name"
+        android:id="@+id/tv_wifi_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="6"
-        android:text="wifi_name"
-        android:textSize="18sp" />
+        android:textSize="@dimen/text_size_18" />
 
     <TextView
-        android:id="@+id/wifi_static"
+        android:id="@+id/tv_wifi_static"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:text="wifi_desc" />
+        android:layout_weight="2"/>
 
     <ImageView
-        android:id="@+id/wifiPwd"
+        android:id="@+id/tv_wifiPwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -30,7 +28,7 @@
         android:src="@mipmap/ic_launcher" />
 
     <ImageView
-        android:id="@+id/wifi_level"
+        android:id="@+id/tv_wifi_level"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

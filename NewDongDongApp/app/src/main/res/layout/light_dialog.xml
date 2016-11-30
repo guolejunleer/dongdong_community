@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="50dp"
+    android:layout_width="300.0dip"
+    android:layout_height="50.0dip"
     android:background="#70000000"
     android:gravity="center_vertical"
     android:orientation="horizontal" >
@@ -10,30 +10,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
-        android:paddingLeft="15dp"
+        android:paddingLeft="@dimen/space_15"
         android:src="@mipmap/brightness_adjust" />
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="@dimen/space_300"
         android:layout_height="fill_parent"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp" >
+        android:paddingLeft="@dimen/space_5"
+        android:paddingRight="@dimen/space_5" >
 
         <SeekBar
-            android:id="@+id/lightbar"
-            android:layout_width="300dp"
+            android:id="@+id/seek_lightbar"
+            android:layout_width="@dimen/space_300"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="#00000000"
             android:centerColor="#85B0E9"
             android:endColor="#165CBC"
             android:max="99"
-            android:maxHeight="5.0dip"
-            android:minHeight="5.0dip"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:maxHeight="@dimen/space_5"
+            android:minHeight="@dimen/space_5"
+            android:paddingLeft="@dimen/space_20"
+            android:paddingRight="@dimen/space_20"
             android:progress="0"
             android:startColor="#85B0E9"
             android:thumb="@mipmap/myseekbar" />

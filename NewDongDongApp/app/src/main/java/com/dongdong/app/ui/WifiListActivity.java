@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.MobileClientLib.InfoUser;
 import com.ddclient.MobileClientLib.InfoWifi;
 import com.ddclient.dongsdk.AbstractDongSDKProxy.DongAccountCallbackImp;
@@ -69,6 +69,9 @@ public class WifiListActivity extends BaseActivity {
 					public void onAddClick() {
 
 					}
+					@Override
+					public void onFinishClick() {
+					}
 				});
 
 		mWifiListAdapter = new WifiListAdapter(this);
@@ -81,7 +84,7 @@ public class WifiListActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				final InfoWifi infoWifi = (InfoWifi) mWifiListAdapter
+				final InfoWifi infoWifi = mWifiListAdapter
 						.getItem(arg2);
 				if (!infoWifi.bCur) {
 					View diaView = View.inflate(WifiListActivity.this,
@@ -92,9 +95,9 @@ public class WifiListActivity extends BaseActivity {
 					dialog.setContentView(diaView);
 					dialog.show();
 					TextView button = (TextView) diaView
-							.findViewById(R.id.login);
+							.findViewById(R.id.tv_login);
 					TextView button1 = (TextView) diaView
-							.findViewById(R.id.cancel);
+							.findViewById(R.id.tv_cancel);
 					final EditText text2 = (EditText) diaView
 							.findViewById(R.id.et_password);
 					button.setOnClickListener(new OnClickListener() {

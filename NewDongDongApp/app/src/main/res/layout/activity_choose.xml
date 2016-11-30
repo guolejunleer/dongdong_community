@@ -11,7 +11,7 @@
     </com.dongdong.app.widget.TitleBar>
 
     <ListView
-        android:id="@+id/mlvInfo"
+        android:id="@+id/lv_mlvInfo"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="#FFFFFF"

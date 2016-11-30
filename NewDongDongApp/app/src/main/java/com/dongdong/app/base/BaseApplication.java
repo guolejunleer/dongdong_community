@@ -1,8 +1,5 @@
 package com.dongdong.app.base;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
@@ -14,10 +11,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.bean.FunctionBean;
 import com.dongdong.app.util.TDevice;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("InflateParams")
 public class BaseApplication extends Application {
@@ -42,7 +44,7 @@ public class BaseApplication extends Application {
 	// public static final int FUNCTION_DD_FUNCTION_AMUSE = 11;
 	private static final String[][] mVenderInfoArray = {
 			{ "com.dongdong.app", "www.dd121.com", "123" },
-			{ "com.dd121.louyu", "www.dd121.com", "123" },
+			{ "com.dd121.community", "www.dd121.com", "123" },
 			{ "com.dongdong.app.test002", "www.dd121.com", "123" } };
 
 	private static Context mContext;
@@ -59,7 +61,7 @@ public class BaseApplication extends Application {
 	}
 
 	public static synchronized BaseApplication context() {
-		return (BaseApplication) mContext;
+		return (BaseApplication)mContext;
 	}
 
 	public static Resources resources() {
@@ -126,11 +128,11 @@ public class BaseApplication extends Application {
 					|| Math.abs(time - mLastToastTime) > 2000) {
 				View view = LayoutInflater.from(context()).inflate(
 						R.layout.view_toast, null);
-				((TextView) view.findViewById(R.id.title_tv)).setText(message);
+				((TextView) view.findViewById(R.id.tv_title)).setText(message);
 				if (icon != 0) {
 					((ImageView) view.findViewById(R.id.icon_iv))
 							.setImageResource(icon);
-					((ImageView) view.findViewById(R.id.icon_iv))
+					(view.findViewById(R.id.icon_iv))
 							.setVisibility(View.VISIBLE);
 				}
 				Toast toast = new Toast(context());
@@ -152,8 +154,36 @@ public class BaseApplication extends Application {
 		}
 	}
 
+	// 登录，注册，忘记密码
+	public static void showMyToast(int message) {
+		WindowManager wm = (WindowManager) context().getSystemService(Context.WINDOW_SERVICE);
+		// 获得屏幕的宽和高
+		int width = wm.getDefaultDisplay().getWidth();
+		int height = wm.getDefaultDisplay().getHeight();
+
+		LayoutInflater inflater = (LayoutInflater) context().getSystemService(
+				Context.LAYOUT_INFLATER_SERVICE);
+		// 设置toast的宽和高
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				(width / 100) * 99, height / 12);
+
+		View view = inflater.inflate(R.layout.view_mytoast, null);
+		LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.ll_mytoastlayout);
+		linearLayout.setLayoutParams(layoutParams);
+		ImageView imageView = (ImageView) view.findViewById(R.id.iv_mytoastimg);
+		imageView.setBackgroundResource(R.mipmap.warning_sign);
+		TextView textView = (TextView) view.findViewById(R.id.tv_mytoasttxt);
+		textView.setText(message);
+
+		Toast toast = new Toast(context());
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP, 0, 0);
+		toast.setView(view);
+		toast.show();
+	}
+
 	public static List<FunctionBean> getFunctionsDatasInit() {
-		List<FunctionBean> list = new ArrayList<FunctionBean>();
+		List<FunctionBean> list = new ArrayList<>();
 		String nowPackageName = mContext.getPackageName();
 
 		if (nowPackageName.equals(mVenderInfoArray[0][0])) {
@@ -201,9 +231,10 @@ public class BaseApplication extends Application {
 			list.add(new FunctionBean(mContext
 					.getString(R.string.shapeopendoor), FUNCTION_SHAPEOPENDOOR,
 					10));
-		} else if (nowPackageName.equals(mVenderInfoArray[2][0])) {
-
 		}
+//		else if (nowPackageName.equals(mVenderInfoArray[2][0])) {
+//
+//		}
 		return list;
 	}
 }

@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.configuration.DongConfiguration;
 import com.ddclient.dongsdk.DongSDKProxy;
 import com.ddclient.dongsdk.PushInfo;
@@ -65,7 +65,7 @@ public class TipDialogManager {
                 if (initedDongAccount) {
                     DongSDKProxy.loginOut();
                     DongConfiguration.clearAllData();
-                    HomePagerFragment.mIsFirstComming = true;
+//                    HomePagerFragment.mIsFirstChooseDefaultDevice = true;
                     AppContext.mAppConfig.remove(
                             AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
                             AppConfig.KEY_DEVICE_ID);

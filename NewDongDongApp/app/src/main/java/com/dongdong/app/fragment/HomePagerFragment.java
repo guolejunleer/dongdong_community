@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.ddclient.MobileClientLib.InfoPush;
 import com.ddclient.MobileClientLib.InfoUser;
 import com.ddclient.configuration.DongConfiguration;
@@ -45,16 +45,16 @@ public class HomePagerFragment extends BaseFragment implements
         OnTabReselectListener, OnTitleBarClickListener, OnItemClickListener,
         OnDynamicViewChangedPositionListener {
 
-    public static boolean mIsFirstComming;// 是否为第一次启动
     private TitleBar mTitleBar;
     private File mFuncFile;
-    private List<FunctionBean> mFunctionsDatas = new ArrayList<FunctionBean>();
+    private List<FunctionBean> mFunctionsDatas = new ArrayList<>();
     private LinkRoomDynamicLayout mDynamicLayout;
 
-    private String mDeviceID;
+    private String mDeviceID;//推送传过來的值
 
     private DeviceInfo mDeviceInfo;
-    private HomePagerFragmentDongAccountProxy mDongAccountProxy = new HomePagerFragmentDongAccountProxy();
+    private HomePagerFragmentDongAccountProxy mDongAccountProxy =
+            new HomePagerFragmentDongAccountProxy();
 
     @Override
     protected int getLayoutId() {
@@ -64,12 +64,10 @@ public class HomePagerFragment extends BaseFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mIsFirstComming = true;
         View view = inflater.inflate(getLayoutId(), container, false);
         Bundle bundle = getArguments();
         mDeviceID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID);
-        LogUtils.i("HomePagerFragment.clazz--->>>onCreateView ...mDeviceID:"
-                + mDeviceID);
+        LogUtils.i("HomePagerFragment.clazz--->>>onCreateView ...mDeviceID:" + mDeviceID);
         return view;
     }
 
@@ -115,7 +113,6 @@ public class HomePagerFragment extends BaseFragment implements
     @Override
     public void onPause() {
         super.onPause();
-        mIsFirstComming = false;
         DongSDKProxy.unRegisterAccountCallback();
         LogUtils.i("HomePagerFragment.clazz--->>>onPause...");
     }
@@ -127,8 +124,7 @@ public class HomePagerFragment extends BaseFragment implements
         mTitleBar.setAddArrowShowing(false);
         mTitleBar.setOnTitleBarClickListener(this);
 
-        mDynamicLayout = (LinkRoomDynamicLayout) view
-                .findViewById(R.id.link_drag_grid_view);
+        mDynamicLayout = (LinkRoomDynamicLayout) view.findViewById(R.id.link_drag_grid_view);
         mDynamicLayout.setOnItemClickListener(this);
         mDynamicLayout.OnDynamicViewChangedPositionListener(this);
     }
@@ -150,91 +146,51 @@ public class HomePagerFragment extends BaseFragment implements
         mDynamicLayout.setAdapter(mNewAdatper);
     }
 
+
     private void showTitleInfo(boolean initedDongAccount) {
-        if (!initedDongAccount) {
-            mTitleBar.setTitleBarContent("请先登录");// 1.如果没有登录，那么提示请先登录
-        } else {
+        if (!initedDongAccount) {// 1.未登录
+            mTitleBar.setTitleBarContent("请先登录");
+        } else {//2.已登录
             ArrayList<DeviceInfo> deviceList;
             DongConfiguration.mDeviceInfoList = deviceList = DongSDKProxy
                     .requestGetDeviceListFromCache();// 这句话很重要!!!!
             int size = deviceList.size();
-            String deviceSeri = (String) AppContext.mAppConfig.getConfigValue(
-                    AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                    AppConfig.KEY_DEVICE_SERIAL, "");
-            LogUtils.i("HomePagerFragment.clazz--->>>showTitleInfo mIsFirstComming:"
-                    + mIsFirstComming);
-            if (mIsFirstComming && !TextUtils.isEmpty(deviceSeri)
-                    && TextUtils.isEmpty(mDeviceID)) {// 2.程序非离线推送第一次进来找默认设备
-                boolean hasDevice = false;
-                for (DeviceInfo deviceInfo : deviceList) {
-                    if (deviceSeri.equals(deviceInfo.deviceSerialNO)) {
-                        hasDevice = true;
-                        mTitleBar.setTitleBarContent(deviceInfo.deviceName);
-                        DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
+            //程序第一次进来会走：包括离线推送和手动进来
+            if (size > 0 && DongConfiguration.mDeviceInfo == null) {
+                //默认设备序列号
+                String deviceSeri = (String) AppContext.mAppConfig.getConfigValue(
+                        AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
+                        AppConfig.KEY_DEVICE_SERIAL, "");
+                LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo deviceSeri:" + deviceSeri +
+                        ",mDeviceID:" + mDeviceID);
+                if (!TextUtils.isEmpty(mDeviceID)) {//离线推送
+                    LogUtils.i("HomePagerFragment.clazz-->>is offline push and we will jump " +
+                            "monitor activty deviceID:" + mDeviceID);
+                    UIHelper.showVideoViewActivity(getActivity(), false, mDeviceID);
+                    mDeviceID = null;
+                } else if (!TextUtils.isEmpty(deviceSeri)) {//有默认设备
+                    for (DeviceInfo deviceInfo : deviceList) {
+                        if (deviceSeri.equals(deviceInfo.deviceSerialNO)) {
+                            mTitleBar.setTitleBarContent(deviceInfo.deviceName);
+                            DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
+                        }
                     }
-                }
-                if (hasDevice) {// 2.1找到匹配设备返回
-                    LogUtils.i("HomePagerFragment.clazz--->>>showTitleInfo return hasDevice!!!");
-                    return;
-                }
-            } else if (DongConfiguration.mDeviceInfo != null// 应用在运行时设置默认设备,再回到这个界面返回,解决后面赋值问题
-                    && deviceSeri
-                    .equals(DongConfiguration.mDeviceInfo.deviceSerialNO)) {
-                LogUtils.i("HomePagerFragment.clazz--->>>showTitleInfo return!!!");
-                return;
-            }
-
-            int deviceId = (Integer) AppContext.mAppConfig.getConfigValue(
-                    AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                    AppConfig.KEY_DEVICE_ID, 0);
-            LogUtils.i("HomePagerFragment.clazz--->>>showTitleInfo deviceSeri:"
-                    + deviceSeri + ",deviceList.size:" + size + ",deviceId:"
-                    + deviceId);
-            if (deviceId == 0 && size > 0) {// 3.第一次进来找到第一台在线设备
-                boolean hasOnline = false;
-                for (DeviceInfo deviceInfo : deviceList) {
-                    if (deviceInfo.isOnline) {
-                        hasOnline = true;
-                        mTitleBar.setTitleBarContent(deviceInfo.deviceName);
-                        DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
-                    }
-                }
-                if (!hasOnline) {// 4.第一次进来如果没有找到在线设备，那么就选择第一台
+                } else {//没有默认设备，选择第一台
                     DeviceInfo deviceInfo = deviceList.get(0);
                     mTitleBar.setTitleBarContent(deviceInfo.deviceName);
                     DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
                 }
-                if (!TextUtils.isEmpty(mDeviceID)) {// 4.1离线推送，先进入到这里再跳转
-                    LogUtils.i("HomePagerFragment.clazz-->>is offline push and we will jump monitor activty deviceID:"
-                            + mDeviceID);
-                    UIHelper.showVideoViewActivity(getActivity(), false,
-                            mDeviceID);
-                    mDeviceID = null;
-                }
-            } else if (size > 0) {// 5.进来找到在本地保存过deviceId的设备
-                for (DeviceInfo deviceInfo : deviceList) {
-                    int pDeviceId = deviceInfo.dwDeviceID;
-                    if (deviceId == pDeviceId) {
-                        mTitleBar.setTitleBarContent(deviceInfo.deviceName);
-                        DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
-                    }
-                }
-                if (!TextUtils.isEmpty(mDeviceID)) {// 5.1离线推送，先进入到这里再跳转
-                    LogUtils.i("HomePagerFragment.clazz-->>is offline push and we will jump monitor activty deviceID:"
-                            + mDeviceID);
-                    UIHelper.showVideoViewActivity(getActivity(), false,
-                            mDeviceID);
-                    mDeviceID = null;
-                }
-            } else {// 6.如果没有设备，提示暂无设备
+            } else if (DongConfiguration.mDeviceInfo != null) {
+                mDeviceInfo = DongConfiguration.mDeviceInfo;
+                mTitleBar.setTitleBarContent(mDeviceInfo.deviceName);
+            } else {
                 mTitleBar.setTitleBarContent("暂无设备");
             }
         }
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-                            long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (TDevice.getNetworkType() == 0) {
             TipDialogManager.showWithoutNetworDialog(getActivity(), null);
             return;
@@ -248,10 +204,8 @@ public class HomePagerFragment extends BaseFragment implements
         String name = dynamicView.getName();
 
         if (name.equals(getString(R.string.message))) {
-            // TODO
-            BaseApplication
-                    .showToastShortInCenter(mDeviceInfo == null ? R.string.please_select_device
-                            : R.string.not_open_service);
+            BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
+                    R.string.please_select_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.monitor))) {
             if (mDeviceInfo != null && mDeviceInfo.isOnline) {
                 UIHelper.showVideoViewActivity(getActivity(), true, "");
@@ -261,44 +215,32 @@ public class HomePagerFragment extends BaseFragment implements
                 BaseApplication.showToastShortInCenter(R.string.device_offline);
             }
         } else if (name.equals(getString(R.string.applykey))) {
-            // TODO
-            BaseApplication
-                    .showToastShortInCenter(mDeviceInfo == null ? R.string.please_select_device
-                            : R.string.not_open_service);
+            BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
+                    R.string.please_select_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.shapeopendoor))) {
-            // TODO
-            BaseApplication
-                    .showToastShortInCenter(mDeviceInfo == null ? R.string.please_select_device
-                            : R.string.not_open_service);
+            BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
+                    R.string.please_select_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.repair))) {
-            // TODO
-            BaseApplication
-                    .showToastShortInCenter(mDeviceInfo == null ? R.string.please_select_device
-                            : R.string.not_open_service);
+            BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
+                    R.string.please_select_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.homesafe))) {
-            // TODO
-            BaseApplication
-                    .showToastShortInCenter(mDeviceInfo == null ? R.string.please_select_device
-                            : R.string.not_open_service);
+            BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
+                    R.string.please_select_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.visitorrecord))) {
-            // TODO
-            BaseApplication
-                    .showToastShortInCenter(mDeviceInfo == null ? R.string.please_select_device
-                            : R.string.not_open_service);
+            BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
+                    R.string.please_select_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.phone))) {
-            UIHelper.showCommonPhoneActivity(getActivity());
+            BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
+                    R.string.please_select_device : R.string.not_open_service);
+//          UIHelper.showCommonPhoneActivity(getActivity());
         } else if (name.equals(getString(R.string.dd_function_parking))) {
-            // TODO
-            BaseApplication
-                    .showToastShortInCenter(mDeviceInfo == null ? R.string.please_select_device
-                            : R.string.not_open_service);
+            BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
+                    R.string.please_select_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.dd_function_finance))) {
-            // TODO
-            BaseApplication
-                    .showToastShortInCenter(mDeviceInfo == null ? R.string.please_select_device
-                            : R.string.not_open_service);
+            BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
+                    R.string.please_select_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.dd_function_more))) {
-            UIHelper.showFunctionManagerActivity(getActivity());
+            System.out.print("消除警告用");
         }
     }
 
@@ -322,6 +264,10 @@ public class HomePagerFragment extends BaseFragment implements
 
     @Override
     public void onAddClick() {
+    }
+
+    @Override
+    public void onFinishClick() {
     }
 
     @Override
@@ -386,9 +332,9 @@ public class HomePagerFragment extends BaseFragment implements
             if (size > 0) {
                 DeviceInfo deviceInfo = infos.get(0);
                 String message = deviceInfo.msg;
-                LogUtils.i("HomePageFragment.clazz-->>OnCall() deviceName:"
-                        + deviceInfo.deviceName + ",dwDeviceID："
-                        + deviceInfo.dwDeviceID + ",msg:" + deviceInfo.msg);
+                LogUtils.i("HomePageFragment.clazz-->>OnCall() deviceName:" +
+                        deviceInfo.deviceName + ",dwDeviceID：" + deviceInfo.dwDeviceID +
+                        ",msg:" + deviceInfo.msg);
                 PushMessageChange.pushMessageChange(getActivity(), message);
             }
             return 0;

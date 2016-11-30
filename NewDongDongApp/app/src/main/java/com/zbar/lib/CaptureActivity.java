@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.widget.TitleBar;
@@ -73,7 +73,7 @@ public class CaptureActivity extends BaseActivity implements Callback, TitleBar.
         this.cropHeight = cropHeight;
     }
 
-    private TitleBar mTitleBar;
+//    private TitleBar mTitleBar;
 
     /**
      * Called when the activity is first created.
@@ -87,14 +87,14 @@ public class CaptureActivity extends BaseActivity implements Callback, TitleBar.
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
 
-        mContainer = (RelativeLayout) findViewById(R.id.capture_containter);
-        mCropLayout = (RelativeLayout) findViewById(R.id.capture_crop_layout);
-        mTitleBar = (TitleBar) findViewById(R.id.tb_title);
-        mTitleBar.setOnTitleBarClickListener(this);
-        mTitleBar.setAddArrowShowing(false);
-        mTitleBar.setTitleBarContent("");
+        mContainer = (RelativeLayout) findViewById(R.id.rl_capture_containter);
+        mCropLayout = (RelativeLayout) findViewById(R.id.rl_capture_crop_layout);
+        TitleBar titleBar = (TitleBar) findViewById(R.id.tb_title);
+        titleBar.setOnTitleBarClickListener(this);
+        titleBar.setAddArrowShowing(false);
+        titleBar.setTitleBarContent("");
 
-        ImageView mQrLineView = (ImageView) findViewById(R.id.capture_scan_line);
+        ImageView mQrLineView = (ImageView) findViewById(R.id.iv_capture_scan_line);
         ScaleAnimation animation = new ScaleAnimation(1.0f, 1.0f, 0.0f, 1.0f);
         animation.setRepeatCount(-1);
         animation.setRepeatMode(Animation.RESTART);
@@ -112,7 +112,7 @@ public class CaptureActivity extends BaseActivity implements Callback, TitleBar.
     boolean flag = true;
 
     protected void light() {
-        if (flag == true) {
+        if (flag) {
             flag = false;
             CameraManager.get().openLight();
         } else {
@@ -126,7 +126,7 @@ public class CaptureActivity extends BaseActivity implements Callback, TitleBar.
     @Override
     protected void onResume() {
         super.onResume();
-        SurfaceView surfaceView = (SurfaceView) findViewById(R.id.capture_preview);
+        SurfaceView surfaceView = (SurfaceView) findViewById(R.id.sfv_capture_preview);
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         if (hasSurface) {
             initCamera(surfaceHolder);
@@ -265,12 +265,10 @@ public class CaptureActivity extends BaseActivity implements Callback, TitleBar.
 
     @Override
     public void initView() {
-
     }
 
     @Override
     public void initData() {
-
     }
 
     @Override
@@ -280,11 +278,13 @@ public class CaptureActivity extends BaseActivity implements Callback, TitleBar.
 
     @Override
     public void onTitleClick() {
-
     }
 
     @Override
     public void onAddClick() {
+    }
 
+    @Override
+    public void onFinishClick() {
     }
 }

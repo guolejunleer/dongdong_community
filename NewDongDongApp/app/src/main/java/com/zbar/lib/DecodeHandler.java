@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 
 final class DecodeHandler extends Handler {
 

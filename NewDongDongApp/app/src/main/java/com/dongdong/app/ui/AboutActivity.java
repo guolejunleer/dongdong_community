@@ -6,7 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.util.LogUtils;
@@ -16,10 +16,9 @@ import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
 public class AboutActivity extends BaseActivity implements OnTitleBarClickListener {
 
-    private TitleBar mTitleBar;
+    //private TitleBar mTitleBar;
     private TextView mTvCurrentVersion;
-    private RelativeLayout mLayoutVersionUpdate, mLayoutFunctionIntroduction,
-            mLayoutHelp;
+    //private RelativeLayout mLayoutVersionUpdate, mLayoutFunctionIntroduction,mLayoutHelp;
 
     @Override
     protected int getLayoutId() {
@@ -28,36 +27,34 @@ public class AboutActivity extends BaseActivity implements OnTitleBarClickListen
 
     @Override
     public void initView() {
-        mTitleBar = (TitleBar) findViewById(R.id.tb_title);
-        mTitleBar.setTitleBarContent(getString(R.string.about));
-        mTitleBar.setOnTitleBarClickListener(this);
-        mTitleBar.setAddArrowShowing(false);
+        TitleBar titleBar = (TitleBar) findViewById(R.id.tb_title);
+        titleBar.setTitleBarContent(getString(R.string.about));
+        titleBar.setOnTitleBarClickListener(this);
+        titleBar.setAddArrowShowing(false);
 
-        mTvCurrentVersion = (TextView) findViewById(R.id.currentversion);
-        mLayoutVersionUpdate = (RelativeLayout) findViewById(R.id.versionupdate);
-        mLayoutFunctionIntroduction = (RelativeLayout) findViewById(R.id.functionintroduction);
-        mLayoutHelp = (RelativeLayout) findViewById(R.id.help);
+        mTvCurrentVersion = (TextView) findViewById(R.id.tv_currentversion);
+        RelativeLayout layoutVersionUpdate = (RelativeLayout) findViewById(R.id.rl_versionupdate);
+        RelativeLayout layoutFunctionIntroduction = (RelativeLayout) findViewById(R.id.rl_functionintroduction);
+        RelativeLayout layoutHelp = (RelativeLayout) findViewById(R.id.rl_help);
 
-        mLayoutFunctionIntroduction.setOnClickListener(onmLayoutClickListener);
-        mLayoutVersionUpdate.setOnClickListener(onmLayoutClickListener);
-        mLayoutHelp.setOnClickListener(onmLayoutClickListener);
+        layoutFunctionIntroduction.setOnClickListener(onmLayoutClickListener);
+        layoutVersionUpdate.setOnClickListener(onmLayoutClickListener);
+        layoutHelp.setOnClickListener(onmLayoutClickListener);
     }
 
     OnClickListener onmLayoutClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.versionupdate:
+                case R.id.rl_versionupdate:
                     // 版本更新
-                    AppContext.showToast(R.string.building, Toast.LENGTH_SHORT, 0,
-                            0);
+                    AppContext.showToast(R.string.building, Toast.LENGTH_SHORT, 0, 0);
                     break;
-                case R.id.functionintroduction:
+                case R.id.rl_functionintroduction:
                     // 功能介绍
-                    AppContext.showToast(R.string.building, Toast.LENGTH_SHORT, 0,
-                            0);
+                    AppContext.showToast(R.string.building, Toast.LENGTH_SHORT, 0, 0);
                     break;
-                case R.id.help:
+                case R.id.rl_help:
                     // 帮助
                     AppContext.showToast(R.string.building, Toast.LENGTH_SHORT, 0,
                             0);
@@ -70,7 +67,7 @@ public class AboutActivity extends BaseActivity implements OnTitleBarClickListen
 
     // 设置当前版本号
     public void setCurrentVersion() {
-        String versionName = "version beta:" + TDevice.getVersionName();
+        String versionName = "V  " + TDevice.getVersionName() + "_beta";
         mTvCurrentVersion.setText(versionName);
         LogUtils.i("AboutActivity.clazz--->>> versionName :" + versionName);
     }
@@ -91,6 +88,10 @@ public class AboutActivity extends BaseActivity implements OnTitleBarClickListen
 
     @Override
     public void onAddClick() {
+    }
+
+    @Override
+    public void onFinishClick() {
     }
 
 }

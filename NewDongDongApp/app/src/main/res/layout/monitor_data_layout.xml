@@ -2,15 +2,16 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fl_video_view_control_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:visibility="gone">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:layout_marginBottom="13dp"
-        android:layout_marginLeft="13dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginBottom="@dimen/space_13"
+        android:layout_marginLeft="@dimen/space_13"
+        android:layout_marginTop="@dimen/space_13"
         android:orientation="vertical" >
 
         <ImageView
@@ -28,10 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/iv_light_control"
             android:layout_gravity="center"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="@dimen/space_15"
             android:background="@mipmap/fps_ph"
             android:gravity="center"
-            android:text="高清"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_light_control"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/space_15"
             android:contentDescription="@null"
             android:src="@mipmap/device_audio" />
     </RelativeLayout>
@@ -49,14 +49,14 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="right"
-        android:layout_marginBottom="13dp"
-        android:layout_marginRight="13dp"
-        android:layout_marginTop="13dp" >
+        android:layout_marginBottom="@dimen/space_13"
+        android:layout_marginRight="@dimen/space_13"
+        android:layout_marginTop="@dimen/space_13" >
 
         <View
             android:id="@+id/view_baseline"
-            android:layout_width="13dp"
-            android:layout_height="1dp"
+            android:layout_width="@dimen/space_13"
+            android:layout_height="@dimen/space_1"
             android:layout_centerInParent="true" />
 
         <TextView
@@ -65,7 +65,6 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/view_baseline"
             android:layout_centerHorizontal="true"
-            android:text="5kb/s"
             android:textColor="@color/white" />
 
         <ImageView
@@ -82,7 +81,6 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/iv_all_data_tip"
             android:layout_centerHorizontal="true"
-            android:text="5kb/s"
             android:textColor="@color/white" />
 
         <ImageView
@@ -90,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/view_baseline"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/space_15"
             android:contentDescription="@null"
             android:src="@mipmap/screen_1" />
     </RelativeLayout>

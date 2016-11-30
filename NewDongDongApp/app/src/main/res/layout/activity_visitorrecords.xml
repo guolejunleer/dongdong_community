@@ -11,44 +11,44 @@
     </com.dongdong.app.widget.TitleBar>
 
     <RadioGroup
-        android:id="@+id/record"
+        android:id="@+id/rg_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <RadioButton
-            android:id="@+id/opendoorrecord"
-            android:layout_width="0dp"
+            android:id="@+id/rb_opendoorrecord"
+            android:layout_width="@dimen/space_0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/tab_selector"
             android:button="@null"
             android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="10dp"
+            android:paddingBottom="@dimen/space_10"
+            android:paddingLeft="@dimen/space_15"
+            android:paddingRight="@dimen/space_15"
+            android:paddingTop="@dimen/space_10"
             android:text="@string/opendoorrecord"
             android:textColor="@color/color_radiobutton" />
 
         <RadioButton
-            android:id="@+id/visitorphoto"
-            android:layout_width="0dp"
+            android:id="@+id/rb_visitorphoto"
+            android:layout_width="@dimen/space_0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/tab_selector"
             android:button="@null"
             android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="10dp"
+            android:paddingBottom="@dimen/space_10"
+            android:paddingLeft="@dimen/space_15"
+            android:paddingRight="@dimen/space_15"
+            android:paddingTop="@dimen/space_10"
             android:text="@string/visitorrecord"
             android:textColor="@color/color_radiobutton" />
     </RadioGroup>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/myviewpager"
+        android:id="@+id/vp_myviewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" >

@@ -23,21 +23,21 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.util.TDevice;
 
 public class CommonDialog extends Dialog {
-	public OnClickListener listener;
-	protected View barDivider;
-	protected View buttonDivider;
-	protected FrameLayout container;
+//	public OnClickListener listener;
+	private View barDivider;
+	private View buttonDivider;
+	private FrameLayout container;
 	protected View content;
 	private final int contentPadding;
 
-	protected DialogTitleView headerVw;
-	protected Button negativeBt;
-	protected Button positiveBt;
-	protected OnClickListener dismissClick = new OnClickListener() {
+	private DialogTitleView headerVw;
+	private Button negativeBt;
+	private Button positiveBt;
+	private OnClickListener dismissClick = new OnClickListener() {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
@@ -71,35 +71,33 @@ public class CommonDialog extends Dialog {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		content = LayoutInflater.from(context).inflate(R.layout.dialog_common,
 				null);
-		headerVw = (DialogTitleView) content.findViewById(R.id.dialog_header);
-		container = (FrameLayout) content.findViewById(R.id.content_container);
-		barDivider = content.findViewById(R.id.button_bar_divider);
-		buttonDivider = content.findViewById(R.id.button_divder);
-		positiveBt = (Button) content.findViewById(R.id.positive_bt);
-		negativeBt = (Button) content.findViewById(R.id.negative_bt);
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-			// TODO Check content view height and change height
-
-		} else {
-			// content.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-			//
-			// @Override
-			// public void onLayoutChange(View v, int left, int top,
-			// int right, int bottom, int oldLeft, int oldTop,
-			// int oldRight, int oldBottom) {
-			// int height = v.getHeight();
-			// int contentHeight = container.getHeight();
-			// int winHeight = BaseApplication.getDisplaySize()[1];
-			// int needHeight = height - winHeight * 8 / 10;
-			// if (needHeight > 0) {
-			// container
-			// .setLayoutParams(new LinearLayout.LayoutParams(
-			// LayoutParams.MATCH_PARENT,
-			// contentHeight - needHeight));
-			// }
-			// }
-			// });
-		}
+		headerVw = (DialogTitleView) content.findViewById(R.id.dt_dialog_header);
+		container = (FrameLayout) content.findViewById(R.id.fl_content_container);
+		barDivider = content.findViewById(R.id.view_button_bar_divider);
+		buttonDivider = content.findViewById(R.id.view_button_divder);
+		positiveBt = (Button) content.findViewById(R.id.bt_positive);
+		negativeBt = (Button) content.findViewById(R.id.bt_negative);
+//		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+//		} else {
+//			// content.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+//			//
+//			// @Override
+//			// public void onLayoutChange(View v, int left, int top,
+//			// int right, int bottom, int oldLeft, int oldTop,
+//			// int oldRight, int oldBottom) {
+//			// int height = v.getHeight();
+//			// int contentHeight = container.getHeight();
+//			// int winHeight = BaseApplication.getDisplaySize()[1];
+//			// int needHeight = height - winHeight * 8 / 10;
+//			// if (needHeight > 0) {
+//			// container
+//			// .setLayoutParams(new LinearLayout.LayoutParams(
+//			// LayoutParams.MATCH_PARENT,
+//			// contentHeight - needHeight));
+//			// }
+//			// }
+//			// });
+//		}
 		super.setContentView(content);
 	}
 
@@ -113,9 +111,11 @@ public class CommonDialog extends Dialog {
 		if (TDevice.isTablet()) {
 			int maxWidth = (int) TDevice.dpToPixel(360f);
 			if (maxWidth < TDevice.getScreenWidth()) {
-				WindowManager.LayoutParams params = getWindow().getAttributes();
-				params.width = maxWidth;
-				getWindow().setAttributes(params);
+				if(getWindow()!=null) {
+					WindowManager.LayoutParams params = getWindow().getAttributes();
+					params.width = maxWidth;
+					getWindow().setAttributes(params);
+				}
 			}
 		}
 	}
@@ -150,8 +150,7 @@ public class CommonDialog extends Dialog {
 	}
 
 	@Override
-	public void setContentView(View view,
-			LayoutParams layoutparams) {
+	public void setContentView(View view, LayoutParams layoutparams) {
 		throw new Error("Dialog: User setContent (View view) instead!");
 	}
 
@@ -301,7 +300,7 @@ public class CommonDialog extends Dialog {
 		setSubTitle((getContext().getResources().getString(i)));
 	}
 
-	public void setSubTitle(CharSequence subtitle) {
+	private void setSubTitle(CharSequence subtitle) {
 		if (subtitle != null && subtitle.length() > 0) {
 			headerVw.subTitleTv.setText(subtitle);
 			headerVw.subTitleTv.setVisibility(View.VISIBLE);

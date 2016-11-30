@@ -8,28 +8,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/space_8"
-        android:paddingLeft="10.0dip"
-        android:paddingRight="10.0dip"
+        android:paddingLeft="@dimen/space_10"
+        android:paddingRight="@dimen/space_10"
         android:paddingTop="@dimen/space_8" >
 
         <ImageView
-            android:id="@+id/icon_iv"
+            android:id="@+id/iv_icon"
             android:layout_width="wrap_content"
-            android:layout_height="40.0dip"
+            android:layout_height="@dimen/space_40"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/space_8"
             android:scaleType="fitCenter"
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/title_tv"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignWithParentIfMissing="true"
             android:layout_toRightOf="@id/icon_iv"
             android:gravity="center_vertical"
             android:textColor="@color/white"
-            android:textSize="16.0dip" />
+            android:textSize="@dimen/text_size_16" />
     </RelativeLayout>
 
 </FrameLayout>

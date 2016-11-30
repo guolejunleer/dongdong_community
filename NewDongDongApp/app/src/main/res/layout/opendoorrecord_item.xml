@@ -2,28 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/option_item_ro"
     android:layout_width="fill_parent"
-    android:layout_height="500dp"
+    android:layout_height="500.0dip"
     android:gravity="center">
 
     <TextView
         android:id="@+id/roomnumber"
         style="@style/option_item_text"
         android:layout_weight="1"
-        android:gravity="center"
-        android:text="房号" />
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/type"
         style="@style/option_item_text"
         android:layout_weight="1"
-        android:gravity="center"
-        android:text="刷卡" />
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/timestamp"
         style="@style/option_item_text"
         android:layout_weight="1"
-        android:gravity="center"
-        android:text="2016-09-20 15:46:30" />
+        android:gravity="center" />
 
 </LinearLayout>

@@ -3,7 +3,7 @@ package com.zbar.lib;
 import android.os.Handler;
 import android.os.Message;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 
 public final class CaptureActivityHandler extends Handler {
 

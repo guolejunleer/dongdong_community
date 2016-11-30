@@ -7,27 +7,23 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 
-public class ADViewPagerAdapter extends PagerAdapter implements
-        OnPageChangeListener {
+public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeListener {
 
     private ViewPager mViewPager;
-    private int[] mImgIdArray = new int[]{R.mipmap.ad_background,
-            R.mipmap.ad_background, R.mipmap.ad_background};
+    private int[] mImgIdArray = new int[]{R.mipmap.ad_background, R.mipmap.ad_background, R.mipmap.ad_background};
     private ImageView[] mImageViews;
     private ImageView[] mTips;
     private boolean mShouldShowPoint;
 
     @SuppressWarnings("deprecation")
-    public ADViewPagerAdapter(Context context, ViewPager viewPager,
-                              List<String> datas, ViewGroup points) {
+    public ADViewPagerAdapter(Context context, ViewPager viewPager, List<String> datas, ViewGroup points) {
         mViewPager = viewPager;
 
         mImageViews = new ImageView[mImgIdArray.length];
@@ -92,31 +88,31 @@ public class ADViewPagerAdapter extends PagerAdapter implements
         View view = mImageViews[position % mImageViews.length];
 
         try {
-            view.setOnClickListener(new OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    if (mImageViews[0] == mCurrentView) {
-                        // AppContext.showToastShort("连接1");
-                        // mViewPager.getContext().startActivity(
-                        // new Intent(mViewPager.getContext(),
-                        // AdverOneActivity.class));
-                    } else if (mImageViews[1] == mCurrentView) {
-                        // AppContext.showToastShort("连接2");
-                        // mViewPager.getContext().startActivity(
-                        // new Intent(mViewPager.getContext(),
-                        // AdverTwoActivity.class));
-                    } else {
-                        // AppContext.showToastShort("连接3");
-                        // mViewPager.getContext().startActivity(
-                        // new Intent(mViewPager.getContext(),
-                        // AdverThreeActivity.class));
-                    }
+//                    if (mImageViews[0] == mCurrentView) {
+////                         AppContext.showToastShort("连接1");
+////                         mViewPager.getContext().startActivity(
+////                         new Intent(mViewPager.getContext(),
+////                         AdverOneActivity.class));
+//                    } else if (mImageViews[1] == mCurrentView) {
+////                         AppContext.showToastShort("连接2");
+////                         mViewPager.getContext().startActivity(
+////                         new Intent(mViewPager.getContext(),
+////                         AdverTwoActivity.class));
+//                    } else {
+////                         AppContext.showToastShort("连接3");
+////                         mViewPager.getContext().startActivity(
+////                         new Intent(mViewPager.getContext(),
+////                         AdverThreeActivity.class));
+//                    }
                 }
             });
-            ((ViewPager) container).addView(view, 0);
+            container.addView(view, 0);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         return view;

@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 
 public class DialogAdapter extends BaseAdapter {
 
@@ -46,8 +46,8 @@ public class DialogAdapter extends BaseAdapter {
 			vh = new DialogHolder();
 			view = LayoutInflater.from(viewgroup.getContext()).inflate(
 					R.layout.list_cell_dialog, null, false);
-			vh.titleTv = (TextView) view.findViewById(R.id.title_tv);
-			vh.divider = view.findViewById(R.id.list_divider);
+			vh.titleTv = (TextView) view.findViewById(R.id.tv_title);
+			vh.divider = view.findViewById(R.id.view_list_divider);
 			vh.checkIv = (RadioButton) view.findViewById(R.id.rb_select);
 			view.setTag(vh);
 		} else {
