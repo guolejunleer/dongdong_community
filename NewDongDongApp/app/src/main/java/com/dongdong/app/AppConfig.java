@@ -39,6 +39,7 @@ public class AppConfig {
 	public static final String CACH_IMAGE_PATH = "temp";
 	//DES Key
 	public static final String DES_KEY = "DONGDONG";
+	public static final String SD_TAKE_PICTURE_PATH="TakePicture";
 
 	private Context mContext;
 	private static AppConfig mAppConfig;
