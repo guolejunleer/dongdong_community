@@ -68,7 +68,7 @@ public class MoreSettingActivity extends BaseActivity implements OnClickListener
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.rl_wifisetting:
-			startActivity(new Intent(MoreSettingActivity.this, WifiListActivity.class));
+//			startActivity(new Intent(MoreSettingActivity.this, WifiListActivity.class));
 			break;
 		case R.id.rl_devicemessage:
 			// DeviceInfo deviceInfo = MonitorActivity.mMonitorActivityInstance

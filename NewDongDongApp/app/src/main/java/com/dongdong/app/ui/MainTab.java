@@ -1,6 +1,6 @@
 package com.dongdong.app.ui;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.fragment.HomePagerFragment;
 import com.dongdong.app.fragment.MyPagerFragment;
 

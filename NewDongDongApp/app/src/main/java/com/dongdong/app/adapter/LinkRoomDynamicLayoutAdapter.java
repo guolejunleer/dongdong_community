@@ -18,10 +18,11 @@ import com.dongdong.app.widget.DynamicItemContainView;
 
 public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 
+	private static final int FUNCTION_TEMP_COUNT=14;
 	public static final int COMMON_VIEWPAGER = 100;
 	private static final int AD_VIEWPAGER = 101;
 
-	private static final int TYPE_DRAGVIEW = 0;
+	private static final int TYPE_DRAG_VIEW = 0;
 	private static final int TYPE_FIXEDVIEW_ITEM = 1;
 	private static final int TYPE_MAX_COUNT = 2;
 
@@ -39,11 +40,10 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mFuncs = funcs;
 		// LogUtils.v("LinkRoomDynamicLayoutAdapter size:" + mFuncs.size());
-		//修改数字可以改变功能模块数
-		int needView = mFuncs.size() % 14;
+		int needView = mFuncs.size() % FUNCTION_TEMP_COUNT;
 		// LogUtils.v("LinkRoomDynamicLayoutAdapter size:" + mFuncs.size()+ "; needView:" + needView);
 		if (needView != 0) {
-			for (int i = 0; i < 14 - needView; i++) {
+			for (int i = 0; i < FUNCTION_TEMP_COUNT - needView; i++) {
 				mFuncs.add(new FunctionBean("transprent", 0, Integer.MAX_VALUE));
 			}
 		}
@@ -72,7 +72,7 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 	@Override
 	public int getItemViewType(int position) {
 		return (position == 0 || position == 9) ? TYPE_FIXEDVIEW_ITEM
-				: TYPE_DRAGVIEW;
+				: TYPE_DRAG_VIEW;
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new ViewHolder();
 			switch (type) {
-			case TYPE_DRAGVIEW:
+			case TYPE_DRAG_VIEW:
 				convertView = mInflater.inflate(R.layout.dragview_item, null);
 				holder.name = (TextView) convertView.findViewById(R.id.tv_func_name);
 				holder.icon = (ImageView) convertView.findViewById(R.id.iv_func_icon);
@@ -99,7 +99,7 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 		}
 
 		switch (type) {
-		case TYPE_DRAGVIEW:
+		case TYPE_DRAG_VIEW:
 			FunctionBean function = mFuncs.get(position < 9 ? (position - 1)
 					: (position - 2));
 			int funcId = function.getFuncId();

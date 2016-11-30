@@ -18,7 +18,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.widget.CompoundButton;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.widget.AnimationController.OnAnimateListener;
 
 public class SwitchButton extends CompoundButton {

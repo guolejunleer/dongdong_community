@@ -31,7 +31,6 @@ public abstract class BaseActivity extends Activity implements
         if (this instanceof VideoViewActivity) {
             LogUtils.i("BaseActivity.clazz--->>> we don't compat status color");
         } else if (this instanceof LoadActivity) {
-            // Òþ²Ø×´Ì¬À¸
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
             StatusBarCompatUtils.compat(this, Color.parseColor("#00000000"));

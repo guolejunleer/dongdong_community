@@ -9,15 +9,16 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Button;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.TDevice;
 
 public class TitleBar extends LinearLayout implements OnClickListener {
 
-    private LinearLayout mLlBack;
-    private TextView mTvTitleInfo, mTvAdd;
+    private TextView mTvTitleInfo;
+    private Button mBtnMyAdd, mBtnMyBack, mBtnMyFinish;
 
     private OnTitleBarClickListener mListener;
 
@@ -27,24 +28,28 @@ public class TitleBar extends LinearLayout implements OnClickListener {
         void onTitleClick();
 
         void onAddClick();
+
+        void onFinishClick();
     }
 
     public TitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         int barHeight = TDevice.getStatuBarHeight();
         View view = LayoutInflater.from(context).inflate(R.layout.titlebar_common, null);
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             params.setMargins(0, barHeight, 0, 0);
         }
         addView(view, params);
-        mLlBack = (LinearLayout) findViewById(R.id.ll_back);
+        mBtnMyBack = (Button) findViewById(R.id.btn_back);
         mTvTitleInfo = (TextView) findViewById(R.id.tv_title_info);
-        mTvAdd = (TextView) findViewById(R.id.tv_add);
-        mLlBack.setOnClickListener(this);
+        mBtnMyAdd = (Button) findViewById(R.id.btn_add);
+        mBtnMyFinish = (Button) findViewById(R.id.btn_finish);
+
+        mBtnMyBack.setOnClickListener(this);
         mTvTitleInfo.setOnClickListener(this);
-        mTvAdd.setOnClickListener(this);
+        mBtnMyAdd.setOnClickListener(this);
+        mBtnMyFinish.setOnClickListener(this);
         LogUtils.i("TitleBar.clazz--->>>construct barHeight:" + barHeight);
     }
 
@@ -65,34 +70,38 @@ public class TitleBar extends LinearLayout implements OnClickListener {
         }
         int id = view.getId();
         switch (id) {
-            case R.id.ll_back:
+            case R.id.btn_back:
                 mListener.onBackClick();
                 break;
             case R.id.tv_title_info:
                 mListener.onTitleClick();
                 break;
-            case R.id.tv_add:
+            case R.id.btn_add:
                 mListener.onAddClick();
+                break;
+            case R.id.btn_finish:
+                mListener.onFinishClick();
                 break;
         }
 
     }
 
     public void setBackArrowShowing(boolean show) {
-        mLlBack.setVisibility(show ? View.VISIBLE : View.GONE);
+        mBtnMyBack.setVisibility(show ? View.VISIBLE : View.GONE);
 
     }
 
     public void setAddArrowShowing(boolean show) {
-        mTvAdd.setVisibility(show ? View.VISIBLE : View.GONE);
-
+        mBtnMyAdd.setVisibility(show ? View.VISIBLE : View.GONE);
+        mBtnMyAdd.setCompoundDrawables(null, null, null, null);
     }
 
     public void setTitleBarContent(String titleInfo) {
         mTvTitleInfo.setText(titleInfo);
     }
 
-    public void setAddContent(String addInfo) {
-        mTvAdd.setText(addInfo);
+    public void setFinishShowing(boolean show) {
+        mBtnMyAdd.setVisibility(show ? View.GONE : View.VISIBLE);
+        mBtnMyFinish.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

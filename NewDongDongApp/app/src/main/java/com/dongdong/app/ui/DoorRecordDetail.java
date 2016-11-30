@@ -3,7 +3,7 @@ package com.dongdong.app.ui;
 import android.annotation.SuppressLint;
 import android.widget.TextView;
 
-import com.dd121.louyu.R;
+import com.dd121.community.R;
 import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
@@ -103,6 +103,11 @@ public class DoorRecordDetail extends BaseActivity implements
 
 	@Override
 	public void onAddClick() {
+	}
+
+	@Override
+	public void onFinishClick() {
+
 	}
 
 }

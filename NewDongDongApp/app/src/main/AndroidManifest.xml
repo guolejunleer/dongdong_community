@@ -117,13 +117,7 @@
             android:name="com.dongdong.app.ui.FileManagerActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.dongdong.app.ui.LocalDeviceActivity"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name="com.dongdong.app.ui.MoreSettingActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.dongdong.app.ui.WifiListActivity"
             android:screenOrientation="portrait"/>
 
         <!-- 个推SDK配置开始 -->
