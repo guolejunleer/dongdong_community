@@ -127,7 +127,7 @@ public class AddDeviceActivity extends BaseActivity implements
         String devName = mDeviceName.getText().toString();
         String deviceSeri = mEtDeviceSerial.getText().toString();
         if (TextUtils.isEmpty(devName) || TextUtils.isEmpty(deviceSeri)) {
-            BaseApplication.showToastShortInBottom(R.string.empty);
+            BaseApplication.showToastShortInBottom(R.string.empty_tip);
             return;
         }
         View view = LayoutInflater.from(this).inflate(R.layout.loading_dialog, null);

@@ -53,7 +53,6 @@ public class PushMessageCallBack {
      * @param message 自定义消息
      */
     public static void pushMessageReceiver(Context context, String message) {
-        LogUtils.i("PushMessageCallBack.clazz--->>>user-defined or error message:"
-                + message);
+        LogUtils.i("PushMessageCallBack.clazz--->>>user-defined or error message:" + message);
     }
 }

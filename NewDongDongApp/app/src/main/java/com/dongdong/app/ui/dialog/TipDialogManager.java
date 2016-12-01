@@ -13,7 +13,6 @@ import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.AppManager;
 import com.dongdong.app.base.BaseApplication;
-import com.dongdong.app.fragment.HomePagerFragment;
 import com.dongdong.app.util.LogUtils;
 import com.igexin.sdk.PushManager;
 
@@ -29,7 +28,7 @@ public class TipDialogManager {
         final CommonDialog tipDialog = new CommonDialog(context);
         tipDialog.setTitle(titleId);
         tipDialog.setMessage(msgId);
-        tipDialog.setPositiveButton(R.string.know, null);
+        tipDialog.setPositiveButton(R.string.i_know, null);
         tipDialog.setCancelable(true);
         tipDialog.show();
     }
@@ -39,7 +38,7 @@ public class TipDialogManager {
         final CommonDialog tipDialog = new CommonDialog(context);
         tipDialog.setTitle(titleId);
         tipDialog.setMessage(msgId);
-        tipDialog.setPositiveButton(R.string.know, null);
+        tipDialog.setPositiveButton(R.string.i_know, null);
         tipDialog.setCancelable(true);
         tipDialog.show();
     }

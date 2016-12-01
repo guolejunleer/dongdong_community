@@ -130,13 +130,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, O
             mMyTv.setTextColor(getResources().getColor(R.color.bottomtab_normal));
         }
         LogUtils.i("MainActivity.clazz--->>>onCreate......");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkContacts();// 检查手机是否有公司电话
-        LogUtils.i("MainActivity.clazz--->>>onResume......");
 
         int networkType = TDevice.getNetworkType();
         if (networkType == 0) {
@@ -147,6 +140,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener, O
                     R.string.continues, R.string.cancel);
         }
         LogUtils.i("LoadActivity.clazz--->>>onResume......networkType:" + networkType);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkContacts();// 检查手机是否有公司电话
+        LogUtils.i("MainActivity.clazz--->>>onResume......");
     }
 
     @Override

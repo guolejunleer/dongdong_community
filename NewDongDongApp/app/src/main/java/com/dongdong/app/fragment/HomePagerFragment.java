@@ -2,7 +2,6 @@ package com.dongdong.app.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -148,6 +147,16 @@ public class HomePagerFragment extends BaseFragment implements
         mDynamicLayout.setAdapter(mNewAdatper);
     }
 
+    // 第二次进入此Fragement, onResume()方法没执行,需要加入此方法来重新设置accountName
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            showTitleInfo(DongSDKProxy.isInitedDongAccount());
+        }
+        LogUtils.i("HomePagerFragment.clazz-->>>onHiddenChanged hidden:" + hidden);
+    }
+
     private void showTitleInfo(boolean isLogin) {
         if (!isLogin) {// 1.未登录
             mTitleBar.setTitleBarContent("请先登录");
@@ -174,6 +183,7 @@ public class HomePagerFragment extends BaseFragment implements
                         if (deviceSeri.equals(deviceInfo.deviceSerialNO)) {
                             mTitleBar.setTitleBarContent(deviceInfo.deviceName);
                             DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
+                            LogUtils.i("HomePagerFragment.clazz-->> ********** default !!!!mDeviceInfo " + mDeviceInfo);
                         }
                     }
                 } else {//没有默认设备，选择第一台
@@ -206,8 +216,16 @@ public class HomePagerFragment extends BaseFragment implements
 
         if (name.equals(getString(R.string.message))) {
             BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
-                    R.string.please_select_device : R.string.not_open_service);
+                    R.string.no_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.monitor))) {
+            //解决第一次进入首页设备信息没及时更新的问题
+            ArrayList<DeviceInfo> deviceInfoList = DongSDKProxy.requestGetDeviceListFromCache();
+            for (DeviceInfo deviceInfo : deviceInfoList) {
+                if (mDeviceInfo != null &&
+                        (mDeviceInfo.dwDeviceID == deviceInfo.dwDeviceID)) {
+                    DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
+                }
+            }
             if (mDeviceInfo != null && mDeviceInfo.isOnline) {
                 UIHelper.showVideoViewActivity(getActivity(), true, "");
             } else if (mDeviceInfo == null) {
@@ -217,29 +235,28 @@ public class HomePagerFragment extends BaseFragment implements
             }
         } else if (name.equals(getString(R.string.applykey))) {
             BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
-                    R.string.please_select_device : R.string.not_open_service);
+                    R.string.no_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.shapeopendoor))) {
             BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
-                    R.string.please_select_device : R.string.not_open_service);
+                    R.string.no_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.repair))) {
             BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
-                    R.string.please_select_device : R.string.not_open_service);
+                    R.string.no_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.homesafe))) {
             BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
-                    R.string.please_select_device : R.string.not_open_service);
+                    R.string.no_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.visitorrecord))) {
             BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
-                    R.string.please_select_device : R.string.not_open_service);
+                    R.string.no_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.phone))) {
             BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
-                    R.string.please_select_device : R.string.not_open_service);
-//          UIHelper.showCommonPhoneActivity(getActivity());
+                    R.string.no_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.dd_function_parking))) {
             BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
-                    R.string.please_select_device : R.string.not_open_service);
+                    R.string.no_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.dd_function_finance))) {
             BaseApplication.showToastShortInCenter(mDeviceInfo == null ?
-                    R.string.please_select_device : R.string.not_open_service);
+                    R.string.no_device : R.string.not_open_service);
         } else if (name.equals(getString(R.string.dd_function_more))) {
             System.out.print("消除警告用");
         }

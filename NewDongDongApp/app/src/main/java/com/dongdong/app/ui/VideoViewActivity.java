@@ -12,6 +12,8 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -125,6 +127,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
     // private VideoViewActivityDongDeviceSettingImpl mDongDeviceSettingImpl;
 
     private PhoneReceiver mReceiver;
+    private NetBroadcastReceiver mNetReceiver;
 
     @Override
     protected int getLayoutId() {
@@ -213,6 +216,11 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         filter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
         registerReceiver(mReceiver, filter);
 
+        mNetReceiver = new NetBroadcastReceiver();//注册网络广播
+        filter = new IntentFilter();
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(mNetReceiver, filter);
+
         VideoViewActivityDongAccountCallbackImp mDongAccountCallBackImpl =
                 new VideoViewActivityDongAccountCallbackImp();
         boolean initDongAccountLan = DongSDKProxy.isInitedDongAccountLan();
@@ -259,6 +267,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mReceiver);
+        unregisterReceiver(mNetReceiver);
         LogUtils.i("log5", "VideoViewActivity.clazz-->>onPause...");
     }
 
@@ -596,6 +605,54 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         texView.setCompoundDrawables(null, topDrawable, null, null);
     }
 
+    private class PhoneReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
+                String phoneNumber = intent
+                        .getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+                LogUtils.i("PhoneReceiver.clazz--->>>ACTION_NEW_OUTGOING_CALL phoneNumber:"
+                        + phoneNumber);
+            } else {
+                // 查了下android文档，貌似没有专门用于接收来电的action,所以，非去电即来电.
+                // 如果我们想要监听电话的拨打状况，需要这么几步 :
+                LogUtils.i("PhoneReceiver.clazz--->>>coming!!!!!!!!!!!!!!!!!!!!");
+                mTvHangup.performClick();
+                BaseApplication
+                        .showToastShortInBottom(R.string.video_stop_phone_comming);
+            }
+        }
+    }
+
+    private class NetBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
+                ConnectivityManager connectivity = (ConnectivityManager) context
+                        .getSystemService(Context.CONNECTIVITY_SERVICE);
+                if (null != connectivity) {
+                    final NetworkInfo info = connectivity.getActiveNetworkInfo();
+                    LogUtils.i("NetBroadcastReceiver.clazz--->>>%%%%%%%%%%%%%%%%%%........NetworkInfo:" + info);
+                    if (null == info || !info.isConnected()) {
+                        VideoViewActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                               // DongSDKProxy.requestStopDeice();
+                                VideoViewActivity.this.finish();
+                                //   mTvHangup.performClick();
+                                LogUtils.i("NetBroadcastReceiver.clazz--->>>%%%%%%%%%%%%%%%%%%........is null:" + (info == null));
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+
     private class VideoViewActivityDongAccountCallbackImp extends
             DongAccountCallbackImp {
 
@@ -742,7 +799,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
             }
             TipDialogManager.showTipDialog(VideoViewActivity.this,
                     BaseApplication.context().getString(R.string.tip), BaseApplication.context().getString(
-                    R.string.video_play_error) + nErrNo);
+                            R.string.video_play_error) + nErrNo);
             return 0;
         }
 
@@ -902,7 +959,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                             mTipDialog.setTitle(R.string.tip);
                             mTipDialog
                                     .setMessage(R.string.video_get_data_error);
-                            mTipDialog.setPositiveButton(R.string.know, null);
+                            mTipDialog.setPositiveButton(R.string.i_know, null);
                             mTipDialog.show();
                         }
                         LogUtils.i("VideoViewActivity.clazz--->>>MyTimerTask coming!!!!!!! mShouldPlayNextDeviceCount ..."
@@ -930,14 +987,20 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                             }
                             mTipDialog.setTitle(R.string.tip);
                             mTipDialog.setMessage(time);
-                            mTipDialog.setPositiveButton(R.string.know, null);
+                            mTipDialog.setPositiveButton(R.string.i_know, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mTipDialog.dismiss();
+                                    mTvHangup.performClick();
+                                }
+                            });
                             mTipDialog.show();
                         } else if (mCloseVideoActivityCount < 7
                                 && mCloseVideoActivityCount > 1) {// 2.2.更改对话框提示字符
                             mTipDialog.setMessage(time);
                         } else {// 2.3.下载视频数据10s后连续为0，5s后关闭界面
-                            mTvHangup.performClick();
                             mTipDialog.dismiss();
+                            mTvHangup.performClick();
                         }
                     }
                 });
@@ -954,7 +1017,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                         if (mDeviceBusyCount == 1) {
                             mTipDialog.setTitle(R.string.tip);
                             mTipDialog.setMessage(time);
-                            mTipDialog.setPositiveButton(R.string.know,
+                            mTipDialog.setPositiveButton(R.string.i_know,
                                     new DialogInterface.OnClickListener() {
 
                                         @Override
@@ -975,26 +1038,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                     }
                 });
 
-            }
-        }
-    }
-
-    private class PhoneReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
-                String phoneNumber = intent
-                        .getStringExtra(Intent.EXTRA_PHONE_NUMBER);
-                LogUtils.i("PhoneReceiver.clazz--->>>ACTION_NEW_OUTGOING_CALL phoneNumber:"
-                        + phoneNumber);
-            } else {
-                // 查了下android文档，貌似没有专门用于接收来电的action,所以，非去电即来电.
-                // 如果我们想要监听电话的拨打状况，需要这么几步 :
-                LogUtils.i("PhoneReceiver.clazz--->>>coming!!!!!!!!!!!!!!!!!!!!");
-                mTvHangup.performClick();
-                BaseApplication
-                        .showToastShortInBottom(R.string.video_stop_phone_comming);
             }
         }
     }

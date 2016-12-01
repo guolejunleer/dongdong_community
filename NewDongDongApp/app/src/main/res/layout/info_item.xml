@@ -14,9 +14,9 @@
         <ImageView
             android:id="@+id/iv_backgroud"
             android:layout_width="match_parent"
-            android:layout_height="480px"
+            android:layout_height="260dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/dongdongicon"/>
+            android:src="@mipmap/dongdongicon" />
 
         <TextView
             android:id="@+id/tv_device_name"
@@ -37,9 +37,9 @@
             android:id="@+id/tv_device_state"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/space_12"
             android:layout_weight="5"
             android:gravity="left|center_vertical"
-            android:layout_margin="@dimen/space_12"
             android:textColor="#000000"
             android:textSize="@dimen/text_size_15" />
 
@@ -47,10 +47,10 @@
             android:id="@+id/tv_device_setting"
             android:layout_width="0dp"
             android:layout_height="30dp"
+            android:layout_margin="@dimen/space_12"
             android:layout_weight="1"
             android:background="@drawable/btn_background"
             android:gravity="center"
-            android:layout_margin="@dimen/space_12"
             android:text="@string/settings"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_15" />

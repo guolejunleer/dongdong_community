@@ -108,7 +108,7 @@ public class TitleBar extends LinearLayout implements OnClickListener {
 
     public void setTitleAnimator() {
         ObjectAnimator animator = ObjectAnimator.ofFloat(mTvTitleInfo, "rotationY", 0f, 360f);
-        animator.setDuration(3000);
+        animator.setDuration(2000);
         animator.start();
     }
 
