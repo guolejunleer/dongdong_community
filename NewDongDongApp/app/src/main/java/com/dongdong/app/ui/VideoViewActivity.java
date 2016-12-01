@@ -905,7 +905,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                             mTipDialog.setPositiveButton(R.string.know, null);
                             mTipDialog.show();
                         }
-                        LogUtils.i("VideoViewActivity.clazz--->>>MyTimerTask comming!!!!!!! mShouldPlayNextDeviceCount ..."
+                        LogUtils.i("VideoViewActivity.clazz--->>>MyTimerTask coming!!!!!!! mShouldPlayNextDeviceCount ..."
                                 + mShouldPlayNextDeviceCount);
                     }
                 });

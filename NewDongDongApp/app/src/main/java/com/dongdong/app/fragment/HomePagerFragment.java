@@ -2,6 +2,7 @@ package com.dongdong.app.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -82,7 +83,7 @@ public class HomePagerFragment extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-
+        mTitleBar.setTitleAnimator();
         boolean initedDongAccount = DongSDKProxy.isInitedDongAccount();
         if (initedDongAccount) {
             DongSDKProxy.registerAccountCallback(mDongAccountProxy);
@@ -123,6 +124,7 @@ public class HomePagerFragment extends BaseFragment implements
         mTitleBar.setBackArrowShowing(false);
         mTitleBar.setAddArrowShowing(false);
         mTitleBar.setOnTitleBarClickListener(this);
+        mTitleBar.setTitleAnimator();
 
         mDynamicLayout = (LinkRoomDynamicLayout) view.findViewById(R.id.link_drag_grid_view);
         mDynamicLayout.setOnItemClickListener(this);
@@ -146,9 +148,8 @@ public class HomePagerFragment extends BaseFragment implements
         mDynamicLayout.setAdapter(mNewAdatper);
     }
 
-
-    private void showTitleInfo(boolean initedDongAccount) {
-        if (!initedDongAccount) {// 1.未登录
+    private void showTitleInfo(boolean isLogin) {
+        if (!isLogin) {// 1.未登录
             mTitleBar.setTitleBarContent("请先登录");
         } else {//2.已登录
             ArrayList<DeviceInfo> deviceList;
@@ -165,7 +166,7 @@ public class HomePagerFragment extends BaseFragment implements
                         ",mDeviceID:" + mDeviceID);
                 if (!TextUtils.isEmpty(mDeviceID)) {//离线推送
                     LogUtils.i("HomePagerFragment.clazz-->>is offline push and we will jump " +
-                            "monitor activty deviceID:" + mDeviceID);
+                            "monitor activity deviceID:" + mDeviceID);
                     UIHelper.showVideoViewActivity(getActivity(), false, mDeviceID);
                     mDeviceID = null;
                 } else if (!TextUtils.isEmpty(deviceSeri)) {//有默认设备

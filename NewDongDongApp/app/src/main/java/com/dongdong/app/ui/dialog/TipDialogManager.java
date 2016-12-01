@@ -39,7 +39,7 @@ public class TipDialogManager {
         final CommonDialog tipDialog = new CommonDialog(context);
         tipDialog.setTitle(titleId);
         tipDialog.setMessage(msgId);
-        tipDialog.setPositiveButton(R.string.ok, null);
+        tipDialog.setPositiveButton(R.string.know, null);
         tipDialog.setCancelable(true);
         tipDialog.show();
     }
