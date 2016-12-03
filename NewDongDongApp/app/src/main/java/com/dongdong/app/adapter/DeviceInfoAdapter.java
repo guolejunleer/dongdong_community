@@ -39,6 +39,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
      * 图片缓存技术的核心类，用于缓存所有下载好的图片，在程序内存达到设定值时会将最少最近使用的图片移除掉。
      */
     private LruCache<String, Bitmap> mMemoryCache;
+    private final Bitmap mDefaultBitmap;
 
     public DeviceInfoAdapter(Context context) {
         this.mContext = context;
@@ -57,6 +58,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 return bitmap.getByteCount();
             }
         };
+        mDefaultBitmap = BitmapUtil.getRoundedCornerBitmap(BitmapFactory.
+                decodeResource(mContext.getResources(), R.mipmap.dongdongicon), ROUND_VALUE_PX);
     }
 
     public void setData(ArrayList<DeviceInfo> devicelist) {
@@ -146,9 +149,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
             Bitmap roundBitmap = BitmapUtil.getRoundedCornerBitmap(bitmap, ROUND_VALUE_PX);
             imageView.setImageBitmap(roundBitmap);
         } else {
-            Bitmap roundBitmap = BitmapUtil.getRoundedCornerBitmap(BitmapFactory.
-                    decodeResource(mContext.getResources(), R.mipmap.dongdongicon), ROUND_VALUE_PX);
-            imageView.setImageBitmap(roundBitmap);
+            imageView.setImageBitmap(mDefaultBitmap);
             BitmapWorkerTask task = new BitmapWorkerTask(imageView);
             task.execute(imageUrl);
         }
@@ -196,6 +197,11 @@ public class DeviceInfoAdapter extends BaseAdapter {
             }
         }
 
+    }
+
+    public void recycle() {
+        if (mDefaultBitmap != null && !mDefaultBitmap.isRecycled())
+            mDefaultBitmap.recycle();
     }
 
     private static class Holder {

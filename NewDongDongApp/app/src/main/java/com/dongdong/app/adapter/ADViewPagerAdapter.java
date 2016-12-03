@@ -1,11 +1,10 @@
 package com.dongdong.app.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -13,9 +12,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dd121.community.R;
+import com.dongdong.app.util.LogUtils;
+
+import java.util.List;
 
 public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeListener {
 
+    private Context mContext;
     private ViewPager mViewPager;
     private int[] mImgIdArray = new int[]{R.mipmap.ad_background, R.mipmap.ad_background, R.mipmap.ad_background};
     private ImageView[] mImageViews;
@@ -23,9 +26,10 @@ public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeList
     private boolean mShouldShowPoint;
 
     @SuppressWarnings("deprecation")
-    public ADViewPagerAdapter(Context context, ViewPager viewPager, List<String> datas, ViewGroup points) {
+    public ADViewPagerAdapter(Context context, ViewPager viewPager,
+                              List<String> datas, ViewGroup points) {
+        mContext = context;
         mViewPager = viewPager;
-
         mImageViews = new ImageView[mImgIdArray.length];
         for (int i = 0; i < mImageViews.length; i++) {
             ImageView imageView = new ImageView(context);
@@ -67,32 +71,38 @@ public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeList
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        // ((ViewPager) container).removeView(mImageViews[position
-        // % mImageViews.length]);
-    }
-
-    // 当前显示的view
-    private View mCurrentView;
-
-    @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        mCurrentView = (View) object;
-    }
-
-    public View getPrimaryItem() {
-        return mCurrentView;
+//        int des = position % mImageViews.length;
+//        View view = mImageViews[des];
+//        try {
+//            container.removeView(view);
+//        } catch (Exception e) {
+//            LogUtils.i("ADViewPagerAdapter.clazz--->>>destroyItem Exception:"
+//                    + e.toString());
+//            e.printStackTrace();
+//        }
+        container.removeView((View) object);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = mImageViews[position % mImageViews.length];
-        try {
-            container.addView(view, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return view;
+//        int des = position % mImageViews.length;
+//        View view = mImageViews[des];
+//        try {
+//            container.addView(view, 0);
+//        } catch (Exception e) {
+//            LogUtils.i("ADViewPagerAdapter.clazz--->>>instantiateItem Exception:"
+//                    + e.toString());
+//            e.printStackTrace();
+//        }
+//        return view;
+        int des = position % mImageViews.length;
+        View channelView = LayoutInflater.from(mContext).inflate(
+                R.layout.viewpager_item, container, false);
+        ImageView mImageView = (ImageView) channelView
+                .findViewById(R.id.iv_ad_item);
+        mImageView.setImageResource(mImgIdArray[des]);
+        container.addView(channelView);
+        return channelView;
     }
 
     @Override

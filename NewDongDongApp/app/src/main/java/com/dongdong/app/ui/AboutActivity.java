@@ -67,7 +67,7 @@ public class AboutActivity extends BaseActivity implements OnTitleBarClickListen
 
     // 设置当前版本号
     public void setCurrentVersion() {
-        String versionName = "V  " + TDevice.getVersionName() + "_beta";
+        String versionName = "V " + TDevice.getVersionName();
         mTvCurrentVersion.setText(versionName);
         LogUtils.i("AboutActivity.clazz--->>> versionName :" + versionName);
     }

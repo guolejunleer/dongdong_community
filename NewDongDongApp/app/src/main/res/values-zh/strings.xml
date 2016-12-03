@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">云社区</string>
+    <string name="app_name">云小区</string>
     <string name="linkman">社区门禁</string>
     <string name="opendoorrecorddetail">开门记录详细</string>
     <string name="App">App</string>
@@ -197,7 +197,7 @@
     <string name="qrCode">二维码</string>
     <string name="addDevice">添加设备</string>
     <string name="serial_error">无效的序列号!</string>
-    <string name="device_already_added">该设备已经被[%s]添加!</string>
+    <string name="device_already_added">该设备已经被(%s)添加!</string>
 
     <string name="scan_tips">请将二维码图片对准扫描框即可自动扫描</string>
     <string name="not_open_service">该小区暂未开通此项服务</string>

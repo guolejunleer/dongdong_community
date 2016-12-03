@@ -1,11 +1,10 @@
 package com.dongdong.app.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -13,10 +12,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dd121.community.R;
+import com.dongdong.app.util.LogUtils;
+
+import java.util.List;
 
 public class NoticeViewPagerAdapter extends PagerAdapter implements
         OnPageChangeListener {
 
+    private Context mContext;
     private ViewPager mViewPager;
     private int[] mImgIdArray = new int[]{R.mipmap.notice1, R.mipmap.notice2, R.mipmap.notice3};
     private ImageView[] mImageViews;
@@ -26,6 +29,7 @@ public class NoticeViewPagerAdapter extends PagerAdapter implements
     @SuppressWarnings("deprecation")
     public NoticeViewPagerAdapter(Context context, ViewPager viewPager,
                                   List<String> datas, ViewGroup points) {
+        mContext = context;
         mViewPager = viewPager;
         mImageViews = new ImageView[mImgIdArray.length];
         for (int i = 0; i < mImageViews.length; i++) {
@@ -67,55 +71,38 @@ public class NoticeViewPagerAdapter extends PagerAdapter implements
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        // ((ViewPager) container).removeView(mImageViews[position
-        // % mImageViews.length]);
-    }
-
-    // 当前显示的view
-    private View mCurrentView;
-
-    @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        mCurrentView = (View) object;
-    }
-
-    public View getPrimaryItem() {
-        return mCurrentView;
+//        int des = position % mImageViews.length;
+//        View view = mImageViews[des];
+//        try {
+//            container.removeView(view);
+//        } catch (Exception e) {
+//            LogUtils.i("NoticeViewPagerAdapter.clazz--->>>destroyItem Exception:"
+//                    + e.toString());
+//            e.printStackTrace();
+//        }
+        container.removeView((View) object);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = mImageViews[position % mImageViews.length];
-
-        try {
-            view.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-//                    if (mImageViews[0] == mCurrentView) {
-////						AppContext.showToastShort("连接1");
-////						mViewPager.getContext().startActivity(
-////								new Intent(mViewPager.getContext(),
-////										AdverOneActivity.class));
-//                    } else if (mImageViews[1] == mCurrentView) {
-////						AppContext.showToastShort("连接2");
-////						mViewPager.getContext().startActivity(
-////								new Intent(mViewPager.getContext(),
-////										AdverTwoActivity.class));
-//                    } else {
-////						AppContext.showToastShort("连接3");
-////						mViewPager.getContext().startActivity(
-////								new Intent(mViewPager.getContext(),
-////										AdverThreeActivity.class));
-//                    }
-                }
-            });
-            container.addView(view, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return view;
+//        int des = position % mImageViews.length;
+//        View view = mImageViews[des];
+//        try {
+//            container.addView(view, 0);
+//        } catch (Exception e) {
+//            LogUtils.i("NoticeViewPagerAdapter.clazz--->>>instantiateItem Exception:"
+//                    + e.toString());
+//            e.printStackTrace();
+//        }
+//        return view;
+        int des = position % mImageViews.length;
+        View channelView = LayoutInflater.from(mContext).inflate(
+                R.layout.viewpager_item, container, false);
+        ImageView mImageView = (ImageView) channelView
+                .findViewById(R.id.iv_ad_item);
+        mImageView.setImageResource(mImgIdArray[des]);
+        container.addView(channelView);
+        return channelView;
     }
 
     @Override
