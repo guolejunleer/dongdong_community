@@ -105,7 +105,7 @@ public class LoginActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DongSDKProxy.unRegisterAccountCallback();
+        DongSDKProxy.unRegisterAccountCallback(mDongAccountProxy);
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;

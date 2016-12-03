@@ -106,7 +106,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        DongSDKProxy.unRegisterAccountCallback();
+        DongSDKProxy.unRegisterAccountCallback(mAccountProxy);
     }
 
     @Override

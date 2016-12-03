@@ -30,8 +30,12 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -69,6 +73,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
     private FrameLayout mFlVideo;
     private SurfaceView mSurfaceView;
     private ImageView mIvDongIcon;
+    private ImageView mIvLockImage;
 
     // 2.第二组
     private View mControlParent;
@@ -78,7 +83,9 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
     private ImageView mIvScreenChange;
 
     // 3.第三组
-    private View mLlControl;
+    private LinearLayout mLlControl;//功能模块
+    private LinearLayout mLlFunction;
+    private LinearLayout mLlAccept;
 
     // 4.第四组
 //    private TextView mTvUnlock;
@@ -128,6 +135,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 
     private PhoneReceiver mReceiver;
     private NetBroadcastReceiver mNetReceiver;
+    private VideoViewActivityDongAccountCallbackImp mDongAccountCallBackImpl;
+    private VideoViewActivityDongDeviceSettingImpl mDongDeviceSettingImpl;
 
     @Override
     protected int getLayoutId() {
@@ -141,6 +150,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         mFlVideo = (FrameLayout) findViewById(R.id.fl_video);
         mSurfaceView = (SurfaceView) findViewById(R.id.sv_video);
         mIvDongIcon = (ImageView) findViewById(R.id.iv_dong_sign);
+        mIvLockImage = (ImageView) findViewById(R.id.iv_openLock);
 
         mControlParent = findViewById(R.id.fl_video_view_control_parent);
         mTvVideoQuality = (TextView) findViewById(R.id.tv_video_quality_cotrol);
@@ -150,7 +160,9 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         mTvDownloadDataTip = (TextView) findViewById(R.id.iv_download_data_tip);
         mIvScreenChange = (ImageView) findViewById(R.id.iv_screen_change);
 
-        mLlControl = findViewById(R.id.ll_control);
+        mLlControl = (LinearLayout) findViewById(R.id.ll_control);
+        mLlFunction = (LinearLayout) findViewById(R.id.ll_function);
+        mLlAccept = (LinearLayout) findViewById(R.id.ll_accept);
 
         TextView tvUnlock = (TextView) findViewById(R.id.tv_unlock);
         TextView tvTakePicture = (TextView) findViewById(R.id.tv_take_picture);
@@ -183,6 +195,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 
     @Override
     public void initData() {
+        mDongAccountCallBackImpl = new VideoViewActivityDongAccountCallbackImp();
         try {
             mMediaPlayer.setDataSource(this, Uri.parse("android.resource://"
                     + this.getPackageName() + "/" + R.raw.doorbell1));
@@ -221,8 +234,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(mNetReceiver, filter);
 
-        VideoViewActivityDongAccountCallbackImp mDongAccountCallBackImpl =
-                new VideoViewActivityDongAccountCallbackImp();
         boolean initDongAccountLan = DongSDKProxy.isInitedDongAccountLan();
         if (initDongAccountLan) {
             DongSDKProxy.registerAccountLanCallback(mDongAccountCallBackImpl);
@@ -268,22 +279,23 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         super.onPause();
         unregisterReceiver(mReceiver);
         unregisterReceiver(mNetReceiver);
-        LogUtils.i("log5", "VideoViewActivity.clazz-->>onPause...");
+        if (DongSDKProxy.isInitedDongAccountLan()) {
+            DongSDKProxy.unRegisterAccountLanCallback(mDongAccountCallBackImpl);
+        } else {
+            DongSDKProxy.unRegisterAccountCallback(mDongAccountCallBackImpl);
+        }
+        DongSDKProxy.unRegisterDongDeviceCallback(mDongDeviceCallBackImpl);
+        DongSDKProxy.unRegisterDongDeviceSettingCallback(mDongDeviceSettingImpl);
+        LogUtils.i("log5", "VideoViewActivity.clazz-->>onPause...unregister");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (DongSDKProxy.isInitedDongAccountLan()) {
-            DongSDKProxy.unRegisterAccountLanCallback();
-        } else {
-            DongSDKProxy.unRegisterAccountCallback();
-        }
+
         if (DongSDKProxy.isInitedDongDevice() && DongSDKProxy.isInitedDongDeviceSetting()) {// 用户没点击挂断后也要停止播放，释放资源等操作
             stopVideo();
         }
-        DongSDKProxy.unRegisterDongDeviceCallback();
-        DongSDKProxy.unRegisterDongDeviceSettingCallback();
         if (mMediaPlayer != null) {
             mMediaPlayer.release();
         }
@@ -298,7 +310,19 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mSurfaceView.requestLayout();
-        mLlControl.setVisibility(TDevice.isLandscape() ? View.GONE : View.VISIBLE);
+        if (TDevice.isLandscape()) {
+            mLlControl.setOrientation(LinearLayout.HORIZONTAL);
+            mLlFunction.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            mLlAccept.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+        } else {
+            mLlControl.setOrientation(LinearLayout.VERTICAL);
+            mLlFunction.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            mLlAccept.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+        }
     }
 
     private void startVideoPlay() {
@@ -310,8 +334,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         DongSDKProxy.initDongDevice(mDongDeviceCallBackImpl);
         LogUtils.i("VideoViewActivity.clazz--->>>videoPlay ... initDongDevice");
 
-        VideoViewActivityDongDeviceSettingImpl mDongDeviceSettingImpl
-                = new VideoViewActivityDongDeviceSettingImpl();
+        mDongDeviceSettingImpl = new VideoViewActivityDongDeviceSettingImpl();
         DongSDKProxy.initDongDeviceSetting(mDongDeviceSettingImpl);
         LogUtils.i("VideoViewActivity.clazz--->>>videoPlay ... initDongDeviceSetting");
 
@@ -364,6 +387,42 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                     return;
                 }
                 DongSDKProxy.requestDOControl();
+                // 图片渐变模糊度始终
+                AlphaAnimation aa = new AlphaAnimation(1f, 0f);
+                // 渐变时间
+                aa.setDuration(1000);
+                // 展示图片渐变动画
+                mIvLockImage.startAnimation(aa);
+                // 渐变过程监听
+                aa.setAnimationListener(new AnimationListener() {
+
+                    /**
+                     * 动画开始时
+                     */
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        System.out.println("动画开始...");
+                        mIvLockImage.setVisibility(View.VISIBLE);
+                    }
+
+                    /**
+                     * 重复动画时
+                     */
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        System.out.println("动画重复...");
+                    }
+
+                    /**
+                     * 动画结束时
+                     */
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        System.out.println("动画结束...");
+                        mIvLockImage.setVisibility(View.GONE);
+                        mIvLockImage.clearAnimation();
+                    }
+                });
                 mUnlockLastTime = System.currentTimeMillis();
                 LogUtils.i("VideoViewActivity.clazz-->>onClick tv_unlock");
                 break;
@@ -640,7 +699,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                         VideoViewActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                               // DongSDKProxy.requestStopDeice();
+                                // DongSDKProxy.requestStopDeice();
                                 VideoViewActivity.this.finish();
                                 //   mTvHangup.performClick();
                                 LogUtils.i("NetBroadcastReceiver.clazz--->>>%%%%%%%%%%%%%%%%%%........is null:" + (info == null));

@@ -113,7 +113,7 @@ public class HomePagerFragment extends BaseFragment implements
     @Override
     public void onPause() {
         super.onPause();
-        DongSDKProxy.unRegisterAccountCallback();
+        DongSDKProxy.unRegisterAccountCallback(mDongAccountProxy);
         LogUtils.i("HomePagerFragment.clazz--->>>onPause...");
     }
 

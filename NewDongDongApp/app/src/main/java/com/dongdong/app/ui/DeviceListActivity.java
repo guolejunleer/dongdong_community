@@ -65,16 +65,17 @@ public class DeviceListActivity extends BaseActivity implements
                         AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
                         AppConfig.KEY_DEVICE_ID, deviceInfo.dwDeviceID);
                 DongConfiguration.mDeviceInfo = deviceInfo;
-                Intent intent = new Intent(DeviceListActivity.this,
-                        MainActivity.class);
+
                 LogUtils.i("DeviceListActivity.clazz--->>>IsOnline:"
                         + deviceInfo.isOnline);
-                intent.putExtra(AppConfig.BUNDLE_KEY_DEVICE_INFO, deviceInfo);
-                startActivity(intent);
-                if (!deviceInfo.isOnline) {
-                    BaseApplication.showToastShortInBottom(R.string.device_offline);
-                } else {
+                if (deviceInfo.isOnline) {
                     UIHelper.showVideoViewActivity(DeviceListActivity.this, true, "");
+                } else {
+                    Intent intent = new Intent(DeviceListActivity.this,
+                            MainActivity.class);
+                    intent.putExtra(AppConfig.BUNDLE_KEY_DEVICE_INFO, deviceInfo);
+                    startActivity(intent);
+                    BaseApplication.showToastShortInBottom(R.string.device_offline);
                 }
             }
         });
@@ -92,12 +93,13 @@ public class DeviceListActivity extends BaseActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        DongSDKProxy.unRegisterAccountCallback();
+        DongSDKProxy.unRegisterAccountCallback(mAccountProxy);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mInfoAdapter.recycle();
     }
 
     @Override
@@ -113,6 +115,7 @@ public class DeviceListActivity extends BaseActivity implements
     public void onAddClick() {
         startActivity(new Intent(this, AddDeviceActivity.class));
     }
+
     @Override
     public void onFinishClick() {
     }

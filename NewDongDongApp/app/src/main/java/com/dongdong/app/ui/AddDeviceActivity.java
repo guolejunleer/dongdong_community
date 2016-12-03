@@ -42,7 +42,8 @@ public class AddDeviceActivity extends BaseActivity implements
     public ArrayList<DeviceInfo> mDeviceList;
     private CommonDialog mDialog;
 
-    private AddDeviceActivityDongAccountProxy mAccountProxy;
+    private AddDeviceActivityDongAccountProxy
+            mAccountProxy = new AddDeviceActivityDongAccountProxy();
 
     @Override
     protected int getLayoutId() {
@@ -61,7 +62,6 @@ public class AddDeviceActivity extends BaseActivity implements
 
     @Override
     public void initData() {
-        mAccountProxy = new AddDeviceActivityDongAccountProxy();
 
         mDialog = new CommonDialog(this);
         mTitleBar.setTitleBarContent(getString(R.string.addDevice));
@@ -89,6 +89,8 @@ public class AddDeviceActivity extends BaseActivity implements
         super.onResume();
         if (!DongSDKProxy.isInitedDongAccountLan()) {
             DongSDKProxy.initDongAccountLan(mAccountProxy);
+        } else {
+            DongSDKProxy.registerAccountLanCallback(mAccountProxy);
         }
         DongSDKProxy.requestLanStartScan();
         LogUtils.i("AddDevcieActivity.clazz-->>> onResume...");
@@ -98,7 +100,7 @@ public class AddDeviceActivity extends BaseActivity implements
     protected void onPause() {
         super.onPause();
         DongSDKProxy.requestLanStopScan();
-        DongSDKProxy.unRegisterAccountLanCallback();
+        DongSDKProxy.unRegisterAccountLanCallback(mAccountProxy);
         DongSDKProxy.clearDongAccountLan();
         LogUtils.i("AddDevcieActivity.clazz-->>> onPause...");
     }
@@ -184,7 +186,8 @@ public class AddDeviceActivity extends BaseActivity implements
             } else if (nReason == 1) {
                 BaseApplication.showToastShortInBottom(R.string.serial_error);
             } else if (nReason == 2) {
-                BaseApplication.showToastShortInBottom(R.string.device_already_added);
+                BaseApplication.showToastShortInBottom(getString(R.string.device_already_added,
+                        username));
             } else if (nReason == 3) {
                 mDialog.setMessage(getString(R.string.device_already_added, username));
                 mDialog.setCancelable(false);
