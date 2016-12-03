@@ -8,7 +8,7 @@ import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
-public class DoorRecordDetail extends BaseActivity implements
+public class DoorRecordDetailActivity extends BaseActivity implements
 		OnTitleBarClickListener {
 	private TitleBar mTitleBar;
 	private TextView mTvRoomNumber, mTvType, mTvTimeStamp, mTvDeviceName,
@@ -94,7 +94,7 @@ public class DoorRecordDetail extends BaseActivity implements
 
 	@Override
 	public void onBackClick() {
-		DoorRecordDetail.this.finish();
+		DoorRecordDetailActivity.this.finish();
 	}
 
 	@Override

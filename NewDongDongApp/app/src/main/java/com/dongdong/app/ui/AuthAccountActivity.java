@@ -178,7 +178,7 @@ public class AuthAccountActivity extends BaseActivity implements
 		case R.id.bt_auth:
 			mAccountName = mEtAccount.getText().toString();
 			if (mAccountName.equals("")) {
-				AppContext.showToastShortInBottom(R.string.empty);
+				AppContext.showToastShortInBottom(R.string.empty_tip);
 			}
 			for (InfoUser info : mUserList) {
 				if (info.userName.equals(mAccountName)) {

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,9 +29,22 @@ import com.dongdong.app.util.StatusBarCompatUtils;
 import com.dongdong.app.util.TDevice;
 import com.dongdong.app.ui.dialog.TipDialogManager.OnTipDialogButtonClick;
 
-public class MainActivity extends FragmentActivity implements OnClickListener,OnTipDialogButtonClick{
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+public class MainActivity extends FragmentActivity implements OnClickListener, OnTipDialogButtonClick {
 
     public static boolean mIsPushStarted = false;
+
+    private final static ThreadLocal<SimpleDateFormat> mDateFormat = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            // yyyy-MM-dd HH:mm:ss
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        }
+    };
     private DoubleClickExitHelper mDoubleClickExit;
 
     // 二个tab布局
@@ -47,6 +61,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,On
     private long mLastTime;
 
     private String mDevcieID;
+    private String mPushTime;
 
     @SuppressLint("NewApi")
     @Override
@@ -59,8 +74,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener,On
         DongSDK.initializePush(this, DongSDK.PUSH_TYPE_ALL);// 初始化推送
         Bundle bundle = getIntent().getBundleExtra(AppConfig.INTENT_BUNDLE_KEY);
         if (bundle != null) {// 离线推送
-            mDevcieID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID, "");
             mIsPushStarted = true;
+            mDevcieID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID, "");
+            mPushTime = bundle.getString(AppConfig.BUNDLE_KEY_PUSH_TIME);
         }
         mDoubleClickExit = new DoubleClickExitHelper(this);
         mHomeLayout = (RelativeLayout) findViewById(R.id.rl_home);
@@ -77,10 +93,30 @@ public class MainActivity extends FragmentActivity implements OnClickListener,On
         mBtUnclock.setOnClickListener(this);
         if (mHomeFragment == null) {
             mHomeFragment = new HomePagerFragment();
-            Bundle bundleFrag = new Bundle();
-            bundleFrag.putString(AppConfig.BUNDLE_KEY_DEVICE_ID, mDevcieID);// 这里的values就是我们要传的值
-            mHomeFragment.setArguments(bundleFrag);
-            // ((HomePagerFragment) mHomeFragment).setDeviceID(mDevcieID);
+            //这里比较当前时间和离线推送消息的时候是否超过3分钟
+            Date date;
+            if (TextUtils.isEmpty(mPushTime)) {
+                date = new Date();
+            } else {
+                try {
+                    date = mDateFormat.get().parse(mPushTime);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    date = new Date();
+                }
+            }
+            long delSecond = (date.getTime() -
+                    new Date(System.currentTimeMillis()).getTime()) / 1000;
+            LogUtils.i("MainActivity.clazz--->>>onCreate......delSecond:" + delSecond);
+            if (delSecond < 60 * 3) {//进入监视界面
+                Bundle bundleFrag = new Bundle();
+                bundleFrag.putString(AppConfig.BUNDLE_KEY_DEVICE_ID, mDevcieID);
+                mHomeFragment.setArguments(bundleFrag);
+            } else {//提示用户
+                TipDialogManager.showTipDialog(this,
+                        BaseApplication.context().getString(R.string.tip),
+                        BaseApplication.context().getString(R.string.tip_push_time, mPushTime));
+            }
         }
         if (!mHomeFragment.isAdded()) {
             // 提交事务
@@ -94,13 +130,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener,On
             mMyTv.setTextColor(getResources().getColor(R.color.bottomtab_normal));
         }
         LogUtils.i("MainActivity.clazz--->>>onCreate......");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkContacts();// 检查手机是否有公司电话
-        LogUtils.i("MainActivity.clazz--->>>onResume......");
 
         int networkType = TDevice.getNetworkType();
         if (networkType == 0) {
@@ -111,6 +140,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener,On
                     R.string.continues, R.string.cancel);
         }
         LogUtils.i("LoadActivity.clazz--->>>onResume......networkType:" + networkType);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkContacts();// 检查手机是否有公司电话
+        LogUtils.i("MainActivity.clazz--->>>onResume......");
     }
 
     @Override
@@ -135,10 +171,15 @@ public class MainActivity extends FragmentActivity implements OnClickListener,On
     }
 
     private void checkContacts() {
-        String contactName = TDevice.getContactFromPhone(BaseApplication.context(), AppConfig.COMPANY_PHONE);
-        String nickName = getString(R.string.linkman);
-        if (!contactName.equals(nickName)) {
-            TDevice.insertContact2Phone(BaseApplication.context(), nickName, AppConfig.COMPANY_PHONE);
+        try {
+            String contactName = TDevice.getContactFromPhone(BaseApplication.context(),
+                    AppConfig.COMPANY_PHONE);
+            String nickName = getString(R.string.linkman);
+            if (!contactName.equals(nickName)) {
+                TDevice.insertContact2Phone(BaseApplication.context(), nickName, AppConfig.COMPANY_PHONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -108,7 +108,7 @@
                 android:id="@+id/tv_accept"
                 style="@style/video_view_function_style"
                 android:drawableTop="@drawable/accept_background"
-                android:text="@string/start" />
+                android:text="@string/accept" />
         </LinearLayout>
     </LinearLayout>
 

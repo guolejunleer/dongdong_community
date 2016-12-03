@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@drawable/backgroud_list_drawable"
-              android:orientation="vertical"
-              android:paddingTop="@dimen/space_5">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/space_5">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -15,7 +14,9 @@
         <ImageView
             android:id="@+id/iv_backgroud"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="260dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/dongdongicon" />
 
         <TextView
             android:id="@+id/tv_device_name"
@@ -23,10 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|left"
             android:layout_marginLeft="@dimen/space_20"
-            android:layout_marginTop="@dimen/space_20"
-            android:text=""
-            android:textColor="#ffffff"
-            android:textSize="@dimen/text_size_15"/>
+            android:layout_marginTop="@dimen/space_15"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_15" />
     </FrameLayout>
 
     <LinearLayout
@@ -37,27 +37,27 @@
             android:id="@+id/tv_device_state"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/space_12"
             android:layout_weight="5"
             android:gravity="left|center_vertical"
-            android:paddingLeft="@dimen/space_8"
             android:textColor="#000000"
-            android:textSize="@dimen/text_size_15"/>
+            android:textSize="@dimen/text_size_15" />
 
         <TextView
             android:id="@+id/tv_device_setting"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="@dimen/space_12"
             android:layout_weight="1"
             android:background="@drawable/btn_background"
             android:gravity="center"
-            android:paddingRight="@dimen/space_8"
             android:text="@string/settings"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_15"/>
+            android:textSize="@dimen/text_size_15" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/space_8"
-        android:background="#eee"/>
+        android:layout_height="@dimen/space_12"
+        android:background="#ccc" />
 </LinearLayout>

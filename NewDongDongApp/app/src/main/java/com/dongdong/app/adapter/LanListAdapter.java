@@ -14,20 +14,25 @@ import com.ddclient.dongsdk.DeviceInfo;
 
 public class LanListAdapter extends BaseAdapter {
 
-	private LayoutInflater inflater;
-	private ArrayList<DeviceInfo> list = new ArrayList<>();
+	private LayoutInflater mInflater;
+	private ArrayList<DeviceInfo> mDeviceInfoList = new ArrayList<>();
 
 	public LanListAdapter(Context context) {
-		inflater = LayoutInflater.from(context);
+		mInflater = LayoutInflater.from(context);
 
 	}
 
 	public void setData(ArrayList<DeviceInfo> deviceList) {
-		this.list = deviceList;
+		mDeviceInfoList.clear();
+		for (DeviceInfo deviceInfo : deviceList) {
+			if (deviceInfo != null) {
+				mDeviceInfoList.add(deviceInfo);
+			}
+		}
 	}
 
 	public ArrayList<DeviceInfo> getData() {
-		return list;
+		return mDeviceInfoList;
 	}
 
 	@Override
@@ -50,7 +55,7 @@ public class LanListAdapter extends BaseAdapter {
 		Holder hold;
 		if (convertView == null) {
 			hold = new Holder();
-			convertView = inflater.inflate(R.layout.lanitem, null);
+			convertView = mInflater.inflate(R.layout.lanitem, null);
 
 			convertView.setTag(hold);
 		} else {

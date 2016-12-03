@@ -86,30 +86,7 @@ public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeList
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = mImageViews[position % mImageViews.length];
-
         try {
-            view.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-//                    if (mImageViews[0] == mCurrentView) {
-////                         AppContext.showToastShort("连接1");
-////                         mViewPager.getContext().startActivity(
-////                         new Intent(mViewPager.getContext(),
-////                         AdverOneActivity.class));
-//                    } else if (mImageViews[1] == mCurrentView) {
-////                         AppContext.showToastShort("连接2");
-////                         mViewPager.getContext().startActivity(
-////                         new Intent(mViewPager.getContext(),
-////                         AdverTwoActivity.class));
-//                    } else {
-////                         AppContext.showToastShort("连接3");
-////                         mViewPager.getContext().startActivity(
-////                         new Intent(mViewPager.getContext(),
-////                         AdverThreeActivity.class));
-//                    }
-                }
-            });
             container.addView(view, 0);
         } catch (Exception e) {
             e.printStackTrace();

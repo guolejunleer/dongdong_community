@@ -34,6 +34,7 @@ public class AppConfig {
 	public static final String BUNDLE_KEY_DEVICE_INFO = "BUNDLE_DEVCIE_INFO";
 	public static final String BUNDLE_KEY_DEVICE_ID = "BUNDLE_DEVCIE_ID";
 	public static final String BUNDLE_KEY_INITIATIVE = "BUNDLE_INITIATIVE";
+	public static final String BUNDLE_KEY_PUSH_TIME= "BUNDLE_KEY_PUSH_TIME";
 
 	public static final String COMPANY_PHONE = "057158111836";
 	public static final String CACH_IMAGE_PATH = "temp";

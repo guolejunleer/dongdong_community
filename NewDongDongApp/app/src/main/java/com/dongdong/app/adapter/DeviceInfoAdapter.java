@@ -177,7 +177,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
         protected Bitmap doInBackground(String... arg0) {
             imageUrl = arg0[0];
             // LogUtils.i("DeviceInfoAdapter.clazz--->>imageUrl:" + imageUrl);
-            Bitmap bitmap = BitmapFactory.decodeFile(mImagePath + "/" + AppConfig.CACH_IMAGE_PATH + "/image/" + imageUrl + ".jpg");
+            Bitmap bitmap = BitmapFactory.decodeFile(mImagePath
+                    + "/" + AppConfig.CACH_IMAGE_PATH + "/image/" + imageUrl + ".jpg");
             if (bitmap != null) {
                 addBitmapToMemoryCache(imageUrl, bitmap);
             }

@@ -16,7 +16,8 @@
         android:layout_marginTop="40dp"
         android:contentDescription="@null"
         android:scaleType="fitXY"
-        android:src="@mipmap/logo" />
+        android:src="@mipmap/logo"
+        android:visibility="invisible" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -131,7 +132,7 @@
                 android:layout_marginRight="@dimen/space_20"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/forgetPassword"
+                android:text="@string/forget_pwd"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18" />
 
@@ -152,7 +153,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/space_20"
                 android:layout_weight="1"
-                android:text="@string/localdevice"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18"
                 android:visibility="gone" />

@@ -1,12 +1,19 @@
 package com.dongdong.app.widget;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Button;
@@ -83,7 +90,6 @@ public class TitleBar extends LinearLayout implements OnClickListener {
                 mListener.onFinishClick();
                 break;
         }
-
     }
 
     public void setBackArrowShowing(boolean show) {
@@ -98,6 +104,12 @@ public class TitleBar extends LinearLayout implements OnClickListener {
 
     public void setTitleBarContent(String titleInfo) {
         mTvTitleInfo.setText(titleInfo);
+    }
+
+    public void setTitleAnimator() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mTvTitleInfo, "rotationY", 0f, 360f);
+        animator.setDuration(2000);
+        animator.start();
     }
 
     public void setFinishShowing(boolean show) {
