@@ -233,4 +233,7 @@
     <string name="tip_push_time">在%s时,有人呼叫过您</string>
     <string name="forget_pwd">忘记密码</string>
     <string name="i_know">知道了</string>
+    <string name="no_message">暂无消息</string>
+
+    <string name="no_phone">暂无常用电话</string>
 </resources>

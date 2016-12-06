@@ -5,28 +5,30 @@ import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
-public class CommonPhoneActivity extends BaseActivity implements OnTitleBarClickListener {
+public class ApplyKeyActivity extends BaseActivity implements OnTitleBarClickListener {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_commom_phone;
+        return R.layout.activity_applykey;
     }
 
     @Override
     public void initView() {
-        TitleBar titleBar = (TitleBar) this.findViewById(R.id.tb_title);
-        titleBar.setTitleBarContent(getString(R.string.phone));
+        TitleBar titleBar= (TitleBar) findViewById(R.id.tb_title);
+        titleBar.setTitleBarContent(getString(R.string.applykey));
         titleBar.setOnTitleBarClickListener(this);
         titleBar.setAddArrowShowing(false);
+
     }
 
     @Override
     public void initData() {
+
     }
 
     @Override
     public void onBackClick() {
-        CommonPhoneActivity.this.finish();
+        ApplyKeyActivity.this.finish();
     }
 
     @Override
@@ -36,9 +38,12 @@ public class CommonPhoneActivity extends BaseActivity implements OnTitleBarClick
 
     @Override
     public void onAddClick() {
+
     }
 
     @Override
     public void onFinishClick() {
+
     }
+
 }

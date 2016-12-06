@@ -247,6 +247,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         //是否主动监视
         isActive = bundle.getBoolean(AppConfig.BUNDLE_KEY_INITIATIVE, false);
         if (TextUtils.isEmpty(mDeviceID) && isActive) {// 1.主动监视
+            isHandsFree = true;
             mDeviceInfo = DongConfiguration.mDeviceInfo;
             // 设置功能按钮界面，主动进来是对讲、挂断按钮
             mTvAudio.setVisibility(View.VISIBLE);
@@ -256,13 +257,14 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         } else {// 2. 推送进来?????????????????????????
             ArrayList<DeviceInfo> list = DongConfiguration.mDeviceInfoList =
                     DongSDKProxy.requestGetDeviceListFromCache();
-            for (DeviceInfo deviceInfo : list) {//通过推动过来的设备ID,获取帐号下对应的设备
+            for (DeviceInfo deviceInfo : list) {//通过推送过来的设备ID,获取帐号下对应的设备
                 if (mDeviceID.equals(String.valueOf(deviceInfo.dwDeviceID))) {
                     mDeviceInfo = deviceInfo;
                 }
             }
             playMusic(mMediaPlayer);
             isVideoOn = true;
+            isHandsFree=true;
             mTvAudio.setVisibility(View.GONE);
             mTvVideo.setVisibility(View.VISIBLE);
             mTvAccept.setVisibility(View.VISIBLE);
@@ -293,7 +295,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
     protected void onDestroy() {
         super.onDestroy();
 
-        if (DongSDKProxy.isInitedDongDevice() && DongSDKProxy.isInitedDongDeviceSetting()) {// 用户没点击挂断后也要停止播放，释放资源等操作
+        if (DongSDKProxy.isInitedDongDevice() && DongSDKProxy.isInitedDongDeviceSetting()) {
+            // 用户没点击挂断后也要停止播放，释放资源等操作
             stopVideo();
         }
         if (mMediaPlayer != null) {
@@ -444,11 +447,11 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                     return;
                 }
                 if (!isHandsFree) {
-                    mAudioManager.setMode(AudioManager.MODE_NORMAL);// 扬声器
                     setCompoundTopDrawables(mTvHandFree, R.mipmap.hand_free_pressed);
+                    mAudioManager.setMode(AudioManager.MODE_NORMAL);// 扬声器
                 } else {
-                    mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);// 听筒
                     setCompoundTopDrawables(mTvHandFree, R.mipmap.hand_free_normal);
+                    mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);// 听筒
                 }
                 mHandsFreeLastTime = System.currentTimeMillis();
                 LogUtils.i("VideoViewActivity.clazz-->>onClick tv_hand_free isHandsFree:"
@@ -478,12 +481,12 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                     return;
                 }
                 if (!isVideoOn) {
-                    setCompoundTopDrawables(mTvAudio, R.mipmap.audio_pressed);
+                    setCompoundTopDrawables(mTvVideo, R.mipmap.video_pressed);
                     DongSDKProxy.requestRealtimePlay(DongSDKProxy.PLAY_TYPE_VIDEO);// 打开设备摄像头
                     mSurfaceView.setVisibility(View.VISIBLE);
                     mIvDongIcon.setVisibility(View.INVISIBLE);
                 } else {
-                    setCompoundTopDrawables(mTvAudio, R.mipmap.video_normal);
+                    setCompoundTopDrawables(mTvVideo, R.mipmap.video_normal);
                     DongSDKProxy.requestStop(DongSDKProxy.PLAY_TYPE_VIDEO);// 关闭设备摄像头
                     mSurfaceView.setVisibility(View.INVISIBLE);
                     mIvDongIcon.setVisibility(View.VISIBLE);
@@ -514,8 +517,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 
             case R.id.tv_video_quality_cotrol:// 视频质量设置
                 if (TDevice.devieType(mDeviceInfo, 23)) {
-                    TipDialogManager.showTipDialog(this, R.string.warn,
-                            R.string.no_permissions);
+                    TipDialogManager.showTipDialog(this, R.string.warn, R.string.no_permissions);
                 } else {
                     View diaView = View.inflate(this, R.layout.set_video_quality_dialog, null);
                     final Dialog dialog = new Dialog(this, R.style.transparent_dialog_theme);

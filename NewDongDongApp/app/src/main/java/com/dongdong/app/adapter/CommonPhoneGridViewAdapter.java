@@ -42,26 +42,26 @@ public class CommonPhoneGridViewAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = View.inflate(context, R.layout.gradview_item, null);
 			viewHolder = new ViewHolder();
-			viewHolder.iv_cmimg = (ImageView) convertView
+			viewHolder.iv_cmImg = (ImageView) convertView
 					.findViewById(R.id.iv_icon);
-			viewHolder.tv_cmname = (TextView) convertView
+			viewHolder.tv_cmName = (TextView) convertView
 					.findViewById(R.id.tv_des);
-			viewHolder.tv_cmphone = (TextView) convertView
+			viewHolder.tv_cmPhone = (TextView) convertView
 					.findViewById(R.id.phone);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		PhoneBean commonphone = mDatas.get(position);
-		viewHolder.iv_cmimg.setBackgroundResource(R.mipmap.phone);
-		viewHolder.tv_cmname.setText(commonphone.getCommonname());
-		viewHolder.tv_cmphone.setText(commonphone.getCommonphone());
+		PhoneBean commonPhone = mDatas.get(position);
+		viewHolder.iv_cmImg.setBackgroundResource(R.mipmap.phone);
+		viewHolder.tv_cmName.setText(commonPhone.getCommonname());
+		viewHolder.tv_cmPhone.setText(commonPhone.getCommonphone());
 		return convertView;
 	}
 
 	private class ViewHolder {
-		private ImageView iv_cmimg;
-		private TextView tv_cmname;
-		private TextView tv_cmphone;
+		private ImageView iv_cmImg;
+		private TextView tv_cmName;
+		private TextView tv_cmPhone;
 	}
 }

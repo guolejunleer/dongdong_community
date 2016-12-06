@@ -56,7 +56,7 @@ public class FunctionBean {
 
 	@Override
 	public String toString() {
-		return "name:" + name + " & sequence:" + sequence + " & iconId:"
-				+ iconId;
+		return "(name:" + name + ",sequence:" + sequence + ",iconId:"
+				+ iconId+")";
 	}
 }
