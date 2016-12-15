@@ -1,6 +1,5 @@
 package com.dongdong.app.ui;
 
-import android.annotation.SuppressLint;
 import android.widget.TextView;
 
 import com.dd121.community.R;
@@ -10,49 +9,46 @@ import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
 public class DoorRecordDetailActivity extends BaseActivity implements
 		OnTitleBarClickListener {
-	private TitleBar mTitleBar;
 	private TextView mTvRoomNumber, mTvType, mTvTimeStamp, mTvDeviceName,
-			mTvMemberName, mTvIdNumber, mTvComNumber, mTvMobliePhone;
+			mTvMemberName, mTvIdNumber, mTvComNumber, mTvPhone;
 
 	@Override
 	protected int getLayoutId() {
-		return R.layout.activity_doorrecorddetail;
+		return R.layout.activity_door_record_detail;
 	}
 
-	@SuppressLint("CutPasteId")
 	@Override
 	public void initView() {
-		mTitleBar = (TitleBar) this.findViewById(R.id.tb_title);
-		mTitleBar.setTitleBarContent(getString(R.string.opendoorrecorddetail));
-		mTitleBar.setOnTitleBarClickListener(this);
-		mTitleBar.setAddArrowShowing(false);
+		TitleBar titleBar = (TitleBar) this.findViewById(R.id.tb_title);
+		titleBar.setTitleBarContent(getString(R.string.opendoorrecorddetail));
+		titleBar.setOnTitleBarClickListener(this);
+		titleBar.setAddArrowShowing(false);
 
-		mTvRoomNumber = (TextView) findViewById(R.id.tv_roomnumber);
+		mTvRoomNumber = (TextView) findViewById(R.id.tv_room_number);
 		mTvType = (TextView) findViewById(R.id.tv_type);
 		mTvTimeStamp = (TextView) findViewById(R.id.tv_timestamp);
-		mTvDeviceName = (TextView) findViewById(R.id.tv_devicename);
-		mTvMemberName = (TextView) findViewById(R.id.tv_membername);
-		mTvIdNumber = (TextView) findViewById(R.id.tv_idnumber);
-		mTvComNumber = (TextView) findViewById(R.id.tv_comnumber);
-		mTvMobliePhone = (TextView) findViewById(R.id.tv_mobilephone);
+		mTvDeviceName = (TextView) findViewById(R.id.tv_device_name);
+		mTvMemberName = (TextView) findViewById(R.id.tv_member_name);
+		mTvIdNumber = (TextView) findViewById(R.id.tv_id_number);
+		mTvComNumber = (TextView) findViewById(R.id.tv_com_number);
+		mTvPhone = (TextView) findViewById(R.id.tv_mobile_phone);
 	}
 
 	@Override
 	public void initData() {
-		String roomnumber = this.getIntent().getStringExtra("roomnumber");
+		String roomNumber = this.getIntent().getStringExtra("roomNumber");
 		String type = this.getIntent().getStringExtra("type");
 		String timestamp = this.getIntent().getStringExtra("timestamp");
-		String devicename = this.getIntent().getStringExtra("devicename");
-		String membername = this.getIntent().getStringExtra("membername");
-		String idnumber = this.getIntent().getStringExtra("idnumber");
-		String comnumber = this.getIntent().getStringExtra("comnumber");
-		String mobilephone = this.getIntent().getStringExtra("mobilephone");
+		String deviceName = this.getIntent().getStringExtra("deviceName");
+		String memberName = this.getIntent().getStringExtra("memberName");
+		String idNumber = this.getIntent().getStringExtra("idNumber");
+		String comNumber = this.getIntent().getStringExtra("comNumber");
+		String mobilePhone = this.getIntent().getStringExtra("mobilePhone");
 
-		System.out.println("跳转后>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + roomnumber+ type + timestamp + devicename + membername + idnumber+ comnumber + mobilephone);
-		if (roomnumber == null) {
+		if (roomNumber == null) {
 			mTvRoomNumber.setText("");
 		} else {
-			mTvRoomNumber.setText(roomnumber);
+			mTvRoomNumber.setText(roomNumber);
 		}
 		if (type == null) {
 			mTvType.setText("");
@@ -64,30 +60,30 @@ public class DoorRecordDetailActivity extends BaseActivity implements
 		} else {
 			mTvTimeStamp.setText(timestamp);
 		}
-		if (devicename == null) {
+		if (deviceName == null) {
 			mTvDeviceName.setText("");
 		} else {
-			mTvDeviceName.setText(devicename);
+			mTvDeviceName.setText(deviceName);
 		}
-		if (membername == null) {
+		if (memberName == null) {
 			mTvMemberName.setText("");
 		} else {
-			mTvMemberName.setText(membername);
+			mTvMemberName.setText(memberName);
 		}
-		if (idnumber == null) {
+		if (idNumber == null) {
 			mTvIdNumber.setText("");
 		} else {
-			mTvIdNumber.setText(idnumber);
+			mTvIdNumber.setText(idNumber);
 		}
-		if (comnumber == null) {
+		if (comNumber == null) {
 			mTvComNumber.setText("");
 		} else {
-			mTvComNumber.setText(comnumber);
+			mTvComNumber.setText(comNumber);
 		}
-		if (mobilephone == null) {
-			mTvMobliePhone.setText("");
+		if (mobilePhone == null) {
+			mTvPhone.setText("");
 		} else {
-			mTvMobliePhone.setText(mobilephone);
+			mTvPhone.setText(mobilePhone);
 		}
 
 	}

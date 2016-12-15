@@ -95,31 +95,60 @@ public class MyPagerFragment extends BaseFragment {
 
 	public void onClick(View v) {
 
-		if (TDevice.getNetworkType() == 0) {
-			TipDialogManager.showWithoutNetworDialog(getActivity(), null);
-			return;
-		}
-		if (!DongSDKProxy.isInitedDongAccount()) {
-			startActivity(new Intent(getActivity(), LoginActivity.class));
-			return;
-		}
 
 		switch (v.getId()) {
 		case R.id.iv_avatar:
+			if (TDevice.getNetworkType() == 0) {
+				TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+				return;
+			}
 			if (!DongSDKProxy.isInitedDongAccount()) {
 				startActivity(new Intent(getActivity(), LoginActivity.class));
+				return;
 			}
 			break;
 		case R.id.ll_myfamily:
+			if (TDevice.getNetworkType() == 0) {
+				TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+				return;
+			}
+			if (!DongSDKProxy.isInitedDongAccount()) {
+				startActivity(new Intent(getActivity(), LoginActivity.class));
+				return;
+			}
 			BaseApplication.showToastShortInCenter(R.string.building);
 			break;
 		case R.id.ll_myhouse:
+			if (TDevice.getNetworkType() == 0) {
+				TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+				return;
+			}
+			if (!DongSDKProxy.isInitedDongAccount()) {
+				startActivity(new Intent(getActivity(), LoginActivity.class));
+				return;
+			}
 			BaseApplication.showToastShortInCenter(R.string.building);
 			break;
 		case R.id.ll_myvillage:
+			if (TDevice.getNetworkType() == 0) {
+				TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+				return;
+			}
+			if (!DongSDKProxy.isInitedDongAccount()) {
+				startActivity(new Intent(getActivity(), LoginActivity.class));
+				return;
+			}
 			BaseApplication.showToastShortInCenter(R.string.building);
 			break;
 		case R.id.ll_mycaller:
+			if (TDevice.getNetworkType() == 0) {
+				TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+				return;
+			}
+			if (!DongSDKProxy.isInitedDongAccount()) {
+				startActivity(new Intent(getActivity(), LoginActivity.class));
+				return;
+			}
 			BaseApplication.showToastShortInCenter(R.string.building);
 			break;
 		case R.id.ll_mypicture:

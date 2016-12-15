@@ -141,7 +141,7 @@ public class LoginActivity extends BaseActivity implements
                 startActivity(new Intent(this, RegeistActivity.class));
                 break;
             case R.id.tv_local:
-//                startActivity(new Intent(this, LocalDeviceActivity.class));
+//              startActivity(new Intent(this, LocalDeviceActivity.class));
                 break;
             case R.id.iv_login:
                 if (TDevice.getNetworkType() == 0) {
@@ -201,7 +201,8 @@ public class LoginActivity extends BaseActivity implements
         List<UserBean> rawUserBeanList = UserOpe.queryAll(BaseApplication.context());
         List<UserBean> decUserBeanList = new ArrayList<>();
         int size = rawUserBeanList.size();
-        LogUtils.i("LoginActivity.clazz--->>>showPopupWindow sort before rawUserBeanList:" + rawUserBeanList + ",width:" + width);
+        LogUtils.i("LoginActivity.clazz--->>>showPopupWindow sort before rawUserBeanList:"
+                + rawUserBeanList + ",width:" + width);
         if (size > 0) {
             Collections.sort(rawUserBeanList, new Comparator<UserBean>() {
                 @Override
@@ -209,7 +210,8 @@ public class LoginActivity extends BaseActivity implements
                     return lhs.getIndex() - rhs.getIndex();
                 }
             });
-            LogUtils.i("LoginActivity.clazz--->>>showPopupWindow sort after rawUserBeanList:" + rawUserBeanList);
+            LogUtils.i("LoginActivity.clazz--->>>showPopupWindow sort after rawUserBeanList:"
+                    + rawUserBeanList);
             // 判断账户个数
 //            if (size > 5) {
 //                UserOpe.deleteDataById(LoginActivity.this, rawUserBeanList.get(0).getId());//????

@@ -6,19 +6,19 @@
     android:gravity="center">
 
     <TextView
-        android:id="@+id/roomnumber"
+        android:id="@+id/tv_room_number"
         style="@style/option_item_text"
         android:layout_weight="1"
         android:gravity="center"/>
 
     <TextView
-        android:id="@+id/type"
+        android:id="@+id/tv_type"
         style="@style/option_item_text"
         android:layout_weight="1"
         android:gravity="center"/>
 
     <TextView
-        android:id="@+id/timestamp"
+        android:id="@+id/tv_timestamp"
         style="@style/option_item_text"
         android:layout_weight="1"
         android:gravity="center" />

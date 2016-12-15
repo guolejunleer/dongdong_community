@@ -1,31 +1,30 @@
 package com.dongdong.app.bean;
 
 public class PhoneBean {
-	private String name;
-	private String phoneNum;
+    private String name;
+    private String phoneNum;
 
-	public PhoneBean() {
-	}
+    public PhoneBean() {
+    }
 
-	public PhoneBean(String name, String phoneNum) {
-		this.name = name;
-		this.phoneNum = phoneNum;
-	}
+    public String getCommonname() {
+        return name;
+    }
 
-	public String getCommonname() {
-		return name;
-	}
+    public void setCommonname(String name) {
+        this.name = name;
+    }
 
-	public void setCommonname(String name) {
-		this.name = name;
-	}
+    public String getCommonphone() {
+        return phoneNum;
+    }
 
-	public String getCommonphone() {
-		return phoneNum;
-	}
+    public void setCommonphone(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
 
-	public void setCommonphone(String phoneNum) {
-		this.phoneNum = phoneNum;
-	}
-
+    @Override
+    public String toString() {
+        return "(name:" + name + "phoneNum:" + phoneNum+")";
+    }
 }

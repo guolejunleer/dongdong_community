@@ -74,19 +74,19 @@
             <TextView
                 android:id="@+id/tv_hand_free"
                 style="@style/video_view_function_style"
-                android:drawableTop="@drawable/hand_free_background"
+                android:drawableTop="@mipmap/hand_free_pressed"
                 android:text="@string/handsFree" />
 
             <TextView
                 android:id="@+id/tv_audio"
                 style="@style/video_view_function_style"
-                android:drawableTop="@drawable/audio_background"
+                android:drawableTop="@mipmap/audio_normal"
                 android:text="@string/spk" />
 
             <TextView
                 android:id="@+id/tv_video"
                 style="@style/video_view_function_style"
-                android:drawableTop="@drawable/video_background"
+                android:drawableTop="@mipmap/video_pressed"
                 android:text="@string/video"
                 android:visibility="gone" />
         </LinearLayout>

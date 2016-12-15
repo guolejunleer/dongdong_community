@@ -16,9 +16,7 @@ import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
 public class AboutActivity extends BaseActivity implements OnTitleBarClickListener {
 
-    //private TitleBar mTitleBar;
     private TextView mTvCurrentVersion;
-    //private RelativeLayout mLayoutVersionUpdate, mLayoutFunctionIntroduction,mLayoutHelp;
 
     @Override
     protected int getLayoutId() {

@@ -73,7 +73,8 @@ public class UserOpe {
      */
     public static UserBean queryDataByUserIndex(Context context, int index) {
         UserBeanDao dao = DBManager.getDaoSession(context).getUserBeanDao();
-        UserBean userBean = dao.queryBuilder().where(UserBeanDao.Properties.Index.eq(index)).build().unique();
+        UserBean userBean = dao.queryBuilder().where(
+                UserBeanDao.Properties.Index.eq(index)).build().unique();
         if (userBean != null) {
             return userBean;
         }

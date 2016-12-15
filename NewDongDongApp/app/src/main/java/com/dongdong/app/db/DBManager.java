@@ -14,7 +14,6 @@ import com.dongdong.app.db.gen.DaoSession;
 public class DBManager {
     // 是否加密
     public static final boolean ENCRYPTED = true;
-
     private static final String DB_NAME = "user.db";
     private static DBManager mDbManager;
     private static DaoMaster.DevOpenHelper mDevOpenHelper;

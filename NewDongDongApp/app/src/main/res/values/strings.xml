@@ -1,236 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">��С��</string>
-    <string name="linkman">�����Ž�</string>
-    <string name="opendoorrecorddetail">���ż�¼��ϸ</string>
+    <string name="app_name">云小区</string>
+    <string name="linkman">社区门禁</string>
+    <string name="opendoorrecorddetail">开门记录详细</string>
     <string name="App">App</string>
-    <string name="accesscards">ˢ��</string>
+    <string name="accesscards">刷卡</string>
 
     <string name="WIFI">WIFI</string>
-    <string name="TemporaryPassword">��ʱ����</string>
-    <string name="Householdpassword">ס������</string>
-    <string name="bluetooth">����</string>
-    <string name="phonecall">�绰</string>
+    <string name="TemporaryPassword">临时密码</string>
+    <string name="Householdpassword">住户密码</string>
+    <string name="bluetooth">蓝牙</string>
+    <string name="phonecall">电话</string>
 
-    <string name="versionupdate">�汾����</string>
-    <string name="functionintroduction">���ܽ���</string>
-    <string name="help">����</string>
-    <string name="message">��Ϣ</string>
-    <string name="phone">���õ绰</string>
+    <string name="versionupdate">版本更新</string>
+    <string name="functionintroduction">功能介绍</string>
+    <string name="help">帮助</string>
+    <string name="message">消息</string>
+    <string name="phone">常用电话</string>
 
-    <string name="monitor">�Ž���Ƶ</string>
-    <string name="applykey">����Կ��</string>
-    <string name="visitorrecord">�ÿͼ�¼</string>
-    <string name="homesafe">�ҾӰ���</string>
-    <string name="dd_function_parking">ͣ����</string>
+    <string name="monitor">门禁视频</string>
+    <string name="applykey">申请钥匙</string>
+    <string name="visitorrecord">访客记录</string>
+    <string name="homesafe">家居安防</string>
+    <string name="dd_function_parking">停车场</string>
 
-    <string name="dd_function_finance">��������</string>
-    <string name="repair">����</string>
-    <string name="shapeopendoor">ҡһҡ����</string>
+    <string name="dd_function_finance">金融理财</string>
+    <string name="repair">报修</string>
+    <string name="shapeopendoor">摇一摇开门</string>
     <string name="dd_function_more"></string>
-    <string name="pushservice">����֪ͨ</string>
+    <string name="pushservice">推送通知</string>
 
-    <string name="nightmode">ҹ��ģʽ</string>
-    <string name="attendedmode">���ӷ�ʽ��WIFI/������</string>
-    <string name="openvideo_in_data_network">���������²�������Ƶ</string>
-    <string name="about">��������</string>
-    <string name="isexit">ȷ��Ҫ�˳���?</string>
+    <string name="nightmode">夜间模式</string>
+    <string name="attendedmode">连接方式（WIFI/蓝牙）</string>
+    <string name="openvideo_in_data_network">数据网络下不启用视频</string>
+    <string name="about">关于软件</string>
+    <string name="isexit">确定要退出吗?</string>
 
-    <string name="exit">�˳�</string>(Quit)
-    <string name="cancel">ȡ��</string>
-    <string name="callphone">��ȷ������˵绰?</string>
-    <string name="yes">��</string>
-    <string name="no">��</string>
-    <string name="copy_success">���Ƴɹ�</string>
+    <string name="exit">退出</string>(Quit)
+    <string name="cancel">取消</string>
+    <string name="callphone">你确定拨打此电话?</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="copy_success">复制成功</string>
 
-    <string name="tip_double_click_exit">�ٴε���˳�</string>
-    <string name="main_tab_name_home">��ҳ</string>
-    <string name="main_tab_name_my">�ҵ�</string>
-    <string name="building">��δ��ͨ</string>
-    <string name="back">����</string>
+    <string name="tip_double_click_exit">再次点击退出</string>
+    <string name="main_tab_name_home">首页</string>
+    <string name="main_tab_name_my">我的</string>
+    <string name="building">暂未开通</string>
+    <string name="back">返回</string>
 
-    <string name="title_info">������Ϣ</string>
-    <string name="myfamily">�ҵļ�ͥ��Ա</string>
-    <string name="myhouse">�ҵķ���</string>
-    <string name="myvillage">�ҵ�����</string>
-    <string name="mycaller">�ҵķÿ�</string>
+    <string name="title_info">标题信息</string>
+    <string name="myfamily">我的家庭成员</string>
+    <string name="myhouse">我的房屋</string>
+    <string name="myvillage">我的社区</string>
+    <string name="mycaller">我的访客</string>
 
-    <string name="mypicture">�ҵ����</string>
-    <string name="newversion">�°汾���</string>
-    <string name="settings">����</string>(Setting)
-    <string name="loginout">�˳���ǰ�˺�</string>
-    <string name="cleansession">�������</string>
+    <string name="mypicture">我的相册</string>
+    <string name="newversion">新版本检查</string>
+    <string name="settings">设置</string>(Setting)
+    <string name="loginout">退出当前账号</string>
+    <string name="cleansession">清除缓存</string>
 
-    <string name="autosettings">��������</string>
-    <string name="othersettings">��������</string>
-    <string name="opendoorrecord">���ż�¼</string>
-    <string name="visitorphoto">�ÿ���Ӱ</string>
-    <string name="loginup">��¼</string>
+    <string name="autosettings">智能设置</string>
+    <string name="othersettings">其它设置</string>
+    <string name="opendoorrecord">开门记录</string>
+    <string name="visitorphoto">访客留影</string>
+    <string name="loginup">登录</string>
 
-    <string name="regeist">ע�����˺�</string>
-    <string name="refrush">ˢ��</string>
-    <string name="regeistAcount">ע��</string>
-    <string name="pleaseInputUsernmae">�������û���</string>
-    <string name="pleaseInputPassword">����������</string>
+    <string name="regeist">注册新账号</string>
+    <string name="refrush">刷新</string>
+    <string name="regeistAcount">注册</string>
+    <string name="pleaseInputUsernmae">请输入用户名</string>
+    <string name="pleaseInputPassword">请输入密码</string>
 
-    <string name="confirmPassword">��ȷ������</string>
-    <string name="pleaseInputPhone">�������ֻ���</string>
-    <string name="pleaseInputVerificationCode">��������֤��</string>
-    <string name="get_verification_code">��֤��</string>
-    <string name="ok">ȷ��</string>
+    <string name="confirmPassword">请确认密码</string>
+    <string name="pleaseInputPhone">请输入手机号</string>
+    <string name="pleaseInputVerificationCode">请输入验证码</string>
+    <string name="get_verification_code">验证码</string>
+    <string name="ok">确定</string>
 
-    <string name="user_name_can_not_empty">�ֻ��Ų���Ϊ��</string>
-    <string name="verification_code_can_not_empty">��֤�벻��Ϊ��</string>
-    <string name="verification_code_mistake">��֤�벻��ȷ!</string>
-    <string name="user_pwd_can_not_empty">���벻��Ϊ��</string>
-    <string name="phone_not_registered">���ֻ���δע��!</string>
+    <string name="user_name_can_not_empty">手机号不能为空</string>
+    <string name="verification_code_can_not_empty">验证码不能为空</string>
+    <string name="verification_code_mistake">验证码不正确!</string>
+    <string name="user_pwd_can_not_empty">密码不能为空</string>
+    <string name="phone_not_registered">该手机号未注册!</string>
 
-    <string name="phone_registered">���ֻ����Ѿ���ע��!</string>
-    <string name="pwd_not_same">2���������벻һ��!</string>
-    <string name="confrim_pwd_can_not_empty">ȷ�����벻��Ϊ��!</string>
-    <string name="get_verification_coding">���ڻ�ȡ��֤��</string>
-    <string name="pwd_failed">��������ʧ��!</string>
+    <string name="phone_registered">该手机号已经被注册!</string>
+    <string name="pwd_not_same">2次密码输入不一致!</string>
+    <string name="confrim_pwd_can_not_empty">确认密码不能为空!</string>
+    <string name="get_verification_coding">正在获取验证码</string>
+    <string name="pwd_failed">密码设置失败!</string>
 
-    <string name="tip">��ʾ</string>
-    <string name="regeist_success">ע��ɹ�!</string>
-    <string name="loginging">������¼</string>
-    <string name="verifaction_failed">��֤ʧ��!</string>
-    <string name="reset_pwd">��������</string>
+    <string name="tip">提示</string>
+    <string name="regeist_success">注册成功!</string>
+    <string name="loginging">立即登录</string>
+    <string name="verifaction_failed">认证失败!</string>
+    <string name="reset_pwd">重置密码</string>
 
-    <string name="inputNewPassword">������������</string>
-    <string name="update_pwd_succ">�޸�����ɹ�</string>
-    <string name="update_pwd_failed">�޸�����ʧ��</string>
-    <string name="login_wait">���ڵ�¼�����Ժ�...</string>
-    <string name="list">�б�</string>
+    <string name="inputNewPassword">请输入新密码</string>
+    <string name="update_pwd_succ">修改密码成功</string>
+    <string name="update_pwd_failed">修改密码失败</string>
+    <string name="login_wait">正在登录，请稍后...</string>
+    <string name="list">列表</string>
 
-    <string name="handsFree">����</string>
-    <string name="spk">�Խ�</string>
-    <string name="picture">����</string>
-    <string name="lock">����</string>
-    <string name="video">��Ƶ</string>
+    <string name="handsFree">免提</string>
+    <string name="spk">对讲</string>
+    <string name="picture">拍照</string>
+    <string name="lock">开锁</string>
+    <string name="video">视频</string>
 
-    <string name="stop">�Ҷ�</string>
-    <string name="reject">�ܾ�</string>
-    <string name="waiting_connection_30">����30%</string>
-    <string name="waiting_certification_60">����60%</string>
-    <string name="waiting_media_90">����90%</string>
+    <string name="stop">挂断</string>
+    <string name="reject">拒绝</string>
+    <string name="waiting_connection_30">缓冲30%</string>
+    <string name="waiting_certification_60">缓冲60%</string>
+    <string name="waiting_media_90">缓冲90%</string>
 
-    <string name="errorCode">������:</string>
-    <string name="mistake">��������</string>
-    <string name="video1">����</string>
-    <string name="video2">����</string>
-    <string name="video3">����</string>
+    <string name="errorCode">错误码:</string>
+    <string name="mistake">发生错误</string>
+    <string name="video1">流畅</string>
+    <string name="video2">标清</string>
+    <string name="video3">高清</string>
 
-    <string name="warn">��ʾ</string>
-    <string name="no_permissions">��û��Ȩ��!</string>
-    <string name="device_offline">�豸����</string>
-    <string name="pleaseLogin">���ȵ�¼</string>
-    <string name="captureSuccess">��ͼ�ѱ��浽Ŀ¼</string>
+    <string name="warn">提示</string>
+    <string name="no_permissions">您没有权限!</string>
+    <string name="device_offline">设备离线</string>
+    <string name="pleaseLogin">请先登录</string>
+    <string name="captureSuccess">截图已保存到目录</string>
 
-    <string name="islogin">���ʺ��ѵ�¼</string>
-    <string name="handup">�Է��ѹҶ�</string>
-    <string name="device_busy">�豸ռ����!(%1$ds)��ر�</string>
-    <string name="vistor">���·ÿ�,�Ƿ����?</string>
-    <string name="accept">����</string>
+    <string name="islogin">该帐号已登录</string>
+    <string name="handup">对方已挂断</string>
+    <string name="device_busy">设备占线中!(%1$ds)后关闭</string>
+    <string name="vistor">有新访客,是否接听?</string>
+    <string name="accept">接听</string>
 
-    <string name="Ignore">����</string>
-    <string name="Notice">֪ͨ</string>
-    <string name="my_device_on">�ҵ��豸(����)</string>
-    <string name="my_device_off">�ҵ��豸(����)</string>
-    <string name="auth_device_on">��Ȩ�豸(����)</string>
+    <string name="Ignore">忽略</string>
+    <string name="Notice">通知</string>
+    <string name="my_device_on">我的设备(在线)</string>
+    <string name="my_device_off">我的设备(离线)</string>
+    <string name="auth_device_on">授权设备(在线)</string>
 
-    <string name="auth_device_off">��Ȩ�豸(����)</string>
-    <string name="warning">����!</string>
-    <string name="login_other_plach_warning">���������˺�������һ̨�豸��¼����Ǳ��˲���������������й¶!</string>
-    <string name="login">��¼/ע��</string>
-    <string name="relogin">���µ�¼</string>
+    <string name="auth_device_off">授权设备(离线)</string>
+    <string name="warning">警告!</string>
+    <string name="login_other_plach_warning">分钟您的账号在另外一台设备登录。如非本人操作，可能是密码泄露!</string>
+    <string name="login">登录/注册</string>
+    <string name="relogin">重新登录</string>
 
-    <string name="loginSucc">��¼�ɹ�</string>
-    <string name="my_information_unlogin_tips">δ��¼</string>
-    <string name="myuname">�˺�</string>
-    <string name="mypsw">����</string>
-    <string name="server_connection_failed">����������ʧ��!</string>
+    <string name="loginSucc">登录成功</string>
+    <string name="my_information_unlogin_tips">未登录</string>
+    <string name="myuname">账号</string>
+    <string name="mypsw">密码</string>
+    <string name="server_connection_failed">服务器连接失败!</string>
 
-    <string name="device_connection_failed">�豸����ʧ��!</string>
-    <string name="server_disconnected">���������ӶϿ�!</string>
-    <string name="server_login_failed">��������¼ʧ��!</string>
-    <string name="invalid_user_name">��Ч���û���!</string>
-    <string name="incorrect_pwd">�������!</string>
+    <string name="device_connection_failed">设备连接失败!</string>
+    <string name="server_disconnected">服务器连接断开!</string>
+    <string name="server_login_failed">服务器登录失败!</string>
+    <string name="invalid_user_name">无效的用户名!</string>
+    <string name="incorrect_pwd">密码错误!</string>
 
-    <string name="device_disconnected">�豸���ӶϿ�!</string>
-    <string name="server_busy">��������æ!</string>
-    <string name="database_server_error">���ݿ����������!</string>
-    <string name="Systemerror">ϵͳ����!</string>
-    <string name="login_overtime">��¼��ʱ,�Ƿ����µ�¼?</string>
+    <string name="device_disconnected">设备连接断开!</string>
+    <string name="server_busy">服务器繁忙!</string>
+    <string name="database_server_error">数据库服务器出错!</string>
+    <string name="Systemerror">系统错误!</string>
+    <string name="login_overtime">登录超时,是否重新登录?</string>
 
-    <string name="no_network">�޿��õ�����,�Ƿ���������?</string>
-    <string name="network_settings">��������</string>
+    <string name="no_network">无可用的网络,是否配置网络?</string>
+    <string name="network_settings">网络设置</string>
     <string name="switchWIFI">WLAN</string>
-    <string name="tip_choose_net">Ŀǰ����2G/3G����,�ۿ���Ƶ���������������,����ʹ��WLAN����!</string>
-    <string name="continues">����</string>
+    <string name="tip_choose_net">目前处于2G/3G网络,观看视频会产生大量流量费,建议使用WLAN网络!</string>
+    <string name="continues">继续</string>
 
-    <string name="no_camera">�Ѿ�û����һ���豸��</string>
-    <string name="first_camera">�����ǵ�һ���豸</string>
-    <string name="deviceName">�豸����:</string>
-    <string name="update">�޸�</string>
-    <string name="deviceMan">�豸��Ȩ�ʺŹ���</string>
+    <string name="no_camera">已经没有下一个设备了</string>
+    <string name="first_camera">现在是第一个设备</string>
+    <string name="deviceName">设备名称:</string>
+    <string name="update">修改</string>
+    <string name="deviceMan">设备授权帐号管理</string>
 
-    <string name="def">Ĭ�ϲ����豸</string>
-    <string name="delete_device">ɾ���豸</string>
-    <string name="device_serial">���к�:</string>
-    <string name="wait">���Ժ�...</string>
-    <string name="suc">�ɹ�!</string>
+    <string name="def">默认操作设备</string>
+    <string name="delete_device">删除设备</string>
+    <string name="device_serial">序列号:</string>
+    <string name="wait">请稍后...</string>
+    <string name="suc">成功!</string>
 
-    <string name="fail">ʧ��!</string>
-    <string name="deldeteDevice">ȷ��Ҫɾ�����豸��?</string>
-    <string name="authorizationSer">��������Ҫ��Ȩ���ʺ�</string>
-    <string name="authorization">��Ȩ</string>
-    <string name="empty_tip">�豸�������кŲ���Ϊ��!</string>
+    <string name="fail">失败!</string>
+    <string name="deldeteDevice">确定要删除该设备吗?</string>
+    <string name="authorizationSer">请输入需要授权的帐号</string>
+    <string name="authorization">授权</string>
+    <string name="empty_tip">设备名或序列号不能为空!</string>
 
-    <string name="yesOrNo">�Ѿ�����Ȩ!</string>
-    <string name="deleteAuthorization">�Ƿ�ɾ������Ȩ?</string>
-    <string name="openlock">�ſ���</string>
-    <string name="add">����</string>
-    <string name="deviceSer">�豸���к�</string>
+    <string name="yesOrNo">已经被授权!</string>
+    <string name="deleteAuthorization">是否删除该授权?</string>
+    <string name="openlock">门开了</string>
+    <string name="add">添加</string>
+    <string name="deviceSer">设备序列号</string>
 
-    <string name="wifiSearch">����������</string>
-    <string name="qrCode">��ά��</string>
-    <string name="addDevice">�����豸</string>
-    <string name="serial_error">��Ч�����к�!</string>
-    <string name="device_already_added">���豸�Ѿ���(%s)����!</string>
+    <string name="wifiSearch">局域网搜索</string>
+    <string name="qrCode">二维码</string>
+    <string name="addDevice">添加设备</string>
+    <string name="serial_error">无效的序列号!</string>
+    <string name="device_already_added">该设备已经被(%s)添加!</string>
 
-    <string name="scan_tips">�뽫��ά��ͼƬ��׼ɨ��򼴿��Զ�ɨ��</string>
-    <string name="not_open_service">��С����δ��ͨ�������</string>
-    <string name="OPENFILE_ERROR">���ļ���ʧ��!����SD��!</string>(
-    <string name="rootDir">���ظ�Ŀ¼</string>
-    <string name="upperDir">�����ϲ�</string>
+    <string name="scan_tips">请将二维码图片对准扫描框即可自动扫描</string>
+    <string name="not_open_service">该小区暂未开通此项服务</string>
+    <string name="OPENFILE_ERROR">打开文件夹失败!请检查SD卡!</string>(
+    <string name="rootDir">返回根目录</string>
+    <string name="upperDir">返回上层</string>
 
-    <string name="wifi">��ǰwifi��</string>
-    <string name="recordSetting">¼������</string>
-    <string name="researtDivece">�����豸</string>
-    <string name="deviceMessage">�豸��Ϣ</string>
-    <string name="alreadyconn">�Ѿ�����</string>
+    <string name="wifi">当前wifi是</string>
+    <string name="recordSetting">录像设置</string>
+    <string name="researtDivece">重启设备</string>
+    <string name="deviceMessage">设备信息</string>
+    <string name="alreadyconn">已经连接</string>
 
-    <string name="connectSucc">���ӳɹ�!</string>
-    <string name="ConFailed">����ʧ��!</string>
-    <string name="apName">�ȵ�����</string>
-    <string name="newPassword">������</string>
-    <string name="againInput">�ٴ�����</string>
+    <string name="connectSucc">连接成功!</string>
+    <string name="ConFailed">连接失败!</string>
+    <string name="apName">热点名称</string>
+    <string name="newPassword">新密码</string>
+    <string name="againInput">再次输入</string>
 
-    <string name="spk_can_not_close">ͨ�����޷��رնԽ�!</string>
-    <string name="video_get_data_error">��Ƶ��ȡʧ��,����Լ������һ���ѡ��ۿ������豸.</string>
-    <string name="video_stop_phone_comming">�Ž���Ƶ�ѹҶ�</string>
-    <string name="video_play_error">���Ŵ���:</string>
-    <string name="add_devcie_error">�����豸����:</string>
+    <string name="spk_can_not_close">通话中无法关闭对讲!</string>
+    <string name="video_get_data_error">视频获取失败,你可以继续左右滑动选择观看其它设备.</string>
+    <string name="video_stop_phone_comming">门禁视频已挂断</string>
+    <string name="video_play_error">播放错误:</string>
+    <string name="add_devcie_error">添加设备错误:</string>
 
-    <string name="register_error">ע���ʺŴ���:</string>
-    <string name="no_device">�����豸</string>
-    <string name="video_connect_quality_error">��ǰ��Ƶ������������,(%1$ds)��رմ˽���</string>
-    <string name="audio_busy">��Ƶ�Ѿ��������û�ռ��</string>
-    <string name="please_talking">��ͨ��</string>
+    <string name="register_error">注册帐号错误:</string>
+    <string name="no_device">暂无设备</string>
+    <string name="video_connect_quality_error">当前视频连接质量不佳,(%1$ds)后关闭此界面</string>
+    <string name="audio_busy">音频已经被其它用户占用</string>
+    <string name="please_talking">请通话</string>
 
-    <string name="tip_delete_user">��ȷ��ɾ���ʺ�:%s?</string>
-    <string name="tip_push_time">��%sʱ,���˺��й���</string>
-    <string name="forget_pwd">��������</string>
-    <string name="i_know">֪����</string>
+    <string name="tip_delete_user">你确定删除帐号:%s?</string>
+    <string name="tip_push_time">在%s时,有人呼叫过您</string>
+    <string name="forget_pwd">忘记密码</string>
+    <string name="i_know">知道了</string>
+    <string name="no_message">暂无消息</string>
+
+    <string name="no_phone">暂无常用电话</string>
 </resources>
