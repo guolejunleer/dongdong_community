@@ -41,11 +41,11 @@ public class TitleBar extends LinearLayout implements OnClickListener {
 
     public TitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        int barHeight = TDevice.getStatuBarHeight();
+        int statusHeight = TDevice.getStatusBarHeight();
         View view = LayoutInflater.from(context).inflate(R.layout.titlebar_common, null);
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            params.setMargins(0, barHeight, 0, 0);
+            params.setMargins(0, statusHeight, 0, 0);
         }
         addView(view, params);
         mBtnMyBack = (Button) findViewById(R.id.btn_back);
@@ -57,13 +57,12 @@ public class TitleBar extends LinearLayout implements OnClickListener {
         mTvTitleInfo.setOnClickListener(this);
         mBtnMyAdd.setOnClickListener(this);
         mBtnMyFinish.setOnClickListener(this);
-        LogUtils.i("TitleBar.clazz--->>>construct barHeight:" + barHeight);
+        LogUtils.i("TitleBar.clazz--->>>construct statusHeight:" + statusHeight);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-
     }
 
     public void setOnTitleBarClickListener(OnTitleBarClickListener listener) {
@@ -116,4 +115,5 @@ public class TitleBar extends LinearLayout implements OnClickListener {
         mBtnMyAdd.setVisibility(show ? View.GONE : View.VISIBLE);
         mBtnMyFinish.setVisibility(show ? View.VISIBLE : View.GONE);
     }
+
 }

@@ -25,9 +25,14 @@ public class VisitorPhotoBeanDao extends AbstractDao<VisitorPhotoBean, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property PhotoUrl = new Property(1, String.class, "photoUrl", false, "PHOTO_URL");
-        public final static Property DeviceName = new Property(2, String.class, "deviceName", false, "DEVICE_NAME");
-        public final static Property PhotoTimestamp = new Property(3, String.class, "photoTimestamp", false, "PHOTO_TIMESTAMP");
+        public final static Property Size = new Property(1, int.class, "size", false, "SIZE");
+        public final static Property Type = new Property(2, String.class, "type", false, "TYPE");
+        public final static Property PhotoUrl = new Property(3, String.class, "photoUrl", false, "PHOTO_URL");
+        public final static Property RoomValue = new Property(4, String.class, "roomValue", false, "ROOM_VALUE");
+        public final static Property DeviceId = new Property(5, int.class, "deviceId", false, "DEVICE_ID");
+        public final static Property DeviceName = new Property(6, String.class, "deviceName", false, "DEVICE_NAME");
+        public final static Property PhotoTimestamp = new Property(7, String.class, "photoTimestamp", false, "PHOTO_TIMESTAMP");
+        public final static Property UserId = new Property(8, int.class, "userId", false, "USER_ID");
     }
 
 
@@ -44,9 +49,14 @@ public class VisitorPhotoBeanDao extends AbstractDao<VisitorPhotoBean, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"VISITOR_PHOTO_BEAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"PHOTO_URL\" TEXT," + // 1: photoUrl
-                "\"DEVICE_NAME\" TEXT," + // 2: deviceName
-                "\"PHOTO_TIMESTAMP\" TEXT);"); // 3: photoTimestamp
+                "\"SIZE\" INTEGER NOT NULL ," + // 1: size
+                "\"TYPE\" TEXT," + // 2: type
+                "\"PHOTO_URL\" TEXT," + // 3: photoUrl
+                "\"ROOM_VALUE\" TEXT," + // 4: roomValue
+                "\"DEVICE_ID\" INTEGER NOT NULL ," + // 5: deviceId
+                "\"DEVICE_NAME\" TEXT," + // 6: deviceName
+                "\"PHOTO_TIMESTAMP\" TEXT," + // 7: photoTimestamp
+                "\"USER_ID\" INTEGER NOT NULL );"); // 8: userId
     }
 
     /** Drops the underlying database table. */
@@ -63,21 +73,34 @@ public class VisitorPhotoBeanDao extends AbstractDao<VisitorPhotoBean, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
+        stmt.bindLong(2, entity.getSize());
+ 
+        String type = entity.getType();
+        if (type != null) {
+            stmt.bindString(3, type);
+        }
  
         String photoUrl = entity.getPhotoUrl();
         if (photoUrl != null) {
-            stmt.bindString(2, photoUrl);
+            stmt.bindString(4, photoUrl);
         }
+ 
+        String roomValue = entity.getRoomValue();
+        if (roomValue != null) {
+            stmt.bindString(5, roomValue);
+        }
+        stmt.bindLong(6, entity.getDeviceId());
  
         String deviceName = entity.getDeviceName();
         if (deviceName != null) {
-            stmt.bindString(3, deviceName);
+            stmt.bindString(7, deviceName);
         }
  
         String photoTimestamp = entity.getPhotoTimestamp();
         if (photoTimestamp != null) {
-            stmt.bindString(4, photoTimestamp);
+            stmt.bindString(8, photoTimestamp);
         }
+        stmt.bindLong(9, entity.getUserId());
     }
 
     @Override
@@ -88,21 +111,34 @@ public class VisitorPhotoBeanDao extends AbstractDao<VisitorPhotoBean, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
+        stmt.bindLong(2, entity.getSize());
+ 
+        String type = entity.getType();
+        if (type != null) {
+            stmt.bindString(3, type);
+        }
  
         String photoUrl = entity.getPhotoUrl();
         if (photoUrl != null) {
-            stmt.bindString(2, photoUrl);
+            stmt.bindString(4, photoUrl);
         }
+ 
+        String roomValue = entity.getRoomValue();
+        if (roomValue != null) {
+            stmt.bindString(5, roomValue);
+        }
+        stmt.bindLong(6, entity.getDeviceId());
  
         String deviceName = entity.getDeviceName();
         if (deviceName != null) {
-            stmt.bindString(3, deviceName);
+            stmt.bindString(7, deviceName);
         }
  
         String photoTimestamp = entity.getPhotoTimestamp();
         if (photoTimestamp != null) {
-            stmt.bindString(4, photoTimestamp);
+            stmt.bindString(8, photoTimestamp);
         }
+        stmt.bindLong(9, entity.getUserId());
     }
 
     @Override
@@ -120,9 +156,14 @@ public class VisitorPhotoBeanDao extends AbstractDao<VisitorPhotoBean, Long> {
     @Override
     public void readEntity(Cursor cursor, VisitorPhotoBean entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setPhotoUrl(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setDeviceName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setPhotoTimestamp(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setSize(cursor.getInt(offset + 1));
+        entity.setType(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setPhotoUrl(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setRoomValue(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setDeviceId(cursor.getInt(offset + 5));
+        entity.setDeviceName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setPhotoTimestamp(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setUserId(cursor.getInt(offset + 8));
      }
     
     @Override

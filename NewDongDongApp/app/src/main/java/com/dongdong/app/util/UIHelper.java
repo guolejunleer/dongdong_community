@@ -10,15 +10,13 @@ import com.dongdong.app.ui.ApplyKeyActivity;
 import com.dongdong.app.ui.CommonPhoneActivity;
 import com.dongdong.app.ui.DeviceListActivity;
 import com.dongdong.app.ui.FinanceActivity;
-import com.dongdong.app.ui.HomeSafeActivity;
 import com.dongdong.app.ui.MessageActivity;
 import com.dongdong.app.ui.ParkingActivity;
 import com.dongdong.app.ui.RepairsActivity;
 import com.dongdong.app.ui.ShakeOpenDoorActivity;
 import com.dongdong.app.ui.VideoViewActivity;
-import com.dongdong.app.ui.VisitorRecordsActivity;
-
-import java.util.Date;
+import com.dongdong.app.ui.OpenDoorActivity;
+import com.dongdong.app.ui.VisitorPhotoActivity;
 
 public class UIHelper {
 
@@ -36,8 +34,8 @@ public class UIHelper {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
         bundle.putString(AppConfig.BUNDLE_KEY_DEVICE_ID, deviceID);
-        intent.putExtra(AppConfig.INTENT_BUNDLE_KEY, bundle);
         bundle.putString(AppConfig.BUNDLE_KEY_PUSH_TIME, pushTime);
+        intent.putExtra(AppConfig.INTENT_BUNDLE_KEY, bundle);
         context.startActivity(intent);
     }
 
@@ -56,6 +54,13 @@ public class UIHelper {
         context.startActivity(intent);
     }
 
+    /**
+     * 启动门禁视频界面
+     *
+     * @param context  程序运行上下文
+     * @param isActive 是否主动监视
+     * @param deviceID 设备ID
+     */
     public static void showVideoViewActivity(Context context, boolean isActive, String deviceID) {
         Intent intent = new Intent(context, VideoViewActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -71,17 +76,13 @@ public class UIHelper {
         context.startActivity(intent);
     }
 
-    public static void showVisitorRecordActivity(Context context, int deviceID) {
-        Intent intent = new Intent(context, VisitorRecordsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Bundle bundle = new Bundle();
-        bundle.putInt(AppConfig.BUNDLE_KEY_DEVICE_ID, deviceID);
-        intent.putExtra(AppConfig.INTENT_BUNDLE_KEY, bundle);
+    public static void showVisitorRecordActivity(Context context) {
+        Intent intent = new Intent(context, OpenDoorActivity.class);
         context.startActivity(intent);
     }
 
     public static void showHomeSafeActivity(Context context) {
-        Intent intent = new Intent(context, HomeSafeActivity.class);
+        Intent intent = new Intent(context, VisitorPhotoActivity.class);
         context.startActivity(intent);
     }
 

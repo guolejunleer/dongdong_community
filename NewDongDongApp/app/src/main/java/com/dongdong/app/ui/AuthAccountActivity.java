@@ -15,8 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dd121.community.R;
-import com.ddclient.MobileClientLib.InfoUser;
-import com.ddclient.dongsdk.AbstractDongSDKProxy.DongAccountCallbackImp;
+import com.ddclient.dongsdk.AbstractDongCallbackProxy;
+import com.ddclient.jnisdk.InfoUser;
 import com.ddclient.dongsdk.DeviceInfo;
 import com.ddclient.dongsdk.DongSDKProxy;
 import com.dongdong.app.AppConfig;
@@ -37,7 +37,7 @@ public class AuthAccountActivity extends BaseActivity implements
     private TitleBar mTitleBar;
     private Button mBtAuth;
     private EditText mEtAccount;
-    private ListView mListview;
+    private ListView mListView;
     private AuthorizedAccountListAdapter mListAdapter;
     private ArrayList<InfoUser> mUserList;
     private UserInfoBean mUserInfoBean;
@@ -47,7 +47,8 @@ public class AuthAccountActivity extends BaseActivity implements
     private PhoneMessUtils mPhoneMess;
 
     private DeviceInfo mDeviceInfo;
-    private AuthAccountActivityDongAccountProxy mAccountProxy = new AuthAccountActivityDongAccountProxy();
+    private AuthAccountActivityDongAccountProxy mAccountProxy
+            = new AuthAccountActivityDongAccountProxy();
 
     @Override
     protected int getLayoutId() {
@@ -59,7 +60,7 @@ public class AuthAccountActivity extends BaseActivity implements
         mTitleBar = (TitleBar) findViewById(R.id.tb_title);
         mBtAuth = (Button) findViewById(R.id.bt_auth);
         mEtAccount = (EditText) findViewById(R.id.et_account);
-        mListview = (ListView) findViewById(R.id.lv_list_account);
+        mListView = (ListView) findViewById(R.id.lv_list_account);
     }
 
     @Override
@@ -67,8 +68,7 @@ public class AuthAccountActivity extends BaseActivity implements
         Intent intent = getIntent();
         mDeviceInfo = (DeviceInfo) intent
                 .getSerializableExtra(AppConfig.BUNDLE_KEY_DEVICE_INFO);
-        LogUtils.i("AuthAccoutnActivity.clazz--->>> initData mDevcieInfo:"
-                + mDeviceInfo);
+        LogUtils.i("AuthAccountActivity.clazz--->>> initData mDeviceInfo:" + mDeviceInfo);
         DongSDKProxy.requestGetDeviceAuthorizeAccounts(mDeviceInfo.dwDeviceID);
 
         mDialog = new CommonDialog(this);
@@ -78,17 +78,17 @@ public class AuthAccountActivity extends BaseActivity implements
         mTitleBar.setAddArrowShowing(false);
         mTitleBar.setOnTitleBarClickListener(this);
         mListAdapter = new AuthorizedAccountListAdapter(this);
-        mListview.setAdapter(mListAdapter);
+        mListView.setAdapter(mListAdapter);
 
         mBtAuth.setOnClickListener(this);
-        mListview.setOnItemClickListener(new OnItemClickListener() {
+        mListView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
                 mUserInfoBean = mListAdapter.getItem(arg2);
                 mDialog.setMessage(R.string.deleteAuthorization);
-                mDialog.setPositiveButton(R.string.ok,
+                mDialog.setPositiveButton(R.string.sure,
                         new DialogInterface.OnClickListener() {
 
                             @Override
@@ -112,28 +112,6 @@ public class AuthAccountActivity extends BaseActivity implements
             }
         });
 
-    }
-
-    private class CheckPhoneMessThread extends Thread {
-
-        @Override
-        public void run() {
-            mPhoneMess = new PhoneMessUtils(AuthAccountActivity.this);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            AuthAccountActivity.this.runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    mListAdapter.setConnectUsernameAndPhoneNum(mPhoneMess
-                            .getPhoneMessBeanList());
-                    mListAdapter.notifyDataSetChanged();
-                }
-            });
-        }
     }
 
     @Override
@@ -178,10 +156,12 @@ public class AuthAccountActivity extends BaseActivity implements
                 mAccountName = mEtAccount.getText().toString();
                 if (mAccountName.equals("")) {
                     AppContext.showToastShortInBottom(R.string.empty_tip);
+                    return;
                 }
                 for (InfoUser info : mUserList) {
                     if (info.userName.equals(mAccountName)) {
                         AppContext.showToastShortInBottom(R.string.yesOrNo);
+                        return;
                     }
                 }
                 View view = LayoutInflater.from(AuthAccountActivity.this).inflate(
@@ -197,18 +177,39 @@ public class AuthAccountActivity extends BaseActivity implements
         }
     }
 
-    private class AuthAccountActivityDongAccountProxy extends
-            DongAccountCallbackImp {
+    private class CheckPhoneMessThread extends Thread {
 
         @Override
-        public int OnAuthenticate(InfoUser tInfo) {
-            LogUtils.i("LoginActivity.clazz--->>>OnAuthenticate........tInfo:"
-                    + tInfo);
+        public void run() {
+            mPhoneMess = new PhoneMessUtils(AuthAccountActivity.this);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            AuthAccountActivity.this.runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    mListAdapter.setConnectUsernameAndPhoneNum(mPhoneMess
+                            .getPhoneMessBeanList());
+                    mListAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
+    private class AuthAccountActivityDongAccountProxy extends
+            AbstractDongCallbackProxy.DongAccountCallbackImp {
+
+        @Override
+        public int onAuthenticate(InfoUser tInfo) {
+            LogUtils.i("AuthAccountActivity.clazz--->>>OnAuthenticate........tInfo:" + tInfo);
             return 0;
         }
 
         @Override
-        public int OnAddDeviceUser(int result, int userid) {
+        public int onAddDeviceUser(int result, int userid) {
             if (mDialog != null) {
                 mDialog.dismiss();
             }
@@ -216,8 +217,7 @@ public class AuthAccountActivity extends BaseActivity implements
                 mDialog2.dismiss();
             }
             if (result == 0) {
-                mUserList.add(new InfoUser(userid, mAccountName, new byte[1],
-                        ""));
+                mUserList.add(new InfoUser(userid, mAccountName, new byte[1], ""));
                 mListAdapter.setData(mUserList);
                 mListAdapter.notifyDataSetChanged();
                 BaseApplication.showToastShortInBottom(R.string.suc);
@@ -231,7 +231,7 @@ public class AuthAccountActivity extends BaseActivity implements
         }
 
         @Override
-        public int OnDelDevice(int result) {
+        public int onDelDevice(int result) {
             if (mDialog != null) {
                 mDialog.dismiss();
             }
@@ -259,7 +259,7 @@ public class AuthAccountActivity extends BaseActivity implements
         }
 
         @Override
-        public int OnGetDeviceUserInfo(ArrayList<InfoUser> infoUsers) {
+        public int onGetDeviceUserInfo(ArrayList<InfoUser> infoUsers) {
             mUserList = infoUsers;
             if (mDialog != null) {
                 mDialog.dismiss();
@@ -267,12 +267,12 @@ public class AuthAccountActivity extends BaseActivity implements
             mListAdapter.setData(mUserList);
             mListAdapter.notifyDataSetChanged();
             new CheckPhoneMessThread().start();// 查找手机上存在手机号的人的名称
-            LogUtils.i("AuthAccountActivity.clazz--->>>OnGetDeviceUserInfo........infoUsers:" + infoUsers);
+            LogUtils.i("AuthAccountActivity.clazz--->>>OnGetDeviceUserInfo infoUsers:" + infoUsers);
             return 0;
         }
 
         @Override
-        public int OnSetDeviceName(int result) {
+        public int onSetDeviceName(int result) {
             if (result == 0) {
                 if (mDialog != null) {
                     mDialog.dismiss();
@@ -284,15 +284,13 @@ public class AuthAccountActivity extends BaseActivity implements
                 }
                 BaseApplication.showToastShortInBottom(getString(R.string.fail));
             }
-            LogUtils.i("AuthAccountActivity.clazz--->>>OnSetDeviceName result:"
-                    + result);
+            LogUtils.i("AuthAccountActivity.clazz--->>>OnSetDeviceName result:" + result);
             return 0;
         }
 
         @Override
-        public int OnUserError(int nErrNo) {
-            LogUtils.i("LoginActivity.clazz--->>>OnUserError........nErrNo:"
-                    + nErrNo);
+        public int onUserError(int nErrNo) {
+            LogUtils.i("AuthAccountActivity.clazz--->>>OnUserError........nErrNo:" + nErrNo);
             return 0;
         }
     }

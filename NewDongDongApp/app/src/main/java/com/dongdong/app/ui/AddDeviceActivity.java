@@ -1,8 +1,7 @@
 package com.dongdong.app.ui;
 
-import java.util.ArrayList;
-
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +14,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dd121.community.R;
-import com.ddclient.MobileClientLib.InfoUser;
-import com.ddclient.dongsdk.AbstractDongSDKProxy.DongAccountCallbackImp;
+import com.ddclient.dongsdk.AbstractDongCallbackProxy;
 import com.ddclient.dongsdk.DeviceInfo;
 import com.ddclient.dongsdk.DongSDKProxy;
+import com.ddclient.jnisdk.InfoUser;
 import com.dongdong.app.adapter.LanListAdapter;
 import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
@@ -29,16 +28,18 @@ import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 import com.zbar.lib.CaptureActivity;
 
+import java.util.ArrayList;
+
 public class AddDeviceActivity extends BaseActivity implements
         OnTitleBarClickListener, OnClickListener {
 
     private TitleBar mTitleBar;
-    private Button mBtnQrcode;
+    private Button mBtnQrCode;
     private Button mBtLan;
     private EditText mEtDeviceSerial;
     private EditText mDeviceName;
     private LanListAdapter mListAdapter;
-    private ListView mListview;
+    private ListView mListView;
     public ArrayList<DeviceInfo> mDeviceList;
     private CommonDialog mDialog;
 
@@ -53,11 +54,11 @@ public class AddDeviceActivity extends BaseActivity implements
     @Override
     public void initView() {
         mTitleBar = (TitleBar) findViewById(R.id.tb_title);
-        mBtnQrcode = (Button) findViewById(R.id.bt_rc_code);
+        mBtnQrCode = (Button) findViewById(R.id.bt_rc_code);
         mEtDeviceSerial = (EditText) findViewById(R.id.et_device_serial);
         mDeviceName = (EditText) findViewById(R.id.et_device_name);
         mBtLan = (Button) findViewById(R.id.bt_lan);
-        mListview = (ListView) findViewById(R.id.lv_list_account);
+        mListView = (ListView) findViewById(R.id.lv_list_account);
     }
 
     @Override
@@ -68,11 +69,11 @@ public class AddDeviceActivity extends BaseActivity implements
         mTitleBar.setFinishShowing(true);
         mTitleBar.setOnTitleBarClickListener(this);
         mBtLan.setOnClickListener(this);
-        mBtnQrcode.setOnClickListener(this);
+        mBtnQrCode.setOnClickListener(this);
 
         mListAdapter = new LanListAdapter(this);
-        mListview.setAdapter(mListAdapter);
-        mListview.setOnItemClickListener(new OnItemClickListener() {
+        mListView.setAdapter(mListAdapter);
+        mListView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -87,13 +88,13 @@ public class AddDeviceActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        if (!DongSDKProxy.isInitedDongAccountLan()) {
+        if (!DongSDKProxy.initCompleteDongAccountLan()) {
             DongSDKProxy.initDongAccountLan(mAccountProxy);
         } else {
             DongSDKProxy.registerAccountLanCallback(mAccountProxy);
         }
         DongSDKProxy.requestLanStartScan();
-        LogUtils.i("AddDevcieActivity.clazz-->>> onResume...");
+        LogUtils.i("AddDeviceActivity.clazz-->>> onResume...");
     }
 
     @Override
@@ -102,12 +103,30 @@ public class AddDeviceActivity extends BaseActivity implements
         DongSDKProxy.requestLanStopScan();
         DongSDKProxy.unRegisterAccountLanCallback(mAccountProxy);
         DongSDKProxy.clearDongAccountLan();
-        LogUtils.i("AddDevcieActivity.clazz-->>> onPause...");
+        LogUtils.i("AddDeviceActivity.clazz-->>> onPause...");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LogUtils.i("AddDeviceActivity.clazz-->>> onActivityResult requestCode："
+                + requestCode + ",resultCode:" + resultCode + ",data:" + data);
+        if (data == null) return;
+        switch (requestCode) {
+            case 0:
+                String stringExtra = data.getStringExtra(CaptureActivity.INTENT_RESULT_KEY);
+                LogUtils.i("AddDeviceActivity.clazz-->>> onActivityResult..." + stringExtra);
+                if (TextUtils.isEmpty(stringExtra))
+                    return;
+                mDeviceName.setText("设备名称");
+                mEtDeviceSerial.setText(stringExtra);
+                break;
+        }
+
     }
 
     @Override
@@ -121,14 +140,13 @@ public class AddDeviceActivity extends BaseActivity implements
 
     @Override
     public void onAddClick() {
-
     }
 
     @Override
     public void onFinishClick() {
         String devName = mDeviceName.getText().toString();
-        String deviceSeri = mEtDeviceSerial.getText().toString();
-        if (TextUtils.isEmpty(devName) || TextUtils.isEmpty(deviceSeri)) {
+        String deviceSer = mEtDeviceSerial.getText().toString();
+        if (TextUtils.isEmpty(devName) || TextUtils.isEmpty(deviceSer)) {
             BaseApplication.showToastShortInBottom(R.string.empty_tip);
             return;
         }
@@ -137,7 +155,7 @@ public class AddDeviceActivity extends BaseActivity implements
         tipTextView.setText(getString(R.string.wait));
         mDialog.setContent(view);
         mDialog.show();
-        DongSDKProxy.requestAddDevice(devName, deviceSeri);
+        DongSDKProxy.requestAddDevice(devName, deviceSer);
     }
 
     @Override
@@ -148,7 +166,7 @@ public class AddDeviceActivity extends BaseActivity implements
                 DongSDKProxy.requestLanStartScan();
                 break;
             case R.id.bt_rc_code:
-                startActivity(new Intent(this, CaptureActivity.class));
+                startActivityForResult(new Intent(this, CaptureActivity.class), 0);
                 break;
             default:
                 break;
@@ -156,17 +174,17 @@ public class AddDeviceActivity extends BaseActivity implements
     }
 
     private class AddDeviceActivityDongAccountProxy extends
-            DongAccountCallbackImp {
+            AbstractDongCallbackProxy.DongAccountCallbackImp {
 
         @Override
-        public int OnAuthenticate(InfoUser tInfo) {
+        public int onAuthenticate(InfoUser tInfo) {
             LogUtils.i("AddDeviceActivity.clazz--->>>OnAuthenticate........tInfo:"
                     + tInfo);
             return 0;
         }
 
         @Override
-        public int OnNewListInfo() {
+        public int onNewListInfo() {
             mDeviceList = DongSDKProxy.requestLanGetDeviceListFromCache();
             mListAdapter.setData(mDeviceList);
             mListAdapter.notifyDataSetChanged();
@@ -176,39 +194,36 @@ public class AddDeviceActivity extends BaseActivity implements
         }
 
         @Override
-        public int OnAddDevice(int nReason, String username) {
+        public int onAddDevice(int nReason, String username) {
             LogUtils.i("AddDeviceActivity.clazz--->>>OnAddDevice........nReason:"
                     + nReason + ";username:" + username);
             if (mDialog.isShowing())
                 mDialog.dismiss();
             if (nReason == 0) {
-                BaseApplication.showToastShortInBottom(R.string.suc);
+//                BaseApplication.showToastShortInBottom(R.string.suc);
+                mDialog.setMessage(getString(R.string.device_already_added));
             } else if (nReason == 1) {
-                BaseApplication.showToastShortInBottom(R.string.serial_error);
-            } else if (nReason == 2) {
-                BaseApplication.showToastShortInBottom(getString(R.string.device_already_added,
-                        username));
+//                BaseApplication.showToastShortInBottom(R.string.serial_error);
+                mDialog.setMessage(getString(R.string.serial_invalidate));
             } else if (nReason == 3) {
                 mDialog.setMessage(getString(R.string.device_already_added, username));
-                mDialog.setCancelable(false);
-                mDialog.setPositiveButton(R.string.ok, null);
-                mDialog.show();
+            } else {
+                mDialog.setMessage(getString(R.string.serial_failed));
             }
+            mDialog.setCancelable(false);
+            mDialog.setPositiveButton(R.string.sure, null);
+            mDialog.show();
             return 0;
         }
 
         @Override
-        public int OnUserError(int nErrNo) {
-            LogUtils.i("AddDeviceActivity.clazz--->>>OnUserError........nErrNo:"
-                    + nErrNo);
+        public int onUserError(int nErrNo) {
+            LogUtils.i("AddDeviceActivity.clazz--->>>OnUserError........nErrNo:" + nErrNo);
             if (mDialog.isShowing())
                 mDialog.dismiss();
-            TipDialogManager.showTipDialog(
-                    AddDeviceActivity.this,
+            TipDialogManager.showTipDialog(AddDeviceActivity.this,
                     BaseApplication.context().getString(R.string.tip),
-                    BaseApplication.context().getString(
-                            R.string.add_devcie_error)
-                            + nErrNo);
+                    BaseApplication.context().getString(R.string.add_devcie_error) + nErrNo);
             return 0;
         }
 

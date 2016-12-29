@@ -1,6 +1,5 @@
 package com.dongdong.app.ui;
 
-import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,7 +14,7 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -41,13 +40,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.dd121.community.R;
-import com.ddclient.MobileClientLib.InfoUser;
 import com.ddclient.configuration.DongConfiguration;
-import com.ddclient.dongsdk.AbstractDongSDKProxy.DongAccountCallbackImp;
-import com.ddclient.dongsdk.AbstractDongSDKProxy.DongDeviceCallbackImp;
-import com.ddclient.dongsdk.AbstractDongSDKProxy.DongDeviceSettingCallbackImp;
+import com.ddclient.dongsdk.AbstractDongCallbackProxy;
 import com.ddclient.dongsdk.DeviceInfo;
 import com.ddclient.dongsdk.DongSDKProxy;
+import com.ddclient.jnisdk.InfoUser;
 import com.dongdong.app.AppConfig;
 import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
@@ -62,7 +59,6 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 public class VideoViewActivity extends BaseActivity implements OnClickListener,
         OnTouchListener, OnGestureListener {
 
@@ -76,7 +72,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
     private ImageView mIvLockImage;
 
     // 2.第二组
-    private View mControlParent;
+    private View mControlParentLeft;
+    private View mControlParentRight;
     private TextView mTvVideoQuality;
     private TextView mTvUploadDataTip;
     private TextView mTvDownloadDataTip;
@@ -127,21 +124,22 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
     private long mUnlockLastTime, mPictureLastTime, mHandsFreeLastTime,
             mSpkLastTime, mVideoLastTime;
 
-    // private String mDeviceID;
-    private DeviceInfo mDeviceInfo;
-    // private VideoViewActivityDongAccountCallbackImp mDongAccountCallBackImpl;
-    private VideoViewActivityDongDeviceCallBackImpl mDongDeviceCallBackImpl;
-    // private VideoViewActivityDongDeviceSettingImpl mDongDeviceSettingImpl;
-
     private PhoneReceiver mReceiver;
     private NetBroadcastReceiver mNetReceiver;
-    private VideoViewActivityDongAccountCallbackImp mDongAccountCallBackImpl;
-    private VideoViewActivityDongDeviceSettingImpl mDongDeviceSettingImpl;
+
+    private DeviceInfo mDeviceInfo;
+    private VideoViewActivityDongAccountCallbackImp mDongAccountCallBackImpl
+            = new VideoViewActivityDongAccountCallbackImp();
+    private VideoViewActivityDongDeviceCallBackImpl mDongDeviceCallBackImpl
+            = new VideoViewActivityDongDeviceCallBackImpl();
+    private VideoViewActivityDongDeviceSettingImpl mDongDeviceSettingImpl
+            = new VideoViewActivityDongDeviceSettingImpl();
 
     @Override
     protected int getLayoutId() {
         // 隐藏状态栏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         return R.layout.activity_video_view;
     }
 
@@ -152,7 +150,9 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         mIvDongIcon = (ImageView) findViewById(R.id.iv_dong_sign);
         mIvLockImage = (ImageView) findViewById(R.id.iv_openLock);
 
-        mControlParent = findViewById(R.id.fl_video_view_control_parent);
+        mControlParentLeft = findViewById(R.id.fl_video_view_control_left);
+        mControlParentRight = findViewById(R.id.fl_video_view_control_right);
+
         mTvVideoQuality = (TextView) findViewById(R.id.tv_video_quality_cotrol);
         ImageView ivLight = (ImageView) findViewById(R.id.iv_light_control);
         ImageView ivVideoAudio = (ImageView) findViewById(R.id.iv_video_audio_control);
@@ -191,11 +191,14 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 
         mTvHangup.setOnClickListener(this);
         mTvAccept.setOnClickListener(this);
+
+        mConnDeviceStateDialog = new CommonDialog(this);
+        mTipDialog = new CommonDialog(this);
+        mDongDeviceCallBackImpl.initTipDialog();
     }
 
     @Override
     public void initData() {
-        mDongAccountCallBackImpl = new VideoViewActivityDongAccountCallbackImp();
         try {
             mMediaPlayer.setDataSource(this, Uri.parse("android.resource://"
                     + this.getPackageName() + "/" + R.raw.doorbell1));
@@ -206,12 +209,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         mTimer = new Timer();
         mTimer.schedule(new MyTimerTask(), new Date(), 1000);
 
-        mConnDeviceStateDialog = new CommonDialog(this);
-        mTipDialog = new CommonDialog(this);
-
         mSoundPlay = new SoundPlay(VideoViewActivity.this);
-        mAudioManager = (AudioManager) this
-                .getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
 
         // 后台在线推送时，自动点亮屏幕
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
@@ -231,10 +230,15 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 
         mNetReceiver = new NetBroadcastReceiver();//注册网络广播
         filter = new IntentFilter();
+//        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+//        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+//        filter.addAction("android.net.wifi.STATE_CHANGE");
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         registerReceiver(mNetReceiver, filter);
 
-        boolean initDongAccountLan = DongSDKProxy.isInitedDongAccountLan();
+        boolean initDongAccountLan = DongSDKProxy.initCompleteDongAccountLan();
         if (initDongAccountLan) {
             DongSDKProxy.registerAccountLanCallback(mDongAccountCallBackImpl);
         } else {
@@ -246,8 +250,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         String mDeviceID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID, "");
         //是否主动监视
         isActive = bundle.getBoolean(AppConfig.BUNDLE_KEY_INITIATIVE, false);
+        isHandsFree = true;
         if (TextUtils.isEmpty(mDeviceID) && isActive) {// 1.主动监视
-            isHandsFree = true;
             mDeviceInfo = DongConfiguration.mDeviceInfo;
             // 设置功能按钮界面，主动进来是对讲、挂断按钮
             mTvAudio.setVisibility(View.VISIBLE);
@@ -264,7 +268,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
             }
             playMusic(mMediaPlayer);
             isVideoOn = true;
-            isHandsFree=true;
             mTvAudio.setVisibility(View.GONE);
             mTvVideo.setVisibility(View.VISIBLE);
             mTvAccept.setVisibility(View.VISIBLE);
@@ -281,7 +284,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         super.onPause();
         unregisterReceiver(mReceiver);
         unregisterReceiver(mNetReceiver);
-        if (DongSDKProxy.isInitedDongAccountLan()) {
+        if (DongSDKProxy.initCompleteDongAccountLan()) {
             DongSDKProxy.unRegisterAccountLanCallback(mDongAccountCallBackImpl);
         } else {
             DongSDKProxy.unRegisterAccountCallback(mDongAccountCallBackImpl);
@@ -294,8 +297,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (DongSDKProxy.isInitedDongDevice() && DongSDKProxy.isInitedDongDeviceSetting()) {
+        if (DongSDKProxy.initCompleteDongDeviceSetting()) {
             // 用户没点击挂断后也要停止播放，释放资源等操作
             stopVideo();
         }
@@ -306,13 +308,14 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
             mTimer.cancel();
             mTimer = null;
         }
-        LogUtils.i("log5", "VideoViewActivity.clazz-->>onDestroy...");
+        LogUtils.i("VideoViewActivity.clazz-->>onDestroy...");
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mSurfaceView.requestLayout();
+        mLlControl.setVisibility(View.VISIBLE);
         if (TDevice.isLandscape()) {
             mLlControl.setOrientation(LinearLayout.HORIZONTAL);
             mLlFunction.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -330,19 +333,17 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 
     private void startVideoPlay() {
         if (mDeviceInfo == null) {
-            BaseApplication.showToastShortInBottom("没有找到这台设备,请关闭界面!");
+            BaseApplication.showToastShortInBottom("播放初始化出错!");
             return;
         }
-        mDongDeviceCallBackImpl = new VideoViewActivityDongDeviceCallBackImpl();
         DongSDKProxy.initDongDevice(mDongDeviceCallBackImpl);
         LogUtils.i("VideoViewActivity.clazz--->>>videoPlay ... initDongDevice");
 
-        mDongDeviceSettingImpl = new VideoViewActivityDongDeviceSettingImpl();
         DongSDKProxy.initDongDeviceSetting(mDongDeviceSettingImpl);
         LogUtils.i("VideoViewActivity.clazz--->>>videoPlay ... initDongDeviceSetting");
 
         //start work
-        DongSDKProxy.requstStartPlayDevice(this, mSurfaceView, mDeviceInfo);
+        DongSDKProxy.requestStartPlayDevice(this, mSurfaceView, mDeviceInfo);
         DongSDKProxy.requestRealtimePlay(DongSDKProxy.PLAY_TYPE_VIDEO);
         LogUtils.i("VideoViewActivity.clazz--->>>videoPlay ... requestRealtimePlay");
     }
@@ -404,7 +405,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                      */
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        System.out.println("动画开始...");
                         mIvLockImage.setVisibility(View.VISIBLE);
                     }
 
@@ -413,7 +413,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                      */
                     @Override
                     public void onAnimationRepeat(Animation animation) {
-                        System.out.println("动画重复...");
                     }
 
                     /**
@@ -421,7 +420,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                      */
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        System.out.println("动画结束...");
                         mIvLockImage.setVisibility(View.GONE);
                         mIvLockImage.clearAnimation();
                     }
@@ -701,7 +699,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                         VideoViewActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                // DongSDKProxy.requestStopDeice();
+                                DongSDKProxy.requestStopDeice();
                                 VideoViewActivity.this.finish();
                                 //   mTvHangup.performClick();
                                 LogUtils.i("NetBroadcastReceiver.clazz--->>>%%%%%%%%%%%%%%%%%%........is null:" + (info == null));
@@ -713,13 +711,12 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         }
     }
 
-
     private class VideoViewActivityDongAccountCallbackImp extends
-            DongAccountCallbackImp {
+            AbstractDongCallbackProxy.DongAccountCallbackImp {
 
         @Override
-        public int OnCall(ArrayList<DeviceInfo> list) {
-            LogUtils.i("VideoViewAvtivityDongAccountCallbackImp.clazz--->>>OnCall........list):" + list);
+        public int onCall(ArrayList<DeviceInfo> list) {
+            LogUtils.i("VideoViewActivityDongAccountCallbackImp.clazz--->>>OnCall........list):" + list);
             if (mDeviceInfo != null && list != null && list.size() > 0) {
                 final DeviceInfo deviceInfo = list.get(0);
                 if (mDeviceInfo.dwDeviceID == deviceInfo.dwDeviceID) {
@@ -758,24 +755,24 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         }
 
         @Override
-        public int OnAuthenticate(InfoUser tInfo) {
-            LogUtils.i("VideoViewAvtivityDongAccountCallbackImp.clazz--->>>OnAuthenticate........tInfo:"
+        public int onAuthenticate(InfoUser tInfo) {
+            LogUtils.i("DongAccountCallbackImp.clazz--->>>OnAuthenticate........tInfo:"
                     + tInfo);
             return 0;
         }
 
         @Override
-        public int OnUserError(int nErrNo) {
-            LogUtils.i("VideoViewAvtivityDongAccountCallbackImp.clazz--->>>OnUserError........nErrNo:"
+        public int onUserError(int nErrNo) {
+            LogUtils.i("DongAccountCallbackImp.clazz--->>>OnUserError........nErrNo:"
                     + nErrNo);
             return 0;
         }
     }
 
     private class VideoViewActivityDongDeviceSettingImpl extends
-            DongDeviceSettingCallbackImp {
+            AbstractDongCallbackProxy.DongDeviceSettingCallbackImp {
         @Override
-        public int OnGetQuality(int result) {
+        public int onGetQuality(int result) {
             if (result == 0) {
                 mTvVideoQuality.setText(VideoViewActivity.this.getString(R.string.video1));
             } else if (result == 1) {
@@ -787,24 +784,31 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         }
 
         @Override
-        public int OnGetBCHS(int nBrightness) {
+        public int onGetBCHS(int nBrightness) {
             mLight = nBrightness;
             return 0;
         }
 
         @Override
-        public int OnGetAudioQuality(short wSpkVolume) {
+        public int onGetAudioQuality(short wSpkVolume) {
             mAudio = wSpkVolume;
+            return 0;
+        }
+
+        @Override
+        public int onOpenDoor(int result) {
+            LogUtils.i("DongDeviceSettingImpl.clazz--->>>onOpenDoor result:" + result);
+            BaseApplication.showToastShortInTop(R.string.openlock);
             return 0;
         }
 
     }
 
     private class VideoViewActivityDongDeviceCallBackImpl extends
-            DongDeviceCallbackImp {
+            AbstractDongCallbackProxy.DongDeviceCallbackImp {
         private TextView mTvConnState;// 视频缓冲文字
 
-        VideoViewActivityDongDeviceCallBackImpl() {
+        void initTipDialog() {
             View view = LayoutInflater.from(VideoViewActivity.this).inflate(
                     R.layout.loading_dialog, null);
             mConnDeviceStateDialog.setContent(view);
@@ -814,14 +818,14 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         }
 
         @Override
-        public int OnConnect(int nType) {
-            LogUtils.i("VideoViewActivityDongDeviceCallBackImpl.clazz--->>>OnConnect nType:" + nType);
+        public int onConnect(int nType) {
+            LogUtils.i("DongDeviceCallBackImpl.clazz--->>>OnConnect nType:" + nType);
             mTvConnState.setText(getString(R.string.waiting_certification_60));
             return 0;
         }
 
         @Override
-        public int OnAuthenticate(int nType) {// 认证成功会回调两次-----音频认证成功，视频认证成功
+        public int onAuthenticate(int nType) {// 认证成功会回调两次-----音频认证成功，视频认证成功
             mTvConnState.setText(getString(R.string.waiting_media_90));
             // 获取音频大小
             int audioSize = DongSDKProxy.requestGetAudioQuality();
@@ -830,16 +834,15 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
             // 获取视频品质
             int quality = DongSDKProxy.requestGetQuality();
             mFlVideo.setBackgroundResource(0);
-            // timer();
-            LogUtils.i("log5", "VideoViewAvtivityDongDeviceCallBackImpl.clazz--->>>OnAuthenticate nType:"
+            LogUtils.i("DongDeviceCallBackImpl.clazz--->>>OnAuthenticate nType:"
                     + nType + ";audioSize:" + audioSize + ";bCHS:"
                     + bCHS + ";quality:" + quality);
             return 0;
         }
 
         @Override
-        public int OnVideoSucc() {
-            LogUtils.i("log5", "VideoViewAvtivityDongDeviceCallBackImpl.clazz--->>>OnVideoSucc");
+        public int onVideoSucc() {
+            LogUtils.i("DongDeviceCallBackImpl.clazz--->>>OnVideoSucc");
             isVideoSuccess = true;
             shouldPlayNextDevice = true;
             mSurfaceView.setVisibility(View.VISIBLE);
@@ -849,8 +852,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         }
 
         @Override
-        public int OnViewError(int nErrNo) {
-            LogUtils.i("VideoViewAvtivityDongDeviceCallBackImpl.clazz--->>>OnViewError...nErrNo:"
+        public int onViewError(int nErrNo) {
+            LogUtils.i("DongDeviceCallBackImpl.clazz--->>>OnViewError...nErrNo:"
                     + nErrNo + ",isVideoSuccess:" + isVideoSuccess);
             if (isVideoSuccess) {
                 stopVideo();
@@ -865,8 +868,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         }
 
         @Override
-        public int OnTrafficStatistics(float upload, float download) {
-            LogUtils.i("VideoViewAvtivityDongDeviceCallBackImpl.clazz--->>>OnTrafficStatistics upload:"
+        public int onTrafficStatistics(float upload, float download) {
+            LogUtils.i("DongDeviceCallBackImpl.clazz--->>>OnTrafficStatistics upload:"
                     + upload + ";download:" + download);
             if (download < 1) {// 如果下载数据小于1，持续时间为10s,那么提示用户网络差
                 mDownloadDataZeroCount++;
@@ -879,8 +882,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         }
 
         @Override
-        public int OnPlayError(int nReason, String username) {
-            LogUtils.i("VideoViewAvtivityDongDeviceCallBackImpl.clazz--->>>OnPlayError nReason:"
+        public int onPlayError(int nReason, String username) {
+            LogUtils.i("DongDeviceCallBackImpl.clazz--->>>OnPlayError nReason:"
                     + nReason + ";username:" + username);
             // reason 1:没有权限 ;2:用户主动挂断;3:设备占线;4:音频已经被其他用户占用;5:请通话
             if (mConnDeviceStateDialog.isShowing())
@@ -920,8 +923,9 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        int state = mControlParent.getVisibility();
-        mControlParent.setVisibility(state == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+        int state = mControlParentLeft.getVisibility();
+        mControlParentLeft.setVisibility(state == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+        mControlParentRight.setVisibility(state == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
         if (TDevice.isLandscape()) {
             state = mLlControl.getVisibility();
             mLlControl.setVisibility(state == View.VISIBLE ? View.GONE : View.VISIBLE);
@@ -943,7 +947,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         boolean isLeft = e1.getX() - e2.getX() > FLIP_DISTANCE;
         boolean isRight = e2.getX() - e1.getX() > FLIP_DISTANCE;
 
-        LogUtils.i("log5", "onFling-------->>>>>>has inline device isActive:" + isActive + ",shouldPlayNextDevice:" + shouldPlayNextDevice);
+        LogUtils.i("log5", "onFling-------->>>>>>has inline device isActive:"
+                + isActive + ",shouldPlayNextDevice:" + shouldPlayNextDevice);
         if (isActive && shouldPlayNextDevice && (isLeft || isRight)) {// 主动监视、下一台设备正常播放
             ArrayList<DeviceInfo> dataList = DongConfiguration.mDeviceInfoList;
             if (dataList == null || mDeviceInfo == null) {
@@ -956,7 +961,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                 }
             }
             int dataSize = onlineTemp.size();
-            LogUtils.i("log5", "onFling-------->>>>>>has online device size:" + dataSize + ",isLeft:" + isLeft + ",isRight:" + isRight + ",data:" + onlineTemp);
+            LogUtils.i("log5", "onFling-------->>>>>>has online device size:" + dataSize
+                    + ",isLeft:" + isLeft + ",isRight:" + isRight + ",data:" + onlineTemp);
             for (int i = 0; i < dataSize; i++) {
                 DeviceInfo deviceInfo = onlineTemp.get(i);
                 if (mDeviceInfo.dwDeviceID == deviceInfo.dwDeviceID) {// 2.找到当前正在播放的设备位置
@@ -1098,7 +1104,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                         }
                     }
                 });
-
             }
         }
     }

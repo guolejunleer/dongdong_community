@@ -42,7 +42,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.dd121.community"/>
 
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
@@ -50,6 +49,8 @@
     <permission
         android:name="getui.permission.GetuiService.com.dd121.community"
         android:protectionLevel="normal"/>
+    <uses-permission
+        android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.dd121.community"/>
 
     <application
         android:name="com.dongdong.app.AppContext"
@@ -84,8 +85,7 @@
         <activity
             android:name="com.dongdong.app.ui.VideoViewActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:launchMode="singleTask"/>
         <activity
             android:name="com.dongdong.app.ui.MessageActivity"
             android:screenOrientation="portrait"/>
@@ -96,10 +96,10 @@
             android:name="com.dongdong.app.ui.ApplyKeyActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.dongdong.app.ui.VisitorRecordsActivity"
+            android:name="com.dongdong.app.ui.OpenDoorActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.dongdong.app.ui.HomeSafeActivity"
+            android:name="com.dongdong.app.ui.VisitorPhotoActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.dongdong.app.ui.ParkingActivity"
@@ -120,7 +120,7 @@
             android:name="com.dongdong.app.ui.LoginActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.dongdong.app.ui.RegeistActivity"
+            android:name="com.dongdong.app.ui.RegisterActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.dongdong.app.ui.ForgetPwdActivity"
@@ -145,7 +145,7 @@
             android:name="com.dongdong.app.ui.VisitorPhotoDetailActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.dongdong.app.ui.DoorRecordDetailActivity"
+            android:name="com.dongdong.app.ui.OpenDoorDetailActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.zbar.lib.CaptureActivity"
@@ -173,7 +173,7 @@
             android:value=""/>
         <!-- 配置第三方Receiver -->
         <receiver
-            android:name="com.ddclient.push.GetuiPushReceiver"
+            android:name="com.ddclient.push.GeTuiPushReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.mFIgANbqUQ7NFYy16ILrs6"/>
@@ -191,6 +191,7 @@
                 <action android:name="com.igexin.sdk.action.service.message"/>
             </intent-filter>
         </service>
+
         <service
             android:name="com.igexin.sdk.PushServiceUser"
             android:exported="true"
@@ -254,7 +255,7 @@
 
 
         <!-- baidu push应用定义消息receiver声明 -->
-        <receiver android:name="com.ddclient.Push.BaiduPushMessageReceiver">
+        <receiver android:name="com.ddclient.push.BaiDuPushMessageReceiver">
             <intent-filter>
 
                 <!-- 接收push消息 -->

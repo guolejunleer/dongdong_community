@@ -188,12 +188,10 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
         @Override
         protected void onPostExecute(Bitmap result) {
-            // LogUtils.i("DeviceInfoAdapter.clazz--->> imageView.getTag():"
-            // + imageView.getTag());
             if (imageView.getTag() != null && imageView.getTag().equals(imageUrl) &&
                     result != null) {
                 Bitmap roundBitmap = BitmapUtil.getRoundedCornerBitmap(result, ROUND_VALUE_PX);
-                imageView.setImageBitmap(roundBitmap);
+                if (roundBitmap != null) imageView.setImageBitmap(roundBitmap);
             }
         }
 

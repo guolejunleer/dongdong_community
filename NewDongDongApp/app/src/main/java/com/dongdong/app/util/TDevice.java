@@ -823,31 +823,7 @@ public class TDevice {
             e.printStackTrace();
         }
     }
-
-    /**
-     * 获取状态栏的高度
-     *
-     * @return
-     */
-    public static int getStatuBarHeight() {
-        Class<?> c;
-        Object obj;
-        Field field;
-        int x, sBar = 38;// 默认为38，貌似大部分是这样的
-        try {
-            c = Class.forName("com.android.internal.R$dimen");
-            obj = c.newInstance();
-            field = c.getField("status_bar_height");
-            x = Integer.parseInt(field.get(obj).toString());
-            sBar = BaseApplication.context().getResources()
-                    .getDimensionPixelSize(x);
-
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        return sBar;
-    }
-
+    
     /**
      * 判断是否有状态栏
      *

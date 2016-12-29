@@ -35,8 +35,7 @@ public class SettingsActivity extends BaseActivity implements
     public void initView() {
         RelativeLayout rlPushService = (RelativeLayout) findViewById(R.id.rl_push_service);
         RelativeLayout rlNightMode = (RelativeLayout) findViewById(R.id.rl_nightmode);
-        RelativeLayout rlOpenVideoInDatanetwork = (RelativeLayout)
-                findViewById(R.id.rl_openvideo_in_data_network);
+        RelativeLayout rlNetwork = (RelativeLayout) findViewById(R.id.rl_openvideo_in_data_network);
         RelativeLayout rlAttendedMode = (RelativeLayout) findViewById(R.id.rl_attended_mode);
         RelativeLayout rlCleanSession = (RelativeLayout) findViewById(R.id.rl_clean_session);
         RelativeLayout rlNewVersion = (RelativeLayout) findViewById(R.id.rl_about);
@@ -52,7 +51,7 @@ public class SettingsActivity extends BaseActivity implements
         rlNewVersion.setOnClickListener(this);
         rlPushService.setOnClickListener(this);
         rlNightMode.setOnClickListener(this);
-        rlOpenVideoInDatanetwork.setOnClickListener(this);
+        rlNetwork.setOnClickListener(this);
         rlAttendedMode.setOnClickListener(this);
         mBtnLoginOut.setOnClickListener(this);
     }
@@ -64,8 +63,7 @@ public class SettingsActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        if (DongConfiguration.mUserInfo == null &&
-                DongConfiguration.mDeviceInfo == null) {
+        if (DongConfiguration.mUserInfo == null) {
             mBtnLoginOut.setVisibility(View.INVISIBLE);
         } else {
             mBtnLoginOut.setVisibility(View.VISIBLE);
@@ -111,7 +109,7 @@ public class SettingsActivity extends BaseActivity implements
                 startActivity(new Intent(SettingsActivity.this, AboutActivity.class));
                 break;
             case R.id.btn_loginout:
-                CommonDialog commonDialog = new CommonDialog(SettingsActivity.this);
+                final CommonDialog commonDialog = new CommonDialog(SettingsActivity.this);
                 commonDialog.setMessage(R.string.isexit);
                 commonDialog.setPositiveButton(R.string.exit,
                         new OnClickListener() {
@@ -122,25 +120,19 @@ public class SettingsActivity extends BaseActivity implements
                                         SettingsActivity.this);
                                 com.baidu.android.pushservice.PushManager
                                         .stopWork(BaseApplication.context());
-                                boolean initedDongAccount = DongSDKProxy
-                                        .isInitedDongAccount();
+                                boolean initDongAccount = DongConfiguration.mUserInfo != null;
                                 // 2.清空SDK信息
-                                if (initedDongAccount) {
+                                if (initDongAccount) {
                                     DongSDKProxy.loginOut();
                                     DongConfiguration.clearAllData();
-//								HomePagerFragment.mIsFirstChooseDefaultDevice = true;
                                     AppContext.mAppConfig.remove(
                                             AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
                                             AppConfig.KEY_DEVICE_ID);
                                     AppContext.mAppConfig.remove(
                                             AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
                                             AppConfig.KEY_IS_LOGIN);
-//								AppContext.mAppConfig.remove(AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-//										AppConfig.KEY_USER_NAME);
-//								AppContext.mAppConfig.remove(AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-//										AppConfig.KEY_USER_PWD);
                                     AppManager.getAppManager().finishNOTLMainActivity();
-                                    dialog.dismiss();
+                                    commonDialog.dismiss();
                                     LogUtils.i("SettingsActivity.clazz--->>>logout!!!!");
                                 }
                             }

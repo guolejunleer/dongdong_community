@@ -25,7 +25,7 @@ public class AppConfig {
     public static final String KEY_DEVICE_ID = "DEVICE_ID";
     public static final String KEY_DEVICE_SERIAL = "DEVICE_SERIAL";
     public static final String KEY_IS_LOGIN = "IS_LOGIN";
-    public static final String KEY_DEVCIE_NAME = "KEY_DEVCIE_NAME";
+    public static final String KEY_DEFAULT_DEVICE_ID = "KEY_DEFAULT_DEVICE_ID";
 
     // intent bundle key
     public static final String INTENT_BUNDLE_KEY = "INTENT_BUNDLE_KEY";
@@ -36,11 +36,15 @@ public class AppConfig {
     public static final String BUNDLE_KEY_INITIATIVE = "BUNDLE_INITIATIVE";
     public static final String BUNDLE_KEY_PUSH_TIME = "BUNDLE_KEY_PUSH_TIME";
 
+    public static final String BUNDLE_KEY_IS_DELAY_PUSH = "BUNDLE_KEY_IS_DELAY_PUSH";
+
     public static final String COMPANY_PHONE = "057158111836";
     public static final String CACH_IMAGE_PATH = "temp";
     //DES Key
     public static final String DES_KEY = "DONGDONG";
     public static final String SD_TAKE_PICTURE_PATH = "TakePicture";
+    public static final int MAX_OPEN_DOOR_RECORD_COUNT = 100;
+    public static final int MAX_VISITOR_PHOTO_COUNT=40;
 
     private Context mContext;
     private static AppConfig mAppConfig;

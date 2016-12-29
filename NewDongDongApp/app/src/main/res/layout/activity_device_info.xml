@@ -74,7 +74,7 @@
                     android:gravity="center"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:text="@string/ok"
+                    android:text="@string/sure"
                     android:textColor="@drawable/textview_color_ebtn"
                     android:textSize="15dp"
                     android:textStyle="bold" />
@@ -151,7 +151,7 @@
                     android:gravity="center"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:text="@string/ok"
+                    android:text="@string/sure"
                     android:textColor="@drawable/textview_color_ebtn"
                     android:textSize="15dp"
                     android:textStyle="bold" />

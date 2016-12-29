@@ -22,7 +22,8 @@ import com.loopj.android.http.RequestParams;
 
 public class ApiHttpClient {
 
-    private final static String HOST = "www.dd121.com";
+    //    private final static String HOST = "www.dd121.com";
+    private final static String HOST = "192.168.68.55";
     private static String API_URL = "http://www.dd121.com/%s";
     // public final static String HOST = "192.168.1.101";
     // private static String API_URL = "http://192.168.1.101/%s";
@@ -33,11 +34,11 @@ public class ApiHttpClient {
     private static AsyncHttpClient client;
 
     // 正式服务器
-//     private static String API_KEY = "P4VenrKw5aam6sREotky";
-//     private static String SECRET_KEY = "1bvNOGryv3IPq0fwICBH";
+    private static String API_KEY = "P4VenrKw5aam6sREotky";
+    private static String SECRET_KEY = "1bvNOGryv3IPq0fwICBH";
     // 测试服务器(55)
-    private static String API_KEY = "po8ujkvNjIm5hcoxtbp4";
-    private static String SECRET_KEY = "UspRzPUcEytfcwR3N56k";
+//    private static String API_KEY = "po8ujkvNjIm5hcoxtbp4";
+//    private static String SECRET_KEY = "UspRzPUcEytfcwR3N56k";
 
     private static final String ALLOW_CIRCULAR_REDIRECTS = "http.protocol.allow-circular-redirects";
 
@@ -50,13 +51,12 @@ public class ApiHttpClient {
 
     public static void setHttpClient(AsyncHttpClient c) {
         client = c;
-        client.addHeader("Accept-Language", Locale.getDefault().toString());
-        client.addHeader("Host", HOST);
-        client.addHeader("Connection", "Keep-Alive");
-        client.getHttpClient().getParams()
-                .setParameter(ALLOW_CIRCULAR_REDIRECTS, true);
-
-        setUserAgent(ApiClientHelper.getUserAgent(AppContext.getInstance()));
+//        client.addHeader("Accept-Language", Locale.getDefault().toString());
+//        client.addHeader("Host", HOST);
+//        client.addHeader("Connection", "Keep-Alive");
+//        client.getHttpClient().getParams()
+//                .setParameter(ALLOW_CIRCULAR_REDIRECTS, true);
+//        setUserAgent(ApiClientHelper.getUserAgent(AppContext.getInstance()));
     }
 
     public static void cancelAll(Context context) {
@@ -163,34 +163,36 @@ public class ApiHttpClient {
         return appCookie;
     }
 
-    /***************************************************************************************/
-    static class MapKeyComparator implements Comparator<String> {
+    private static class MapKeyComparator implements Comparator<String> {
         @Override
         public int compare(String str1, String str2) {
             return str1.compareTo(str2);
         }
     }
 
-    // 使用 Map按key进行排序
+    /**
+     * 使用 Map按key进行排序
+     */
     private static Map<String, String> sortMapByKey(Map<String, String> map) {
         if (map == null || map.isEmpty()) {
             return null;
         }
-        Map<String, String> sortMap = new TreeMap<String, String>(
+        Map<String, String> sortMap = new TreeMap<>(
                 new MapKeyComparator());
         sortMap.putAll(map);
         return sortMap;
     }
 
-    // 获取签名
+    /**
+     * 获取签名
+     */
     private static String getSign(String url, Map<String, String> params,
                                   String encode) {
-        //String baseStr = "POST" + url;
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("POST").append(url);
-        Map<String, String> sortparams = sortMapByKey(params);
+        Map<String, String> sortParams = sortMapByKey(params);
         try {
-            for (Map.Entry<String, String> entry : sortparams.entrySet()) {
+            for (Map.Entry<String, String> entry : sortParams.entrySet()) {
                 stringBuffer.append(entry.getKey()).append("=")
                         .append(URLEncoder.encode(entry.getValue(), encode));
             }
@@ -202,7 +204,9 @@ public class ApiHttpClient {
         }
     }
 
-    // md5加密
+    /**
+     * md5加密
+     */
     private static String getMd5(String plainText) {
         try {
             StringBuffer buf = new StringBuffer("");
@@ -225,36 +229,35 @@ public class ApiHttpClient {
         }
     }
 
-    /*
-     * Fuction:获取开门记录的参数：
+    /**
+     * 获取开门记录的参数：
      */
     public static RequestParams getUnlockRecords3(
-            String url, int user_id, int device_id, int start_index, int end_index) {
+            String url, int userId, int deviceId, int startIndex, int endIndex) {
         Calendar calendar = Calendar.getInstance();
         RequestParams params = new RequestParams();
         params.put("apikey", API_KEY);
         params.put("timestamp", "" + calendar.getTimeInMillis() / 1000);
         params.put("id", "435");
         params.put("method", "getUnlockRecords3");
-        params.put("userid", user_id);
-        params.put("deviceid", device_id);
-        params.put("startindex", start_index);
-        params.put("endindex", end_index);
+        params.put("userid", userId);
+        params.put("deviceid", deviceId);
+        params.put("startindex", startIndex);
+        params.put("endindex", endIndex);
 
         Map<String, String> map = new HashMap<>();
         map.put("apikey", API_KEY);
         map.put("timestamp", "" + calendar.getTimeInMillis() / 1000);
         map.put("id", "435");
         map.put("method", "getUnlockRecords3");
-        map.put("userid", String.valueOf(user_id));
-        map.put("deviceid", String.valueOf(device_id));
-        map.put("startindex", String.valueOf(start_index));
-        map.put("endindex", String.valueOf(end_index));
+        map.put("userid", String.valueOf(userId));
+        map.put("deviceid", String.valueOf(deviceId));
+        map.put("startindex", String.valueOf(startIndex));
+        map.put("endindex", String.valueOf(endIndex));
 
         String sign = getSign(url, map, "utf-8");
         params.put("sign", sign);
 
-        System.out.println("开门记录sign>>>>>>>>>>" + sign);
         return params;
     }
 }

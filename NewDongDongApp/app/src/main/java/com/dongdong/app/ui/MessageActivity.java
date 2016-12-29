@@ -14,16 +14,14 @@ public class MessageActivity extends BaseActivity implements OnTitleBarClickList
 
     @Override
     public void initView() {
-        TitleBar titleBar= (TitleBar) findViewById(R.id.tb_title);
+        TitleBar titleBar = (TitleBar) findViewById(R.id.tb_title);
         titleBar.setTitleBarContent(getString(R.string.message));
         titleBar.setOnTitleBarClickListener(this);
         titleBar.setAddArrowShowing(false);
-
     }
 
     @Override
     public void initData() {
-
     }
 
     @Override
@@ -33,17 +31,14 @@ public class MessageActivity extends BaseActivity implements OnTitleBarClickList
 
     @Override
     public void onTitleClick() {
-
     }
 
     @Override
     public void onAddClick() {
-
     }
 
     @Override
     public void onFinishClick() {
-
     }
 
 }

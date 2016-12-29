@@ -156,9 +156,9 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 			return R.mipmap.ic_dd_shapeopendoor;
 		case BaseApplication.FUNCTION_REPAIR:
 			return R.mipmap.ic_dd_repair;
-		case BaseApplication.FUNCTION_HOMESAFE:
+		case BaseApplication.FUNCTION_VISITORPHOTO:
 			return R.mipmap.ic_dd_homesafe;
-		case BaseApplication.FUNCTION_VISITORRECORD:
+		case BaseApplication.FUNCTION_OPENDOOR:
 			return R.mipmap.ic_dd_visitorrecord;
 		case BaseApplication.FUNCTION_PHONE:
 			return R.mipmap.ic_dd_phone;
@@ -182,10 +182,10 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 			return R.string.shapeopendoor;
 		case BaseApplication.FUNCTION_REPAIR:
 			return R.string.repair;
-		case BaseApplication.FUNCTION_HOMESAFE:
-			return R.string.homesafe;
-		case BaseApplication.FUNCTION_VISITORRECORD:
-			return R.string.visitorrecord;
+		case BaseApplication.FUNCTION_VISITORPHOTO:
+			return R.string.visitorphoto;
+		case BaseApplication.FUNCTION_OPENDOOR:
+			return R.string.opendoor;
 		case BaseApplication.FUNCTION_PHONE:
 			return R.string.phone;
 		case BaseApplication.FUNCTION_DD_FUNCTION_FINANCE:

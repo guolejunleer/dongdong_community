@@ -2,66 +2,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff0f0f3"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.dongdong.app.widget.TitleBar
         android:id="@+id/tb_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </com.dongdong.app.widget.TitleBar>
+        android:layout_height="wrap_content" />
+
 
     <LinearLayout
-        android:id="@+id/ll_home_setting_reward_n_balance_layout3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/space_5"
-        android:layout_marginLeft="@dimen/space_10"
-        android:layout_marginRight="@dimen/space_10"
-        android:layout_marginTop="@dimen/space_35"
-        android:background="@drawable/widget_list_item_bg" >
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_60"
+        android:background="@drawable/widget_list_item_bg_selector"
+        android:padding="@dimen/space_10">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/space_50"
-            android:background="@drawable/widget_list_item_bg_selector"
-            android:paddingBottom="@dimen/space_6"
-            android:paddingLeft="@dimen/space_10"
-            android:paddingRight="@dimen/space_10"
-            android:paddingTop="@dimen/space_6" >
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:hint="@string/authorizationSer"
+            android:padding="@dimen/space_10"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_size_16" />
 
-            <EditText
-                android:id="@+id/et_account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@color/white"
-                android:hint="@string/authorizationSer"
-                android:paddingLeft="@dimen/space_12"
-                android:textColor="#000000"
-                android:textSize="@dimen/text_size_18" />
-
-            <Button
-                android:id="@+id/bt_auth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/authorization" />
-        </RelativeLayout>
+        <Button
+            android:id="@+id/bt_auth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/space_5"
+            android:layout_weight="1"
+            android:background="@drawable/btn_background"
+            android:text="@string/authorization"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_12" />
     </LinearLayout>
 
     <ListView
         android:id="@+id/lv_list_account"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="@dimen/space_10"
-        android:layout_marginTop="@dimen/space_5"
         android:background="#FFFFFF"
         android:cacheColorHint="#00000000"
         android:choiceMode="singleChoice"
-        android:divider="#AAAAAA"
+        android:divider="#44AAAAAA"
         android:dividerHeight="@dimen/space_1"
         android:drawSelectorOnTop="false"
-        android:footerDividersEnabled="false" >
-    </ListView>
+        android:footerDividersEnabled="false" />
 
 </LinearLayout>

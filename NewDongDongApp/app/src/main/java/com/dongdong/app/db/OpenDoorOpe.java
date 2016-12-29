@@ -3,6 +3,8 @@ package com.dongdong.app.db;
 import android.content.Context;
 
 import com.dongdong.app.bean.OpenDoorRecordBean;
+import com.dongdong.app.bean.UserBean;
+import com.dongdong.app.db.gen.OpenDoorRecordBeanDao;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
@@ -21,16 +23,12 @@ public class OpenDoorOpe {
     }
 
     /**
-     * 添加数据至数据库(最多保存15条记录)
+     * 清空数据
      *
-     * @param context            上下文
-     * @param openDoorRecordBean 数据
+     * @param context 上下文
      */
-    public static void save(Context context, OpenDoorRecordBean openDoorRecordBean) {
-        //清空数据
-        DBManager.getDaoSession(context).getOpenDoorRecordBeanDao().deleteAll();
-        //再插入新数据
-        DBManager.getDaoSession(context).getOpenDoorRecordBeanDao().save(openDoorRecordBean);
+    public static void delete(Context context, List<Long> ids) {
+        DBManager.getDaoSession(context).getOpenDoorRecordBeanDao().deleteByKeyInTx(ids);
     }
 
     /**
@@ -41,7 +39,8 @@ public class OpenDoorOpe {
      */
     public static List<OpenDoorRecordBean> queryAll(Context context) {
         QueryBuilder<OpenDoorRecordBean> builder = DBManager.getDaoSession(context).
-                getOpenDoorRecordBeanDao().queryBuilder();
+                getOpenDoorRecordBeanDao().queryBuilder().orderDesc(OpenDoorRecordBeanDao.
+                Properties.Timestamp);
         return builder.build().list();
     }
 }

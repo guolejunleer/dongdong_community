@@ -17,9 +17,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dd121.community.R;
-import com.ddclient.MobileClientLib.InfoUser;
+import com.ddclient.dongsdk.AbstractDongCallbackProxy;
+import com.ddclient.jnisdk.InfoUser;
 import com.ddclient.configuration.DongConfiguration;
-import com.ddclient.dongsdk.AbstractDongSDKProxy.DongAccountCallbackImp;
 import com.ddclient.dongsdk.DongSDK;
 import com.ddclient.dongsdk.DongSDKProxy;
 import com.ddclient.dongsdk.PushInfo;
@@ -30,6 +30,7 @@ import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.UserBean;
 import com.dongdong.app.db.UserOpe;
+import com.dongdong.app.fragment.HomePagerFragment;
 import com.dongdong.app.ui.dialog.CommonDialog;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.CyptoUtils;
@@ -58,7 +59,6 @@ public class LoginActivity extends BaseActivity implements
     private ImageView mIvSelectedUser;
     private ImageView mIvLogin;
     private Timer mTimer;// 定时器
-    private int mLoginCount;
 
     private EditText mEtName, mEtPwd;
     private PopupWindow mPopupWindow;
@@ -100,12 +100,18 @@ public class LoginActivity extends BaseActivity implements
         super.onResume();
         refreshUI(UserOpe.queryDataByUserIndex(BaseApplication.context(),
                 UserOpe.FIRST_INDEX), true);
+        DongSDKProxy.registerAccountCallback(mDongAccountProxy);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        DongSDKProxy.unRegisterAccountCallback(mDongAccountProxy);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DongSDKProxy.unRegisterAccountCallback(mDongAccountProxy);
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;
@@ -138,7 +144,7 @@ public class LoginActivity extends BaseActivity implements
                 startActivity(new Intent(this, ForgetPwdActivity.class));
                 break;
             case R.id.tv_register:
-                startActivity(new Intent(this, RegeistActivity.class));
+                startActivity(new Intent(this, RegisterActivity.class));
                 break;
             case R.id.tv_local:
 //              startActivity(new Intent(this, LocalDeviceActivity.class));
@@ -151,24 +157,19 @@ public class LoginActivity extends BaseActivity implements
                 mEtUserName = mEtName.getText();
                 mEtUserPwd = mEtPwd.getText();
                 if (TextUtils.isEmpty(mEtUserName)) {
-                    BaseApplication
-                            .showToastShortInTop(R.string.user_name_can_not_empty);
+                    BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
                 } else if (TextUtils.isEmpty(mEtUserPwd)) {
-                    BaseApplication
-                            .showToastShortInTop(R.string.user_pwd_can_not_empty);
+                    BaseApplication.showToastShortInTop(R.string.user_pwd_can_not_empty);
                 } else {
                     mDialog = new CommonDialog(this);
-                    View view = LayoutInflater.from(this).inflate(
-                            R.layout.loading_dialog, null);
-                    TextView tipTextView = (TextView) view
-                            .findViewById(R.id.tv_tip);
+                    View view = LayoutInflater.from(this).inflate(R.layout.loading_dialog, null);
+                    TextView tipTextView = (TextView) view.findViewById(R.id.tv_tip);
                     tipTextView.setText(getString(R.string.login_wait));
                     mDialog.setContent(view);
                     mDialog.show();
                     DongSDKProxy.initDongAccount(mDongAccountProxy);
                     // 后续可能要加入取消回调引用接口
-                    DongSDKProxy.login(mEtUserName.toString(),
-                            mEtUserPwd.toString());
+                    DongSDKProxy.login(mEtUserName.toString().trim(), mEtUserPwd.toString().trim());
                     mTimer = new Timer();
                     mTimer.schedule(new MyTimerTask(), new Date(), 1000);
                 }
@@ -245,7 +246,7 @@ public class LoginActivity extends BaseActivity implements
             String pwd = CyptoUtils.decode(AppConfig.DES_KEY, userBean.getPassWord());
             mEtName.setText(name);
             mEtPwd.setText(pwd);
-        } else if (userBean != null && !isCyp) {
+        } else if (userBean != null) {
             String name = mEtName.getText().toString();
             if (userBean.getUserName().equals(name)) {
                 mEtName.setText("");
@@ -262,6 +263,7 @@ public class LoginActivity extends BaseActivity implements
     private class MyTimerTask extends TimerTask implements TipDialogManager.OnTipDialogButtonClick {
 
         boolean shouldStop;
+        int mLoginCount;
 
         @Override
         public void run() {
@@ -273,7 +275,7 @@ public class LoginActivity extends BaseActivity implements
                         if (mDialog.isShowing()) mDialog.dismiss();
                         shouldStop = true;
                         TipDialogManager.showNormalTipDialog(LoginActivity.this, MyTimerTask.this,
-                                R.string.tip, R.string.login_overtime, R.string.suc, R.string.cancel);
+                                R.string.tip, R.string.login_overtime, R.string.sure, R.string.cancel);
                     }
                 });
             }
@@ -290,11 +292,12 @@ public class LoginActivity extends BaseActivity implements
         }
     }
 
-    private class LoginActivityDongAccountProxy extends DongAccountCallbackImp {
+    private class LoginActivityDongAccountProxy extends AbstractDongCallbackProxy.DongAccountCallbackImp {
 
         @Override
-        public int OnAuthenticate(InfoUser tInfo) {
+        public int onAuthenticate(InfoUser tInfo) {
             DongConfiguration.mUserInfo = tInfo;
+            LogUtils.i("LoginActivity.clazz--->>>OnAuthenticate........tInfo:" + tInfo);
             String enUserName = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserName.toString());
             String enUserPwd = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserPwd.toString());
             //1.查询所有表
@@ -315,7 +318,7 @@ public class LoginActivity extends BaseActivity implements
                     UserOpe.updateDataByUserBean(BaseApplication.context(), temUserBean);
                 }
             }
-            if (!isOldUser) {//如果数据库不存在将要登陆的用户
+            if (!isOldUser) {//如果数据库不存在将插入登陆的用户
                 UserBean userBean = new UserBean();
                 userBean.setUserName(enUserName);
                 userBean.setPassWord(enUserPwd);
@@ -323,37 +326,33 @@ public class LoginActivity extends BaseActivity implements
                 UserOpe.insertDataByUserBean(BaseApplication.context(), userBean);
             }
             PushManager.getInstance().turnOnPush(LoginActivity.this);
+            com.baidu.android.pushservice.PushManager.resumeWork(LoginActivity.this);
             DongSDKProxy.requestSetPushInfo(PushInfo.PUSHTYPE_FORCE_ADD);
+            DongSDKProxy.requestGetDeviceListFromPlatform();
             mDialog.dismiss();
             // 保存用户登录信息
             AppContext.mAppConfig.setConfigValue(
                     AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                    AppConfig.KEY_USER_NAME, mEtUserName.toString());
+                    AppConfig.KEY_USER_NAME, mEtUserName.toString().trim());
             AppContext.mAppConfig.setConfigValue(
                     AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                    AppConfig.KEY_USER_PWD, mEtUserPwd.toString());
+                    AppConfig.KEY_USER_PWD, mEtUserPwd.toString().trim());
             AppContext.mAppConfig.setConfigValue(
                     AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
                     AppConfig.KEY_IS_LOGIN, true);
-            DongSDKProxy.requestGetDeviceListFromPlatform();
             LoginActivity.this.finish();
             return 0;
         }
 
         @Override
-        public int OnUserError(int nErrNo) {
-            LogUtils.i("LoginActivity.clazz--->>>OnUserError........nErrNo:"
-                    + nErrNo);
+        public int onUserError(int nErrNo) {
+            LogUtils.i("LoginActivity.clazz--->>>OnUserError........nErrNo:" + nErrNo);
             if (mDialog.isShowing())
                 mDialog.dismiss();
             mDialog.setTitle(R.string.tip);
-            mDialog.setMessage(TDevice.getLoginMessage(nErrNo,
-                    LoginActivity.this)
-                    + "("
-                    + LoginActivity.this.getString(R.string.errorCode)
-                    + nErrNo
-                    + ")");
-            mDialog.setPositiveButton(R.string.ok, null);
+            mDialog.setMessage(TDevice.getLoginMessage(nErrNo, LoginActivity.this) + "("
+                    + LoginActivity.this.getString(R.string.errorCode) + nErrNo + ")");
+            mDialog.setPositiveButton(R.string.sure, null);
             mDialog.show();
             mTimer.cancel();
             return 0;

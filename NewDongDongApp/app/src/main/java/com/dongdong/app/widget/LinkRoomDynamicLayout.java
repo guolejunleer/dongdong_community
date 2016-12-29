@@ -129,7 +129,7 @@ public class LinkRoomDynamicLayout extends FrameLayout {
 	private Adapter mAdapter;
 
 	public interface OnDynamicViewChangedPositionListener {
-		void onItemChangedPostition(int oldPosition, int newPosition);
+		void onItemChangedPosition(int oldPosition, int newPosition);
 	}
 
 	private OnDynamicViewChangedPositionListener mDynamicViewChangedListener;
@@ -698,7 +698,7 @@ public class LinkRoomDynamicLayout extends FrameLayout {
 				DEBUG_LOG("rearrange---- mLastDragged=" + mLastDragged
 						+ "; mLastTarget:" + mLastTarget);
 				if (mDynamicViewChangedListener != null) {
-					mDynamicViewChangedListener.onItemChangedPostition(
+					mDynamicViewChangedListener.onItemChangedPosition(
 							mLastDragged, mLastTarget);
 				}
 				DEBUG_LOG("rearrange---- getChildCount()=" + getChildCount());

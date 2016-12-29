@@ -8,7 +8,7 @@ import org.greenrobot.greendao.annotation.Generated;
  * 开门记录实体类
  */
 @Entity(generateConstructors = false)
-public class OpenDoorRecordBean {
+public class OpenDoorRecordBean implements Comparable<OpenDoorRecordBean>{
     @Id(autoincrement = true)
     private Long id;
 
@@ -122,6 +122,20 @@ public class OpenDoorRecordBean {
 
     public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
+    }
+
+    @Override
+    public int compareTo(OpenDoorRecordBean o) {
+        if(o != null){
+            return this.getTimestamp().compareTo(o.getTimestamp());
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        OpenDoorRecordBean object = (OpenDoorRecordBean) o;
+        return this.timestamp.equals(object.timestamp);
     }
 
     @Override

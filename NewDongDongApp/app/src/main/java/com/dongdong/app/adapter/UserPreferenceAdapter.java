@@ -76,7 +76,7 @@ public class UserPreferenceAdapter extends BaseAdapter {
                             public void onNegativeButtonClick() {
                             }
                         }, BaseApplication.context().getString(R.string.tip),
-                        msg, BaseApplication.context().getString(R.string.ok),
+                        msg, BaseApplication.context().getString(R.string.sure),
                         BaseApplication.context().getString(R.string.cancel));
 
             }

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.dongdong.app.widget.TitleBar
         android:id="@+id/tb_title"
@@ -14,26 +13,31 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             style="@style/option_item_ro"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/space_0"
             android:layout_weight="1"
-            android:clickable="false" >
+            android:clickable="false">
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/room_number"
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/tv_room_number"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_16" />
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -43,19 +47,24 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/space_0"
             android:layout_weight="1"
-            android:clickable="false" >
+            android:clickable="false">
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/type"
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/tv_type"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_16" />
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -65,19 +74,24 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/space_0"
             android:layout_weight="1"
-            android:clickable="false" >
+            android:clickable="false">
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/time"
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/tv_timestamp"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_16" />
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -87,19 +101,24 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/space_0"
             android:layout_weight="1"
-            android:clickable="false" >
+            android:clickable="false">
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/device"
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/tv_device_name"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_16" />
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -109,19 +128,24 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/space_0"
             android:layout_weight="1"
-            android:clickable="false" >
+            android:clickable="false">
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/owner"
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/tv_member_name"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_16" />
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -131,19 +155,24 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:clickable="false" >
+            android:clickable="false">
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/door_card_or_mobile_phone"
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/tv_com_number"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_16" />
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -153,19 +182,23 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:clickable="false" >
+            android:clickable="false"
+            android:visibility="gone">
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="身份证号:"
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/tv_id_number"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/text_size_16" />
         </RelativeLayout>
 
         <View style="@style/h_line" />
@@ -175,19 +208,23 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:clickable="false" >
+            android:clickable="false"
+            android:visibility="gone">
 
             <TextView
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="手机号码:"
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/tv_mobile_phone"
                 style="@style/option_item_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/text_size_16" />
         </RelativeLayout>
     </LinearLayout>
 

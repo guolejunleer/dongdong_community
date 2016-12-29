@@ -43,6 +43,16 @@ public class TipDialogManager {
         tipDialog.show();
     }
 
+    public static void showCancelableTipDialog(Context context, String titleId,
+                                               String msgId, boolean cancelable) {
+        final CommonDialog tipDialog = new CommonDialog(context);
+        tipDialog.setTitle(titleId);
+        tipDialog.setMessage(msgId);
+        tipDialog.setPositiveButton(R.string.i_know, null);
+        tipDialog.setCancelable(cancelable);
+        tipDialog.show();
+    }
+
     public static void showOtherLoginDialog(final Context context, String time) {
         final CommonDialog tipDialog = new CommonDialog(context);
         String tip = time
@@ -55,43 +65,39 @@ public class TipDialogManager {
         tipDialog.setPositiveButton(R.string.exit, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                tipDialog.dismiss();
                 // 1.关闭推送
                 PushManager.getInstance().turnOffPush(context);
-                com.baidu.android.pushservice.PushManager
-                        .stopWork(BaseApplication.context());
-                boolean initedDongAccount = DongSDKProxy.isInitedDongAccount();
+                com.baidu.android.pushservice.PushManager.stopWork(BaseApplication.context());
+                boolean initDongAccount = DongConfiguration.mUserInfo != null;
                 // 2.清空SDK信息
-                if (initedDongAccount) {
+                if (initDongAccount) {
                     DongSDKProxy.loginOut();
                     DongConfiguration.clearAllData();
-//                    HomePagerFragment.mIsFirstChooseDefaultDevice = true;
                     AppContext.mAppConfig.remove(
                             AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
                             AppConfig.KEY_DEVICE_ID);
                     AppContext.mAppConfig.remove(
                             AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
                             AppConfig.KEY_IS_LOGIN);
-                    tipDialog.dismiss();
                     AppManager.getAppManager().finishNOTLMainActivity();
-
                 }
-                LogUtils.i("WarnDialog.clazz--->>>logout!!!!initedDongAccount:"
-                        + initedDongAccount);
+                LogUtils.i("WarnDialog.clazz--->>>logout!!!!initDongAccount:"
+                        + initDongAccount);
             }
         });
         tipDialog.setNegativeButton(R.string.relogin, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                boolean initedDongAccount = DongSDKProxy.isInitedDongAccount();
+                tipDialog.dismiss();
+                boolean initDongAccount = DongConfiguration.mUserInfo != null;
                 // 2.清空SDK信息
-                if (initedDongAccount) {
-                    DongSDKProxy
-                            .requestSetPushInfo(PushInfo.PUSHTYPE_FORCE_ADD);
+                if (initDongAccount) {
+                    DongSDKProxy.requestSetPushInfo(PushInfo.PUSHTYPE_FORCE_ADD);
                     BaseApplication.showToastShortInBottom(R.string.loginSucc);
                 }
-                tipDialog.dismiss();
-                LogUtils.i("WarnDialog.clazz--->>>relogin!!!!initedDongAccount:"
-                        + initedDongAccount);
+                LogUtils.i("WarnDialog.clazz--->>>re login!!!!initDongAccount:"
+                        + initDongAccount);
             }
         });
         tipDialog.setCancelable(false);

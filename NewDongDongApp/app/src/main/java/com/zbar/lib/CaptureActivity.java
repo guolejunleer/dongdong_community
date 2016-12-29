@@ -2,6 +2,7 @@ package com.zbar.lib;
 
 import java.io.IOException;
 
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Point;
 import android.media.AudioManager;
@@ -25,7 +26,10 @@ import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.widget.TitleBar;
 
-public class CaptureActivity extends BaseActivity implements Callback, TitleBar.OnTitleBarClickListener {
+public class CaptureActivity extends BaseActivity implements Callback,
+        TitleBar.OnTitleBarClickListener {
+
+    public static final String INTENT_RESULT_KEY = "result_key";
 
     private CaptureActivityHandler handler;
     private boolean hasSurface;
@@ -162,9 +166,15 @@ public class CaptureActivity extends BaseActivity implements Callback, TitleBar.
     public void handleDecode(String result) {
         inactivityTimer.onActivity();
         playBeepSoundAndVibrate();
-        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT)
-                .show();
-        // AppContext.deviceSerialNO=result;先注释掉，编译通过
+//        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT)
+//                .show();
+        //数据是使用Intent返回
+        Intent intent = new Intent();
+        //把返回数据存入Intent
+        intent.putExtra(INTENT_RESULT_KEY, result);
+        LogUtils.i("CaptureActivity.clazz--->>>handleDecode result:" + result);
+        //设置返回数据
+        CaptureActivity.this.setResult(RESULT_OK, intent);
         handler.sendEmptyMessage(R.id.restart_preview);
         CaptureActivity.this.finish();
     }

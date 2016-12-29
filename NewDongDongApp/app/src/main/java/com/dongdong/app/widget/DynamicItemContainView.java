@@ -6,7 +6,7 @@ import android.widget.RelativeLayout;
 
 public class DynamicItemContainView extends RelativeLayout {
 
-	private boolean mDragStatu = true;
+	private boolean mDragState = true;
 	private String name;
 
 	public DynamicItemContainView(Context context, AttributeSet attrs,
@@ -37,11 +37,11 @@ public class DynamicItemContainView extends RelativeLayout {
 	}
 
 	public void setDragStatu(boolean dragStatu) {
-		mDragStatu = dragStatu;
+		mDragState = dragStatu;
 	}
 
 	public boolean getDragStatu() {
-		return mDragStatu;
+		return mDragState;
 	}
 
 }

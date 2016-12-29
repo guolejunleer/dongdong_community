@@ -11,17 +11,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dd121.community.R;
-import com.ddclient.MobileClientLib.InfoUser;
 import com.ddclient.configuration.DongConfiguration;
-import com.ddclient.dongsdk.AbstractDongSDKProxy.DongAccountCallbackImp;
+import com.ddclient.dongsdk.AbstractDongCallbackProxy;
 import com.ddclient.dongsdk.DeviceInfo;
 import com.ddclient.dongsdk.DongSDKProxy;
+import com.ddclient.jnisdk.InfoUser;
 import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
-import com.dongdong.app.MainActivity;
 import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
-import com.dongdong.app.fragment.HomePagerFragment;
 import com.dongdong.app.ui.dialog.CommonDialog;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.TDevice;
@@ -42,7 +40,8 @@ public class DeviceSettingsActivity extends BaseActivity implements
 
     private CommonDialog mUpdateDialog, mDeleteDialog;
     private DeviceInfo mDeviceInfo;
-    private DeviceSettingsActivityDongAccountProxy mAccountProxy;
+    private DeviceSettingsActivityDongAccountProxy mAccountProxy
+            = new DeviceSettingsActivityDongAccountProxy();
 
     @Override
     protected int getLayoutId() {
@@ -63,8 +62,6 @@ public class DeviceSettingsActivity extends BaseActivity implements
 
     @Override
     public void initData() {
-        mAccountProxy = new DeviceSettingsActivityDongAccountProxy();
-
         mTitleBar.setAddArrowShowing(false);
         mTitleBar.setOnTitleBarClickListener(this);
         mUpdateDialog = new CommonDialog(this);
@@ -73,15 +70,15 @@ public class DeviceSettingsActivity extends BaseActivity implements
         Intent intent = getIntent();
         mDeviceInfo = (DeviceInfo) intent
                 .getSerializableExtra(AppConfig.BUNDLE_KEY_DEVICE_INFO);
-        mDeviceSer.setText(String.format("%s", getString(R.string.device_serial)
+        mDeviceSer.setText(String.format("%s", getString(R.string.device_serial) + " "
                 + mDeviceInfo.deviceSerialNO));
         mEtDeviceName.setText(mDeviceInfo.deviceName);
         mTitleBar.setTitleBarContent(mDeviceInfo.deviceName);
 
-        String deviceSeri = (String) AppContext.mAppConfig.getConfigValue(
+        int defaultDeviceId = (int) AppContext.mAppConfig.getConfigValue(
                 AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                AppConfig.KEY_DEVICE_SERIAL, "");
-        if (deviceSeri.equals(mDeviceInfo.deviceSerialNO)) {
+                AppConfig.KEY_DEFAULT_DEVICE_ID, 0);
+        if (defaultDeviceId == mDeviceInfo.dwDeviceID) {
             mTvDefaultDevice.setText(getString(R.string.yes));
         } else {
             mTvDefaultDevice.setText(DeviceSettingsActivity.this.getResources()
@@ -93,7 +90,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
         mTvAuthorizedAccount.setOnClickListener(this);
 
         LogUtils.i("DeviceSettingsActivity.clazz--->>>initData mDeviceInfo:"
-                + mDeviceInfo + ",deviceSeri:" + deviceSeri);
+                + mDeviceInfo + ",defaultDeviceId:" + defaultDeviceId);
 
     }
 
@@ -116,12 +113,10 @@ public class DeviceSettingsActivity extends BaseActivity implements
 
     @Override
     public void onTitleClick() {
-
     }
 
     @Override
     public void onAddClick() {
-
     }
 
     @Override
@@ -147,7 +142,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
                 break;
             case R.id.tv_delete_device:
                 mUpdateDialog.setMessage(R.string.deldeteDevice);
-                mUpdateDialog.setPositiveButton(getString(R.string.ok),
+                mUpdateDialog.setPositiveButton(getString(R.string.sure),
                         new DialogInterface.OnClickListener() {
 
                             @Override
@@ -170,14 +165,14 @@ public class DeviceSettingsActivity extends BaseActivity implements
                 break;
             case R.id.rl_default_device:
                 // 可以优化用户体验,提示用户是否确认
-                String deviceSerialNO = mDeviceInfo.deviceSerialNO;
-                String loacalDeviceSeri = (String) AppContext.mAppConfig
+                int deviceId = mDeviceInfo.dwDeviceID;
+                int localDeviceId = (int) AppContext.mAppConfig
                         .getConfigValue(AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                                AppConfig.KEY_DEVICE_SERIAL, "");
-                if (loacalDeviceSeri.equals(deviceSerialNO)) {
+                                DongConfiguration.mUserInfo.userID + "", 0);
+                if (localDeviceId == deviceId) {
                     mTvDefaultDevice.setText(DeviceSettingsActivity.this
                             .getResources().getString(R.string.no));
-                    deviceSerialNO = "";
+                    deviceId = 0;
                 } else {
                     mTvDefaultDevice.setText(DeviceSettingsActivity.this
                             .getResources().getString(R.string.yes));
@@ -185,7 +180,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
                 }
                 AppContext.mAppConfig.setConfigValue(
                         AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                        AppConfig.KEY_DEVICE_SERIAL, deviceSerialNO);
+                        DongConfiguration.mUserInfo.userID + "", deviceId);
                 break;
             case R.id.tv_authorizationaccount:
                 if (TDevice.devieType(mDeviceInfo, 23)) {
@@ -202,23 +197,23 @@ public class DeviceSettingsActivity extends BaseActivity implements
     }
 
     private class DeviceSettingsActivityDongAccountProxy extends
-            DongAccountCallbackImp {
+            AbstractDongCallbackProxy.DongAccountCallbackImp {
 
         @Override
-        public int OnAuthenticate(InfoUser tInfo) {
+        public int onAuthenticate(InfoUser tInfo) {
             LogUtils.i("DeviceSettingsActivity.clazz--->>>OnAuthenticate........tInfo:"
                     + tInfo);
             return 0;
         }
 
         @Override
-        public int OnConnect() {
+        public int onConnect() {
             LogUtils.i("DeviceSettingsActivity.clazz--->>>OnConnect........");
             return 0;
         }
 
         @Override
-        public int OnDelDevice(int result) {
+        public int onDelDevice(int result) {
             LogUtils.i("DeviceSettingsActivity.clazz--->>>OnDelDevice........result:"
                     + result);
             if (mUpdateDialog != null && mUpdateDialog.isShowing()) {
@@ -229,6 +224,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
             }
             if (result == 0) {
                 BaseApplication.showToastShortInBottom(R.string.suc);
+                finish();
             } else {
                 BaseApplication.showToastShortInBottom(R.string.fail);
             }
@@ -236,7 +232,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
         }
 
         @Override
-        public int OnSetDeviceName(int result) {
+        public int onSetDeviceName(int result) {
             LogUtils.i("DeviceSettings.clazz--->>>OnSetDeviceName........result:"
                     + result);
             if (result == 0) {
@@ -254,7 +250,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
         }
 
         @Override
-        public int OnUserError(int nErrNo) {
+        public int onUserError(int nErrNo) {
             LogUtils.i("DeviceSettings.clazz--->>>OnUserError........nErrNo:"
                     + nErrNo);
             return 0;

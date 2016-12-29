@@ -1,6 +1,6 @@
 package com.dongdong.app.bean;
 
-import com.ddclient.MobileClientLib.InfoUser;
+import com.ddclient.jnisdk.InfoUser;
 
 public class UserInfoBean {
 	private InfoUser userInfo;

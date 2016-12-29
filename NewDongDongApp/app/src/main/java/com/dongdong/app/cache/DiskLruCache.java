@@ -209,7 +209,7 @@ public final class DiskLruCache implements Closeable {
 	 * @throws EOFException
 	 *             if the stream is exhausted before the next newline character.
 	 */
-	public static String readAsciiLine(InputStream in) throws IOException {
+	private static String readAsciiLine(InputStream in) throws IOException {
 		// TODO: support UTF-8 here instead
 
 		StringBuilder result = new StringBuilder(80);
@@ -234,7 +234,7 @@ public final class DiskLruCache implements Closeable {
 	 * Closes 'closeable', ignoring any checked exceptions. Does nothing if
 	 * 'closeable' is null.
 	 */
-	public static void closeQuietly(Closeable closeable) {
+	private static void closeQuietly(Closeable closeable) {
 		if (closeable != null) {
 			try {
 				closeable.close();
@@ -249,7 +249,7 @@ public final class DiskLruCache implements Closeable {
 	 * Recursively delete everything in {@code dir}.
 	 */
 	// TODO: this should specify paths as Strings rather than as Files
-	public static void deleteContents(File dir) throws IOException {
+	private static void deleteContents(File dir) throws IOException {
 		File[] files = dir.listFiles();
 		if (files == null) {
 			throw new IllegalArgumentException("not a directory: " + dir);
@@ -301,6 +301,7 @@ public final class DiskLruCache implements Closeable {
 	 * @param directory
 	 *            a writable directory
 	 * @param appVersion
+	 *            App version
 	 * @param valueCount
 	 *            the number of values per cache entry. Must be positive.
 	 * @param maxSize

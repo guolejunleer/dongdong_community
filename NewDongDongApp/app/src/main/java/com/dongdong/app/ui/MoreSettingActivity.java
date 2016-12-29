@@ -1,7 +1,6 @@
 package com.dongdong.app.ui;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
@@ -87,7 +86,7 @@ public class MoreSettingActivity extends BaseActivity implements OnClickListener
 			CommonDialog dialog = new CommonDialog(MoreSettingActivity.this);
 			dialog.setTitle(R.string.warn);
 			dialog.setMessage(R.string.researtDivece);
-			dialog.setPositiveButton(R.string.ok,
+			dialog.setPositiveButton(R.string.sure,
 					new DialogInterface.OnClickListener() {
 
 						@Override

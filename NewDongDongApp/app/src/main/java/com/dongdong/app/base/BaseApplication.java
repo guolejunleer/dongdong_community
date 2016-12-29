@@ -33,8 +33,8 @@ public class BaseApplication extends Application {
 	public static final int FUNCTION_APPLYKEY = 3;
 	public static final int FUNCTION_SHAPEOPENDOOR = 4;
 	public static final int FUNCTION_REPAIR = 5;
-	public static final int FUNCTION_HOMESAFE = 6;
-	public static final int FUNCTION_VISITORRECORD = 7;
+	public static final int FUNCTION_VISITORPHOTO = 6;
+	public static final int FUNCTION_OPENDOOR = 7;
 	public static final int FUNCTION_PHONE = 8;
 	public static final int FUNCTION_DD_FUNCTION_FINANCE = 9;
 	public static final int FUNCTION_DD_FUNCTION_PARKING = 10;
@@ -196,10 +196,9 @@ public class BaseApplication extends Application {
 					R.mipmap.ic_dd_monitor, 2));
 			list.add(new FunctionBean(mContext.getString(R.string.applykey),
 					R.mipmap.ic_dd_applykey, 3));
-			list.add(new FunctionBean(mContext
-					.getString(R.string.visitorrecord),
+			list.add(new FunctionBean(mContext.getString(R.string.opendoor),
 					R.mipmap.ic_dd_visitorrecord, 4));
-			list.add(new FunctionBean(mContext.getString(R.string.homesafe),
+			list.add(new FunctionBean(mContext.getString(R.string.visitorphoto),
 					R.mipmap.ic_dd_homesafe, 5));
 			list.add(new FunctionBean(mContext.getString(R.string.repair),
 					R.mipmap.ic_dd_repair, 6));
@@ -216,10 +215,10 @@ public class BaseApplication extends Application {
 			list.add(new FunctionBean(mContext.getString(R.string.applykey),
 					FUNCTION_APPLYKEY, 4));
 			list.add(new FunctionBean(mContext
-					.getString(R.string.visitorrecord), FUNCTION_VISITORRECORD,
+					.getString(R.string.opendoor), FUNCTION_OPENDOOR,
 					5));
-			list.add(new FunctionBean(mContext.getString(R.string.homesafe),
-					FUNCTION_HOMESAFE, 6));
+			list.add(new FunctionBean(mContext.getString(R.string.visitorphoto),
+					FUNCTION_VISITORPHOTO, 6));
 			list.add(new FunctionBean(mContext
 					.getString(R.string.dd_function_parking),
 					FUNCTION_DD_FUNCTION_PARKING, 7));

@@ -1,13 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#f5f5f5"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5"
+    android:orientation="vertical">
 
     <com.dongdong.app.widget.TitleBar
         android:id="@+id/tb_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,12 +32,12 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/space_10"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14"/>
+                android:textSize="@dimen/text_size_14" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/space_1"
-                android:background="#eee"/>
+                android:background="#eee" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,36 +48,38 @@
                 <TextView
                     android:layout_width="@dimen/space_0"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="0.6"
                     android:gravity="center_vertical"
                     android:text="@string/deviceName"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14"/>
+                    android:textSize="@dimen/text_size_14" />
 
                 <EditText
                     android:id="@+id/tv_device_name"
                     android:layout_width="@dimen/space_0"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="2"
                     android:background="@color/white"
                     android:inputType="text"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14"/>
+                    android:textSize="@dimen/text_size_14" />
 
                 <Button
                     android:id="@+id/bt_update"
                     android:layout_width="@dimen/space_0"
                     android:layout_height="@dimen/space_30"
-                    android:layout_weight="0.7"
+                    android:layout_weight="0.4"
                     android:background="@drawable/btn_background"
                     android:text="@string/update"
-                    android:textSize="@dimen/text_size_14"/>
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_16" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/space_1"
-                android:background="#eee"/>
+                android:background="#eee" />
 
 
             <TextView
@@ -89,13 +91,13 @@
                 android:padding="@dimen/space_10"
                 android:text="@string/deviceMan"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14"/>
+                android:textSize="@dimen/text_size_14" />
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/space_1"
-                android:background="#eee"/>
+                android:background="#eee" />
 
             <RelativeLayout
                 android:id="@+id/rl_default_device"
@@ -110,33 +112,34 @@
                     android:layout_centerVertical="true"
                     android:text="@string/def"
                     android:textColor="#000000"
-                    android:textSize="@dimen/text_size_14"/>
+                    android:textSize="@dimen/text_size_14" />
 
                 <TextView
                     android:id="@+id/tv_defaultText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:drawablePadding="@dimen/space_5"
                     android:drawableRight="@mipmap/space_favor_item_arrow"
-                    android:textSize="@dimen/text_size_14"/>
+                    android:textSize="@dimen/text_size_14" />
             </RelativeLayout>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/space_1"
-                android:background="#eee"/>
+                android:background="#eee" />
 
             <TextView
                 android:id="@+id/tv_delete_device"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:background="@drawable/widget_list_item_bg_selector"
                 android:drawableRight="@mipmap/space_favor_item_arrow"
+                android:gravity="center_vertical"
                 android:padding="@dimen/space_10"
                 android:text="@string/delete_device"
                 android:textColor="#000000"
-                android:textSize="@dimen/text_size_14"/>
+                android:textSize="@dimen/text_size_14" />
         </LinearLayout>
     </ScrollView>
 

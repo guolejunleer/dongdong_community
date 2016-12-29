@@ -1,7 +1,5 @@
 package com.dongdong.app.ui;
 
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,12 +7,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.dd121.community.R;
-import com.ddclient.MobileClientLib.InfoUser;
 import com.ddclient.configuration.DongConfiguration;
-import com.ddclient.dongsdk.AbstractDongSDKProxy.DongAccountCallbackImp;
+import com.ddclient.dongsdk.AbstractDongCallbackProxy;
 import com.ddclient.dongsdk.DeviceInfo;
 import com.ddclient.dongsdk.DongSDKProxy;
-import com.ddclient.push.PushMessageChange;
+import com.ddclient.jnisdk.InfoUser;
+import com.ddclient.push.DongPushMsgManager;
 import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.MainActivity;
@@ -27,13 +25,16 @@ import com.dongdong.app.util.UIHelper;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
-public class DeviceListActivity extends BaseActivity implements
-        OnTitleBarClickListener {
+import java.util.ArrayList;
+
+public class DeviceListActivity extends BaseActivity implements OnTitleBarClickListener {
 
     private ListView mLvInfo;
     private TitleBar mTitleBar;
     private DeviceInfoAdapter mInfoAdapter;
-    private DeviceListActivityDongAccountProxy mAccountProxy;
+    private DeviceListActivityDongAccountProxy mAccountProxy
+            = new DeviceListActivityDongAccountProxy();
+    ;
 
     @Override
     protected int getLayoutId() {
@@ -50,7 +51,6 @@ public class DeviceListActivity extends BaseActivity implements
 
     @Override
     public void initData() {
-        mAccountProxy = new DeviceListActivityDongAccountProxy();
         mTitleBar.setTitleBarContent(getString(R.string.list));
         mTitleBar.setBackArrowShowing(true);
         mTitleBar.setFinishShowing(false);
@@ -121,22 +121,22 @@ public class DeviceListActivity extends BaseActivity implements
     }
 
     private class DeviceListActivityDongAccountProxy extends
-            DongAccountCallbackImp {
+            AbstractDongCallbackProxy.DongAccountCallbackImp {
 
         @Override
-        public int OnAuthenticate(InfoUser infoUser) {
+        public int onAuthenticate(InfoUser infoUser) {
             LogUtils.i("DeviceListActivity.clazz -->>> OnAuthenticate infoUser:" + infoUser);
             return 0;
         }
 
         @Override
-        public int OnLoginOtherPlace(String tip) {
+        public int onLoginOtherPlace(String tip) {
             TipDialogManager.showOtherLoginDialog(DeviceListActivity.this, tip);
             return 0;
         }
 
         @Override
-        public int OnCall(ArrayList<DeviceInfo> infos) {
+        public int onCall(ArrayList<DeviceInfo> infos) {
             LogUtils.i("DeviceListActivity.clazz -->>OnCall infos:" + infos);
             int size = infos.size();
             if (size > 0) {
@@ -145,14 +145,14 @@ public class DeviceListActivity extends BaseActivity implements
                 LogUtils.i("DeviceListActivity.clazz-->>OnCall() deviceName:"
                         + deviceInfo.deviceName + ",dwDeviceID："
                         + deviceInfo.dwDeviceID + ",msg:" + deviceInfo.msg);
-                PushMessageChange.pushMessageChange(DeviceListActivity.this,
+                DongPushMsgManager.pushMessageChange(DeviceListActivity.this,
                         message);
             }
             return 0;
         }
 
         @Override
-        public int OnNewListInfo() {
+        public int onNewListInfo() {
             ArrayList<DeviceInfo> deviceList = DongSDKProxy.requestGetDeviceListFromCache();
             mInfoAdapter.setData(deviceList);
             mInfoAdapter.notifyDataSetChanged();
@@ -161,7 +161,7 @@ public class DeviceListActivity extends BaseActivity implements
         }
 
         @Override
-        public int OnUserError(int error) {
+        public int onUserError(int error) {
             LogUtils.i("DeviceListActivity.clazz -->>> OnUserError error:" + error);
             return 0;
         }
