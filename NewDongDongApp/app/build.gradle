@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "24.0.0"
 
     defaultConfig {
@@ -17,6 +17,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //App:ucilZA4JfMuw4YraheTQyFCJATjEx1QXsqsaiimFC7JS1P/0CLK9ZPVchVyzhfUJ
+    //leelin:5MOdvgqhFLKeVEsLt7Gu/ueAsfeZK0Y8uuuyaaK1g6iZIEG5hGQcqRUi1ukSiAYr
+
+    //编译配置，第三方集成我们的SDK，只需要拷贝AndroidMainfest中的部分配置，所有改动在这里修改即可
+    //编译配置，第三方集成我们的SDK，只需要拷贝AndroidMainfest中的部分配置，所有改动在这里修改即可
+    defaultConfig {
+        manifestPlaceholders = [BUILD_TIME_VALUE       : new Date().format('yyyyMMdd'),
+                                DONG_APPID_VALUE       : '5MOdvgqhFLKeVEsLt7Gu/ueAsfeZK0Y8uuuyaaK1g6iZIEG5hGQcqRUi1ukSiAYr',//咚咚AppID(咚咚公司生成)
+                                GT_PUSH_APPID_VALUE    : 'mFIgANbqUQ7NFYy16ILrs6',//个推AppID
+                                GT_PUSH_APPSECRET_VALUE: 'tsmDKU3n8t5OIF87K3gGu6',//个推App Secret
+                                GT_PUSH_APPKEY_VALUE   : 'z1j2UutS8AAQBIQDKmsxR9',//个推App Key
+                                BAIDU_API_KEY_VALUE    : '1iCYEhLzVXez2HlaKyHkhPLv']//百度api key
+    }
+
+
 }
 
 buildscript {
@@ -34,7 +49,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile files('libs/fastjson-1.2.8.jar')
-    compile files('libs/GetuiSDK2.9.0.0.jar')
     compile files('libs/pushservice-5.1.0.48.jar')
     compile files('libs/xgcameralib.jar')
     compile 'com.loopj.android:android-async-http:1.4.9'
@@ -46,6 +60,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:22.2.1'
     compile files('libs/DongDongSDK-1.1.1.0.jar')
     compile files('libs/recyclerview-v7-22.2.1-sources.jar')
+    compile files('libs/GetuiSDK2.9.5.0.jar')
 }
 
 greendao {

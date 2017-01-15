@@ -11,8 +11,7 @@ import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 public class OpenDoorDetailActivity extends BaseActivity implements
         OnTitleBarClickListener {
     private TextView mTvRoomNumber, mTvType, mTvTimeStamp, mTvDeviceName,
-            mTvMemberName, mTvComNumber;
-//            mTvIdNumber, mTvPhone;
+            mTvMemberName, mTvIdNumber, mTvComNumber, mTvPhone;
 
     @Override
     protected int getLayoutId() {
@@ -31,9 +30,9 @@ public class OpenDoorDetailActivity extends BaseActivity implements
         mTvTimeStamp = (TextView) findViewById(R.id.tv_timestamp);
         mTvDeviceName = (TextView) findViewById(R.id.tv_device_name);
         mTvMemberName = (TextView) findViewById(R.id.tv_member_name);
-//        mTvIdNumber = (TextView) findViewById(R.id.tv_id_number);
+        mTvIdNumber = (TextView) findViewById(R.id.tv_id_number);
         mTvComNumber = (TextView) findViewById(R.id.tv_com_number);
-//        mTvPhone = (TextView) findViewById(R.id.tv_mobile_phone);
+        mTvPhone = (TextView) findViewById(R.id.tv_mobile_phone);
     }
 
     @Override
@@ -43,9 +42,9 @@ public class OpenDoorDetailActivity extends BaseActivity implements
         String timestamp = this.getIntent().getStringExtra("timestamp");
         String deviceName = this.getIntent().getStringExtra("deviceName");
         String memberName = this.getIntent().getStringExtra("memberName");
-//        String idNumber = this.getIntent().getStringExtra("idNumber");
+        String idNumber = this.getIntent().getStringExtra("idNumber");
         String comNumber = this.getIntent().getStringExtra("comNumber");
-//        String mobilePhone = this.getIntent().getStringExtra("mobilePhone");
+        String mobilePhone = this.getIntent().getStringExtra("mobilePhone");
 
         if (TextUtils.isEmpty(roomNumber)) {
             mTvRoomNumber.setText("");
@@ -72,22 +71,23 @@ public class OpenDoorDetailActivity extends BaseActivity implements
         } else {
             mTvMemberName.setText(memberName);
         }
-//        if (TextUtils.isEmpty(idNumber)) {
-//            mTvIdNumber.setText("");
-//        } else {
-//            //用于显示的加*身份证
-//            mTvIdNumber.setText(idNumber.substring(0, 5) + "*******" + idNumber.substring(14));
-//        }
+        if (TextUtils.isEmpty(idNumber)) {
+            mTvIdNumber.setText("");
+        } else {
+            // 用于显示的加*身份证
+            //mTvIdNumber.setText(idNumber.substring(0, 5) + "*******" + idNumber.substring(14));
+        }
         if (TextUtils.isEmpty(comNumber)) {
             mTvComNumber.setText("");
         } else {
             mTvComNumber.setText(comNumber);
         }
-//        if (TextUtils.isEmpty(mobilePhone)) {
-//            mTvPhone.setText("");
-//        } else {
-//            mTvPhone.setText(mobilePhone);
-//        }
+        if (TextUtils.isEmpty(mobilePhone)) {
+            mTvPhone.setText("");
+        } else {
+            mTvPhone.setText(mobilePhone);
+        }
+
     }
 
     @Override

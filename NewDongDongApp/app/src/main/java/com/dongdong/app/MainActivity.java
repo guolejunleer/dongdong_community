@@ -59,8 +59,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DongSDK.initializePush(this, DongSDK.PUSH_TYPE_ALL);// 1.初始化推送
-        PushManager.getInstance().turnOffPush(this);
-        com.baidu.android.pushservice.PushManager.stopWork(this);
+//        PushManager.getInstance().turnOffPush(this);
+//        com.baidu.android.pushservice.PushManager.stopWork(this);
         AppManager.getAppManager().addActivity(this);
         setContentView(R.layout.activity_main);
         StatusBarCompatUtils.compat(this);
@@ -112,7 +112,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         //7.检查网络
         int networkType = TDevice.getNetworkType();
         if (networkType == 0) {
-            TipDialogManager.showWithoutNetworDialog(this, this);
+            TipDialogManager.showWithoutNetDialog(this, this);
         } else if (networkType == 2 || networkType == 3) {
             TipDialogManager.showNormalTipDialog(this, this,
                     R.string.tip, R.string.tip_choose_net,
@@ -194,7 +194,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
                 break;
             case R.id.iv_unclock:// 点击了开锁操作按钮
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(this, null);
+                    TipDialogManager.showWithoutNetDialog(this, null);
                     return;
                 }
                 if (Math.abs(System.currentTimeMillis() - mLastTime) <= 1000) {

@@ -183,7 +183,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
                         DongConfiguration.mUserInfo.userID + "", deviceId);
                 break;
             case R.id.tv_authorizationaccount:
-                if (TDevice.devieType(mDeviceInfo, 23)) {
+                if (TDevice.deviceType(mDeviceInfo, 23)) {
                     BaseApplication.showToastShortInBottom(R.string.no_permissions);
                     return;
                 }

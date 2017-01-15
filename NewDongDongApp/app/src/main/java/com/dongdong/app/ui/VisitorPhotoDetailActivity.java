@@ -38,8 +38,8 @@ public class VisitorPhotoDetailActivity extends BaseActivity implements
     @Override
     public void initData() {
         Bitmap photo = this.getIntent().getParcelableExtra(VisitorPhotoActivity.INTENT_PHOTO_KEY);
-        String deviceName = this.getIntent().getStringExtra(VisitorPhotoActivity.INTENT_DEVICE_NAME_KEY);
-        String roomNum = this.getIntent().getStringExtra(VisitorPhotoActivity.INTENT_ROOM_NUMBER_KEY);
+        String deviceName = this.getIntent().getStringExtra(VisitorPhotoActivity.INTENT_DEVICENAME_KEY);
+        String roomNum = this.getIntent().getStringExtra(VisitorPhotoActivity.INTENT_ROOMNUM_KEY);
         String photoTimestamp = this.getIntent().getStringExtra(VisitorPhotoActivity.INTENT_TIMESTAMP_KEY);
         String type = this.getIntent().getStringExtra(VisitorPhotoActivity.INTENT_TYPE_KEY);
 
@@ -48,27 +48,27 @@ public class VisitorPhotoDetailActivity extends BaseActivity implements
         }
 
         if (!TextUtils.isEmpty(deviceName)) {
-            mTvDeviceName.setText(String.format("%s", getString(R.string.device) + deviceName));
+            mTvDeviceName.setText(String.format("%s", "设备 " + deviceName));
         } else {
-            mTvDeviceName.setText(getString(R.string.unKnow));
+            mTvDeviceName.setText("未知");
         }
 
         if (!TextUtils.isEmpty(roomNum)) {
-            mTvRoomNum.setText(String.format("%s", getString(R.string.room_number) + roomNum));
+            mTvRoomNum.setText("房号 " + roomNum);
         } else {
-            mTvRoomNum.setText(getString(R.string.unKnow));
+            mTvRoomNum.setText("未知");
         }
 
         if (!TextUtils.isEmpty(photoTimestamp)) {
-            mTvPhotoTimestamp.setText(String.format("%s", getString(R.string.time) + photoTimestamp));
+            mTvPhotoTimestamp.setText(String.format("%s", "时间 " + photoTimestamp));
         } else {
-            mTvPhotoTimestamp.setText(getString(R.string.unKnow));
+            mTvPhotoTimestamp.setText("未知");
         }
 
         if (!TextUtils.isEmpty(type)) {
-            mTvType.setText(String.format("%s", getString(R.string.type) + type));
+            mTvType.setText(String.format("%s", "类型 " + type));
         } else {
-            mTvType.setText(getString(R.string.unKnow));
+            mTvType.setText("未知");
         }
     }
 

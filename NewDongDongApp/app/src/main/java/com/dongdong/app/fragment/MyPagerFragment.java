@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.dd121.community.R;
 import com.ddclient.configuration.DongConfiguration;
-import com.ddclient.dongsdk.DongSDKProxy;
 import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.base.BaseApplication;
@@ -100,7 +99,7 @@ public class MyPagerFragment extends BaseFragment {
         switch (v.getId()) {
             case R.id.iv_avatar:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                    TipDialogManager.showWithoutNetDialog(getActivity(), null);
                     return;
                 }
                 if (DongConfiguration.mUserInfo == null) {
@@ -110,7 +109,7 @@ public class MyPagerFragment extends BaseFragment {
                 break;
             case R.id.ll_myfamily:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                    TipDialogManager.showWithoutNetDialog(getActivity(), null);
                     return;
                 }
                 if (DongConfiguration.mUserInfo == null) {
@@ -121,7 +120,7 @@ public class MyPagerFragment extends BaseFragment {
                 break;
             case R.id.ll_myhouse:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                    TipDialogManager.showWithoutNetDialog(getActivity(), null);
                     return;
                 }
                 if (DongConfiguration.mUserInfo == null) {
@@ -132,7 +131,7 @@ public class MyPagerFragment extends BaseFragment {
                 break;
             case R.id.ll_myvillage:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                    TipDialogManager.showWithoutNetDialog(getActivity(), null);
                     return;
                 }
                 if (DongConfiguration.mUserInfo == null) {
@@ -143,7 +142,7 @@ public class MyPagerFragment extends BaseFragment {
                 break;
             case R.id.ll_mycaller:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                    TipDialogManager.showWithoutNetDialog(getActivity(), null);
                     return;
                 }
                 if (DongConfiguration.mUserInfo == null) {

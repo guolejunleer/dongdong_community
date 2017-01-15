@@ -112,9 +112,9 @@ public class TDevice {
     /**
      * px转sp
      *
-     * @param fontScale
-     * @param pxVal
-     * @return
+     * @param context 应用上下文
+     * @param pxVal   传入值
+     * @return 转换后的值
      */
     public static float px2sp(Context context, float pxVal) {
         return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
@@ -282,26 +282,20 @@ public class TDevice {
     /**
      * 判断是否有网络
      *
-     * @return
-     */
-    /**
-     * @return
+     * @return hasInternet
      */
     public static boolean hasInternet() {
         boolean flag;
-        if (((ConnectivityManager) BaseApplication.context().getSystemService(
-                "connectivity")).getActiveNetworkInfo() != null)
-            flag = true;
-        else
-            flag = false;
+        flag = ((ConnectivityManager) BaseApplication.context().
+                getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
         return flag;
     }
 
     /**
      * 判断应用包是否存在
      *
-     * @param pckName
-     * @return
+     * @param pckName 应用包
+     * @return 是否存在
      */
     public static boolean isPackageExist(String pckName) {
         try {
@@ -823,7 +817,7 @@ public class TDevice {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * 判断是否有状态栏
      *
@@ -935,12 +929,12 @@ public class TDevice {
         resolver.insert(uri, values);
     }
 
-    public static boolean devieType(DeviceInfo infodevice, int i) {// 23判断设备是授权设备还是我的设备
-        if (infodevice == null)
+    public static boolean deviceType(DeviceInfo deviceInfo, int i) {// 23判断设备是授权设备还是我的设备
+        if (deviceInfo == null)
             return false;
         int x = 1 << i;
-        if (infodevice.dwCapacity != 0) {
-            if ((x & infodevice.dwCapacity) != 0) {
+        if (deviceInfo.dwCapacity != 0) {
+            if ((x & deviceInfo.dwCapacity) != 0) {
                 return true;
             }
         }

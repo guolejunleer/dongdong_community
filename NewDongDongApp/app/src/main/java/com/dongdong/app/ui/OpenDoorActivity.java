@@ -58,7 +58,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
     private OpenDoorAdapter mOpenDoorAdapter;
 
     //上拉加载所需要的最小高度
-//    private static float mUpDownloadNeedHeight;
+    private static float mUpDownloadNeedHeight;
     private boolean mIsLoading;
     private int mStartIndex = 0;
     final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -75,6 +75,18 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
         RecyclerView rvOpenDoor = (RecyclerView) findViewById(R.id.rv_open_door_record);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         TitleBar titleBar = (TitleBar) this.findViewById(R.id.tb_title);
+
+
+        float density = TDevice.getDensity();
+        int titleBarHeight = (int) (density * getResources().getDimension(R.dimen.title_bard_height));
+
+        mUpDownloadNeedHeight = TDevice.getScreenHeight() - TDevice.getStatusBarHeight()
+                - titleBarHeight;
+
+        LogUtils.i("OpenDoorActivity.clazz-->titleBarHeight:"
+                + titleBarHeight + ",density:" + density
+                + ",TDevice.getScreenHeight():" + TDevice.getScreenHeight());
+
         titleBar.setTitleBarContent(getString(R.string.opendoor));
         titleBar.setOnTitleBarClickListener(this);
         titleBar.setAddArrowShowing(false);
@@ -91,16 +103,6 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
         rvOpenDoor.setAdapter(mOpenDoorAdapter);
         mOpenDoorAdapter.setOnItemClickListener(onOpenDoorItemClickListener);
         mOpenDoorAdapter.changeLoadStatus(DO_NOT_LOAD);
-
-        //        float density = TDevice.getDensity();
-//        int titleBarHeight = (int) (density * getResources().getDimension(R.dimen.title_bard_height));
-//
-//        mUpDownloadNeedHeight = TDevice.getScreenHeight() - TDevice.getStatusBarHeight()
-//                - titleBarHeight;
-//
-//        LogUtils.i("OpenDoorActivity.clazz-->titleBarHeight:"
-//                + titleBarHeight + ",density:" + density
-//                + ",TDevice.getScreenHeight():" + TDevice.getScreenHeight());
     }
 
     @Override
@@ -199,9 +201,9 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
                     intent.putExtra("timestamp", openDoorRecordBean.getTimestamp());
                     intent.putExtra("deviceName", openDoorRecordBean.getDeviceName());
                     intent.putExtra("memberName", openDoorRecordBean.getMemberName());
-//                    intent.putExtra("idNumber", openDoorRecordBean.getIdNumber());
+                    intent.putExtra("idNumber", openDoorRecordBean.getIdNumber());
                     intent.putExtra("comNumber", openDoorRecordBean.getComNumber());
-//                    intent.putExtra("mobilePhone", openDoorRecordBean.getMobilePhone());
+                    intent.putExtra("mobilePhone", openDoorRecordBean.getMobilePhone());
                     startActivity(intent);
                 }
             };
@@ -275,7 +277,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
      *
      * @param localData 本地开门记录数据
      */
-    public void deleteLocal(List<OpenDoorRecordBean> localData) {
+    public void delete(List<OpenDoorRecordBean> localData) {
         int count = localData.size() - AppConfig.MAX_OPEN_DOOR_RECORD_COUNT;
         if (count > 0) {
             List<Long> doorRecordIndex = new ArrayList<>();
@@ -337,7 +339,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
                 mAdapterList.size() + ",newLocalList.size:" + newLocalList.size()
                 + ",netDataList.size():" + netDataList.size() + ",mIsNoMoreData:" + mIsNoMoreData);
         //删除本地数据
-//        deleteLocal(newLocalList);
+//        delete(newLocalList);
         notifyDataSetChanged();
     }
 

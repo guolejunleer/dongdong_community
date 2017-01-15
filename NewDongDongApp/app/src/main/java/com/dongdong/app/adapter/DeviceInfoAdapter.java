@@ -114,7 +114,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
         setImageView(deviceInfo.deviceSerialNO, mHold.backgroud);
         mHold.deviceName.setText(deviceInfo.deviceName);
         if (deviceInfo.isOnline) {
-            if (TDevice.devieType(deviceInfo, 23)) {
+            if (TDevice.deviceType(deviceInfo, 23)) {
                 mHold.deviceState.setText(mContext
                         .getString(R.string.auth_device_on));
             } else {
@@ -122,7 +122,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
                         .getString(R.string.my_device_on));
             }
         } else {
-            if (TDevice.devieType(deviceInfo, 23)) {
+            if (TDevice.deviceType(deviceInfo, 23)) {
                 mHold.deviceState.setText(mContext
                         .getString(R.string.auth_device_off));
             } else {

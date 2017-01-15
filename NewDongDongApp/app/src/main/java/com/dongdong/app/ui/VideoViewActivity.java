@@ -38,6 +38,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dd121.community.R;
 import com.ddclient.configuration.DongConfiguration;
@@ -56,6 +57,7 @@ import com.dongdong.app.util.TDevice;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -134,6 +136,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
             = new VideoViewActivityDongDeviceCallBackImpl();
     private VideoViewActivityDongDeviceSettingImpl mDongDeviceSettingImpl
             = new VideoViewActivityDongDeviceSettingImpl();
+    private int channelId;
 
     @Override
     protected int getLayoutId() {
@@ -250,6 +253,9 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         String mDeviceID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID, "");
         //是否主动监视
         isActive = bundle.getBoolean(AppConfig.BUNDLE_KEY_INITIATIVE, false);
+        //test
+        channelId = isActive ? new Random().nextInt(8888) : 0;
+        LogUtils.i("VideoViewActivity.clazz--->>>onResume channelId:" + channelId);
         isHandsFree = true;
         if (TextUtils.isEmpty(mDeviceID) && isActive) {// 1.主动监视
             mDeviceInfo = DongConfiguration.mDeviceInfo;
@@ -282,6 +288,12 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
         unregisterReceiver(mReceiver);
         unregisterReceiver(mNetReceiver);
         if (DongSDKProxy.initCompleteDongAccountLan()) {
@@ -292,11 +304,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         DongSDKProxy.unRegisterDongDeviceCallback(mDongDeviceCallBackImpl);
         DongSDKProxy.unRegisterDongDeviceSettingCallback(mDongDeviceSettingImpl);
         LogUtils.i("log5", "VideoViewActivity.clazz-->>onPause...unregister");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
         if (DongSDKProxy.initCompleteDongDeviceSetting()) {
             // 用户没点击挂断后也要停止播放，释放资源等操作
             stopVideo();
@@ -345,7 +352,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         //start work
         DongSDKProxy.requestStartPlayDevice(this, mSurfaceView, mDeviceInfo);
         DongSDKProxy.requestRealtimePlay(DongSDKProxy.PLAY_TYPE_VIDEO);
-        LogUtils.i("VideoViewActivity.clazz--->>>videoPlay ... requestRealtimePlay");
+//        DongSDKProxy.requestRealtimePlayWithChannelId(DongSDKProxy.PLAY_TYPE_VIDEO,  channelId);
+        LogUtils.i("VideoViewActivity.clazz--->>>videoPlay ......................hahahah requestRealtimePlay");
     }
 
     private void stopVideo() {
@@ -462,7 +470,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                 }
                 stopMusic(mMediaPlayer);
                 if (!isMicroOn) {
-                    DongSDKProxy.requestRealtimePlay(DongSDKProxy.PLAY_TYPE_AUDIO);// 打开设备音响
+                    DongSDKProxy.requestRealtimePlay(DongSDKProxy.PLAY_TYPE_AUDIO);
+//                    DongSDKProxy.requestRealtimePlayWithChannelId(DongSDKProxy.PLAY_TYPE_AUDIO, channelId);// 打开设备音响
                     DongSDKProxy.requestOpenPhoneMic();// 打开手机麦克风
                     DongSDKProxy.requestOpenPhoneSound();// 打开手机音频
                     setCompoundTopDrawables(mTvAudio, R.mipmap.audio_pressed);
@@ -480,7 +489,8 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                 }
                 if (!isVideoOn) {
                     setCompoundTopDrawables(mTvVideo, R.mipmap.video_pressed);
-                    DongSDKProxy.requestRealtimePlay(DongSDKProxy.PLAY_TYPE_VIDEO);// 打开设备摄像头
+                    DongSDKProxy.requestRealtimePlay(DongSDKProxy.PLAY_TYPE_AUDIO);
+//                    DongSDKProxy.requestRealtimePlayWithChannelId(DongSDKProxy.PLAY_TYPE_VIDEO, channelId);// 打开设备摄像头
                     mSurfaceView.setVisibility(View.VISIBLE);
                     mIvDongIcon.setVisibility(View.INVISIBLE);
                 } else {
@@ -514,7 +524,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                 break;
 
             case R.id.tv_video_quality_cotrol:// 视频质量设置
-                if (TDevice.devieType(mDeviceInfo, 23)) {
+                if (TDevice.deviceType(mDeviceInfo, 23)) {
                     TipDialogManager.showTipDialog(this, R.string.warn, R.string.no_permissions);
                 } else {
                     View diaView = View.inflate(this, R.layout.set_video_quality_dialog, null);
@@ -563,7 +573,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                 }
                 break;
             case R.id.iv_light_control:// 亮度设置
-                if (TDevice.devieType(mDeviceInfo, 23)) {
+                if (TDevice.deviceType(mDeviceInfo, 23)) {
                     TipDialogManager.showTipDialog(this, R.string.warn, R.string.no_permissions);
                 } else {
                     DongSDKProxy.requestGetBCHS();// 获取设备的亮度
@@ -603,7 +613,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                 }
                 break;
             case R.id.iv_video_audio_control:// 音量设置
-                if (TDevice.devieType(mDeviceInfo, 23)) {
+                if (TDevice.deviceType(mDeviceInfo, 23)) {
                     TipDialogManager.showTipDialog(this, R.string.warn, R.string.no_permissions);
                 } else {
                     DongSDKProxy.requestGetAudioQuality();// 获取声音的大小
@@ -719,6 +729,24 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
             LogUtils.i("VideoViewActivityDongAccountCallbackImp.clazz--->>>OnCall........list):" + list);
             if (mDeviceInfo != null && list != null && list.size() > 0) {
                 final DeviceInfo deviceInfo = list.get(0);
+
+                String[] strArray = deviceInfo.msg.split("[|]");
+                try {
+                    String msgContent = strArray[0];//推送信息:C1<360269ggb> <设备呼叫> <2016-12-29 15:41:11>
+                    int pushState = Integer.parseInt(strArray[1]);//呼叫状态：8-设备呼叫，9-呼叫接听，10-呼叫结束
+                    String deviceId = strArray[2];//设备Id
+                    if (pushState == 8) {
+                        Toast.makeText(VideoViewActivity.this, "设备呼叫", Toast.LENGTH_LONG).show();
+                    } else if (pushState == 11) {
+                        Toast.makeText(VideoViewActivity.this, " 呼叫已接听", Toast.LENGTH_LONG).show();
+                        return 0;
+                    } else if (pushState == 12) {
+                        Toast.makeText(VideoViewActivity.this, "呼叫已结束", Toast.LENGTH_LONG).show();
+                        return 0;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if (mDeviceInfo.dwDeviceID == deviceInfo.dwDeviceID) {
                     return 0;// 如果报警了正在当前播放的设备，忽略此次报警
                 }
@@ -1020,7 +1048,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                         }
                         int networkType = TDevice.getNetworkType();
                         if (networkType == 0) {// 10s后发现无网
-                            TipDialogManager.showWithoutNetworDialog(
+                            TipDialogManager.showWithoutNetDialog(
                                     VideoViewActivity.this, null);
                         } else {// 10s后还没有视频数据
                             mTipDialog.setTitle(R.string.tip);

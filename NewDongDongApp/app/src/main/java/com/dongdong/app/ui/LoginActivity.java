@@ -30,7 +30,6 @@ import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.UserBean;
 import com.dongdong.app.db.UserOpe;
-import com.dongdong.app.fragment.HomePagerFragment;
 import com.dongdong.app.ui.dialog.CommonDialog;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.CyptoUtils;
@@ -151,7 +150,7 @@ public class LoginActivity extends BaseActivity implements
                 break;
             case R.id.iv_login:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(this, null);
+                    TipDialogManager.showWithoutNetDialog(this, null);
                     return;
                 }
                 mEtUserName = mEtName.getText();
@@ -274,8 +273,9 @@ public class LoginActivity extends BaseActivity implements
                     public void run() {
                         if (mDialog.isShowing()) mDialog.dismiss();
                         shouldStop = true;
-                        TipDialogManager.showNormalTipDialog(LoginActivity.this, MyTimerTask.this,
-                                R.string.tip, R.string.login_overtime, R.string.sure, R.string.cancel);
+                        if (!LoginActivity.this.isFinishing())
+                            TipDialogManager.showNormalTipDialog(LoginActivity.this, MyTimerTask.this,
+                                    R.string.tip, R.string.login_overtime, R.string.sure, R.string.cancel);
                     }
                 });
             }
@@ -283,21 +283,30 @@ public class LoginActivity extends BaseActivity implements
 
         @Override
         public void onPositiveButtonClick() {
-            DongSDK.reInitDongSDK();
+//            DongSDK.reInitDongSDK();
         }
 
         @Override
         public void onNegativeButtonClick() {
-            DongSDK.reInitDongSDK();
+//            DongSDK.reInitDongSDK();
         }
     }
 
     private class LoginActivityDongAccountProxy extends AbstractDongCallbackProxy.DongAccountCallbackImp {
 
         @Override
+        public int onConnect() {
+            LogUtils.i("LoginActivity.clazz--->>>onConnect........");
+            return super.onConnect();
+        }
+
+        @Override
         public int onAuthenticate(InfoUser tInfo) {
             DongConfiguration.mUserInfo = tInfo;
-            LogUtils.i("LoginActivity.clazz--->>>OnAuthenticate........tInfo:" + tInfo);
+            LogUtils.i("LoginActivity.clazz--->>>OnAuthenticate........tInfo:" + tInfo + ",mEtUserName:" + mEtUserName);
+            if (TextUtils.isEmpty(mEtUserName) || TextUtils.isEmpty(mEtUserPwd)) {
+                return -1;
+            }
             String enUserName = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserName.toString());
             String enUserPwd = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserPwd.toString());
             //1.查询所有表
@@ -328,7 +337,7 @@ public class LoginActivity extends BaseActivity implements
             PushManager.getInstance().turnOnPush(LoginActivity.this);
             com.baidu.android.pushservice.PushManager.resumeWork(LoginActivity.this);
             DongSDKProxy.requestSetPushInfo(PushInfo.PUSHTYPE_FORCE_ADD);
-            DongSDKProxy.requestGetDeviceListFromPlatform();
+//            DongSDKProxy.requestGetDeviceListFromPlatform();
             mDialog.dismiss();
             // 保存用户登录信息
             AppContext.mAppConfig.setConfigValue(

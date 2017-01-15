@@ -2,9 +2,9 @@ package com.push.message;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.ddclient.configuration.DongConfiguration;
-import com.ddclient.dongsdk.DongSDKProxy;
 import com.ddclient.dongsdk.PushMsgBean;
 import com.dongdong.app.util.UIHelper;
 import com.gViewerX.util.LogUtils;
@@ -16,8 +16,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * 必须拷贝这个类到应用中去，此类用于离线推送处理的中转站,已过时,
- * 参考ProcessPushMsgProxy类.2017年01月01号后将不再支持此接口
+ * 必须拷贝这个类到应用中去，此类用于离线推送处理的中转站,已过时
  */
 public class ProcessPushMsgProxy {
 
@@ -41,14 +40,15 @@ public class ProcessPushMsgProxy {
         String deviceID = pushMsgBean.getDeviceId();
         String pushTime = pushMsgBean.getPushTime();
 
-        //0.过滤时间相同的推送，因为这有百度、推二种，有可能时间是相同的，我们只取一种
+        LogUtils.i("ProcessPushMsgProxy.clazz--->>>pushMessageReceiver PushMsgBean:"
+                + pushMsgBean);
+        //0.过滤时间相同的推送，因为这有百度、个推二种，有可能时间是相同的，我们只取一种
         if (mpushTimeList.contains(pushTime)) {//0.0如果上次有时间相同的，那么返回
             return;
         } else {//0.1如果没有，添加进集合
             mpushTimeList.add(pushTime);
         }
-        LogUtils.i("ProcessPushMsgProxy.clazz--->>>pushMessageReceiver PushMsgBean:"
-                + pushMsgBean);
+
         //1.这里比较当前时间和离线推送消息的时候是否超过3分钟
         Date date;
         if (TextUtils.isEmpty(pushTime)) {
@@ -63,6 +63,16 @@ public class ProcessPushMsgProxy {
         }
         long delSecond = (new Date(System.currentTimeMillis()).getTime() - date.getTime()) / 1000;
         LogUtils.i("ProcessPushMsgProxy.clazz-->delSecond " + delSecond);
+        int pushState = pushMsgBean.getPushState();
+        if (pushState == 8) {
+            Toast.makeText(context, "设备呼叫", Toast.LENGTH_LONG).show();
+        } else if (pushState == 11) {
+            Toast.makeText(context, " 呼叫已接听", Toast.LENGTH_LONG).show();
+            return;
+        } else if (pushState == 12) {
+            Toast.makeText(context, "呼叫已结束", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (delSecond > 10) {//2.如果离线推送大于3分钟，那么我们就在首页提示用户多少分钟前有人呼叫过
             UIHelper.showMainActivityWithPushTime(context, deviceID, pushTime);
         } else {//3.如果离线推送在规定时间内，那么跳转到对应界面

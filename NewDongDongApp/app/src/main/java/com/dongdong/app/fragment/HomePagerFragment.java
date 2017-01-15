@@ -67,7 +67,8 @@ public class HomePagerFragment extends BaseFragment implements
                              Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutId(), container, false);
         Bundle bundle = getArguments();
-        mDeviceID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID);
+        if (bundle != null)
+            mDeviceID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID);
         LogUtils.i("HomePagerFragment.clazz--->>>onCreateView ...mDeviceID:" + mDeviceID);
         return view;
     }
@@ -184,18 +185,28 @@ public class HomePagerFragment extends BaseFragment implements
                     UIHelper.showVideoViewActivity(getActivity(), false, mDeviceID);
                     mDeviceID = null;
                 } else if (defaultDeviceId != 0) {//2.4有默认设备
+                    boolean hasDefault = false;
                     for (DeviceInfo deviceInfo : deviceList) {
-                        LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo deviceInfo.dwDeviceID " + deviceInfo.dwDeviceID);
+                        LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo compare default" +
+                                " device and deviceInfo.dwDeviceID " + deviceInfo.dwDeviceID);
                         if (defaultDeviceId == deviceInfo.dwDeviceID) {
+                            hasDefault = true;
                             mTitleBar.setTitleBarContent(deviceInfo.deviceName);
                             DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
                             LogUtils.i("HomePagerFragment.clazz-->> ********** default !!!!mDeviceInfo " + mDeviceInfo);
                         }
                     }
+                    if (!hasDefault) {//解决默认设备删除后界面显示的问题
+                        DeviceInfo deviceInfo = deviceList.get(0);
+                        mTitleBar.setTitleBarContent(deviceInfo.deviceName);
+                        DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
+                        LogUtils.i("HomePagerFragment.clazz-->>selected first deviceInfo:" + deviceInfo);
+                    }
                 } else {//2.5没有默认设备，选择第一台
                     DeviceInfo deviceInfo = deviceList.get(0);
                     mTitleBar.setTitleBarContent(deviceInfo.deviceName);
                     DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
+                    LogUtils.i("HomePagerFragment.clazz-->>selected first deviceInfo:" + deviceInfo);
                 }
             } else if (DongConfiguration.mDeviceInfo != null) {
                 mDeviceInfo = DongConfiguration.mDeviceInfo;
@@ -227,7 +238,7 @@ public class HomePagerFragment extends BaseFragment implements
         } else if (name.equals(getString(R.string.monitor))) {
             //判断网络，只有在观看设备的时候需要网
             if (TDevice.getNetworkType() == 0) {
-                TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                TipDialogManager.showWithoutNetDialog(getActivity(), null);
                 return;
             }
             //解决第一次进入首页设备信息没及时更新的问题
@@ -322,10 +333,10 @@ public class HomePagerFragment extends BaseFragment implements
         public int onAuthenticate(InfoUser tInfo) {
             DongConfiguration.mUserInfo = tInfo;
             LogUtils.i("HomePagerFragment.clazz--->>>OnAuthenticate........tInfo:" + tInfo);
-            PushManager.getInstance().turnOnPush(HomePagerFragment.this.getActivity());
-            com.baidu.android.pushservice.PushManager.resumeWork(HomePagerFragment.this.getActivity());
+//            PushManager.getInstance().turnOnPush(HomePagerFragment.this.getActivity());
+//            com.baidu.android.pushservice.PushManager.resumeWork(HomePagerFragment.this.getActivity());
             DongSDKProxy.requestSetPushInfo(InfoPush.PUSHTYPE_FORCE_ADD);
-            DongSDKProxy.requestGetDeviceListFromPlatform();
+//            DongSDKProxy.requestGetDeviceListFromPlatform();
             return 0;
         }
 

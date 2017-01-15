@@ -38,7 +38,7 @@ public class AppContext extends BaseApplication {
     /**
      * 获得当前应用运行的AppContext
      *
-     * @return
+     * @return AppContext
      */
     public static AppContext getInstance() {
         return mInstance;
@@ -62,7 +62,7 @@ public class AppContext extends BaseApplication {
     /**
      * 获取App唯一标识
      *
-     * @return
+     * @return appId
      */
     public String getAppId() {
         String uniqueID = (String) mAppConfig.getConfigValue(

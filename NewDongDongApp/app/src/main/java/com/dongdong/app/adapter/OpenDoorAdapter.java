@@ -14,7 +14,6 @@ import com.dongdong.app.bean.OpenDoorRecordBean;
 
 import java.util.List;
 
-
 public class OpenDoorAdapter extends Adapter<ViewHolder> {
 
     //加载状态
@@ -29,7 +28,7 @@ public class OpenDoorAdapter extends Adapter<ViewHolder> {
     private static final int TYPE_NORMAL_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
 
-    private Context mContext;
+
     private List<OpenDoorRecordBean> mData;
     private final LayoutInflater mLayoutInflater;
 
@@ -45,7 +44,6 @@ public class OpenDoorAdapter extends Adapter<ViewHolder> {
 
     public OpenDoorAdapter(Context context, List<OpenDoorRecordBean> data) {
         this.mData = data;
-        this.mContext = context;
         this.mLayoutInflater = LayoutInflater.from(context);
     }
 
@@ -83,10 +81,8 @@ public class OpenDoorAdapter extends Adapter<ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (holder instanceof NormalItemHolder) {
             NormalItemHolder normalItemHolder = (NormalItemHolder) holder;
-            normalItemHolder.mTvRoomNumber.setText(String.format("%s",
-                    mContext.getString(R.string.room_number) + mData.get(position).getRoomNumber()));
+            normalItemHolder.mTvRoomNumber.setText("房号 " + mData.get(position).getRoomNumber());
             normalItemHolder.mTvTimesStamp.setText(mData.get(position).getTimestamp());
-
 
             if (onItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -98,18 +94,18 @@ public class OpenDoorAdapter extends Adapter<ViewHolder> {
                 });
             }
         } else if (holder instanceof EmptyViewHolder) {
-            ((EmptyViewHolder) holder).mTvEmpty.setText(mContext.getString(R.string.no_door_record));
+            ((EmptyViewHolder) holder).mTvEmpty.setText("暂无开门记录,下拉界面获取最新数据");
         } else if (holder instanceof FooterViewHolder) {
             switch (mLoadStatus) {
                 case LOAD_NO_DATA:
                     ((FooterViewHolder) holder).mPbLoad.setVisibility(View.GONE);
                     ((FooterViewHolder) holder).mTvLoad.setVisibility(View.VISIBLE);
-                    ((FooterViewHolder) holder).mTvLoad.setText(mContext.getString(R.string.no_more_data));
+                    ((FooterViewHolder) holder).mTvLoad.setText("没有更多数据了");
                     break;
                 case LOADING:
                     ((FooterViewHolder) holder).mPbLoad.setVisibility(View.VISIBLE);
                     ((FooterViewHolder) holder).mTvLoad.setVisibility(View.VISIBLE);
-                    ((FooterViewHolder) holder).mTvLoad.setText(mContext.getString(R.string.loading));
+                    ((FooterViewHolder) holder).mTvLoad.setText("加载中");
                     break;
                 case DO_NOT_LOAD:
                     ((FooterViewHolder) holder).mPbLoad.setVisibility(View.GONE);
@@ -118,7 +114,7 @@ public class OpenDoorAdapter extends Adapter<ViewHolder> {
                 case LOAD_DATA_FAILED:
                     ((FooterViewHolder) holder).mPbLoad.setVisibility(View.GONE);
                     ((FooterViewHolder) holder).mTvLoad.setVisibility(View.VISIBLE);
-                    ((FooterViewHolder) holder).mTvLoad.setText(mContext.getString(R.string.load_fail));
+                    ((FooterViewHolder) holder).mTvLoad.setText("加载数据失败了");
                     break;
             }
         }

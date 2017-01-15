@@ -149,8 +149,9 @@ public class AppManager {
             finishAllActivity();
             DongSDK.finishDongSDK();
             // 杀死该应用进程
-			android.os.Process.killProcess(android.os.Process.myPid());
-			System.exit(0);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
+            LogUtils.i("AppManager.clazz--->>>appExit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         } catch (Exception e) {
         }
     }

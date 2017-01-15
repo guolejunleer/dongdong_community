@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="@string/room_number"
+                android:text="房  号"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="@string/type"
+                android:text="类  型"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="@string/time"
+                android:text="时  间"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="@string/device"
+                android:text="设  备"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
@@ -135,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="@string/owner"
+                android:text="业  主"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
@@ -162,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="@string/door_card_or_mobile_phone"
+                android:text="门卡/手机"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
