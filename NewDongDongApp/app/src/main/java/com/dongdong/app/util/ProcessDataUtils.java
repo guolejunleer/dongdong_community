@@ -13,16 +13,16 @@ public class ProcessDataUtils {
     private static final int HOUSEHOLD_PASSWORD_OPEN_DOOR = 5;//住户密码开门
     private static final int SELECT_CARD_OPEN_DOOR = 6; //平台查询卡号开门
     private static final int BLUE_TOOTH_OPEN_DOOR = 7;//蓝牙开门
-    private static final int PHONE_OPEN_DOOR = 10;//呼叫住户开门
+    private static final int PHONE_OPEN_DOOR = 10;//电话呼叫住户开门
 
     //访客留影
-    private static final int CLOUD_CALL_TIME_OUT =1;//呼叫超时，未接听
-    private static final int APP_ANSWER = 2;//App接听
-    private static final int PHONE_ANSWER = 3;//电话接听
-    private static final int APP_UNLOCK = 4;//App开锁
-    private static final int PHONE_UNLOCK = 5;//电话开锁
-    private static final int CARD_UNLOCK = 6;//刷卡开锁
-    private static final int PASSWORD_UNLOCK = 7;//密码开锁
+    private static final int CLOUD_CALL_TIME_OUT =21;//呼叫超时，未接听
+    private static final int APP_ANSWER = 22;//App接听
+    private static final int PHONE_ANSWER = 23;//电话接听
+    private static final int APP_UNLOCK = 1;//App开锁
+    private static final int PHONE_UNLOCK = 10;//电话开锁
+    private static final int CARD_UNLOCK = 2;//刷卡开锁
+    private static final int PASSWORD_UNLOCK = 5;//密码开锁
 
     /**
      * 判断开门类型

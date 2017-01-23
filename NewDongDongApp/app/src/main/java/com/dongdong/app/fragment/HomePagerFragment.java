@@ -11,19 +11,26 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.dd121.community.R;
-import com.ddclient.dongsdk.AbstractDongCallbackProxy;
-import com.ddclient.jnisdk.InfoPush;
-import com.ddclient.jnisdk.InfoUser;
 import com.ddclient.configuration.DongConfiguration;
+import com.ddclient.dongsdk.AbstractDongCallbackProxy;
 import com.ddclient.dongsdk.DeviceInfo;
 import com.ddclient.dongsdk.DongSDKProxy;
+import com.ddclient.jnisdk.InfoPush;
+import com.ddclient.jnisdk.InfoUser;
 import com.ddclient.push.DongPushMsgManager;
 import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
+import com.dongdong.app.adapter.ADViewPagerAdapter;
+import com.dongdong.app.adapter.BulletinViewPagerAdapter;
 import com.dongdong.app.adapter.LinkRoomDynamicLayoutAdapter;
+import com.dongdong.app.api.ApiHttpClient;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.base.BaseFragment;
+import com.dongdong.app.bean.BulletinBean;
 import com.dongdong.app.bean.FunctionBean;
+import com.dongdong.app.bean.VillageBean;
+import com.dongdong.app.db.BulletinOpe;
+import com.dongdong.app.db.VillageOpe;
 import com.dongdong.app.interf.OnTabReselectListener;
 import com.dongdong.app.ui.LoginActivity;
 import com.dongdong.app.ui.dialog.TipDialogManager;
@@ -31,20 +38,40 @@ import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.TDevice;
 import com.dongdong.app.util.UIHelper;
 import com.dongdong.app.util.XmlUtils;
+import com.dongdong.app.widget.CommonViewPager;
 import com.dongdong.app.widget.DynamicItemContainView;
 import com.dongdong.app.widget.LinkRoomDynamicLayout;
 import com.dongdong.app.widget.LinkRoomDynamicLayout.OnDynamicViewChangedPositionListener;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 import com.igexin.sdk.PushManager;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
+
+import static com.dongdong.app.api.ApiHttpClient.get;
+import static com.dongdong.app.api.ApiHttpClient.getDVNotices;
+
 public class HomePagerFragment extends BaseFragment implements
         OnTabReselectListener, OnTitleBarClickListener, OnItemClickListener,
         OnDynamicViewChangedPositionListener {
+
+    private CommonViewPager mBulletinViewPager;//物业公告轮播图
+    private List<BulletinBean> mBulletinList = new ArrayList<>();
+    private BulletinViewPagerAdapter mBulletinViewPagerAdapter;
+    private ViewGroup mBulletinViewPagerPoints;
+
+    private CommonViewPager mADViewPager;//广告轮播图
+    private ADViewPagerAdapter ADViewPagerAdapter;
+    private ViewGroup mADPagerPoints;
 
     private TitleBar mTitleBar;
     private File mFuncFile;
@@ -67,8 +94,10 @@ public class HomePagerFragment extends BaseFragment implements
                              Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutId(), container, false);
         Bundle bundle = getArguments();
+        LogUtils.i("HomePagerFragment.clazz--->>>onCreateView befor...mDeviceID:"
+                + mDeviceID + ",bundle:" + bundle);
         if (bundle != null)
-            mDeviceID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID);
+        mDeviceID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID);
         LogUtils.i("HomePagerFragment.clazz--->>>onCreateView ...mDeviceID:" + mDeviceID);
         return view;
     }
@@ -106,8 +135,11 @@ public class HomePagerFragment extends BaseFragment implements
                 LogUtils.i("HomePagerFragment.clazz--->>>onResume login start ....:");
             }
         }
-        // 设置标题栏信息
+
+        // 1.设置标题栏信息
         showTitleInfo(!initDongAccount);
+        // 2.登录后查看设置物业公告信息
+        showBulletinInfo();
         LogUtils.i("HomePagerFragment.clazz--->>>onResume initDongAccount:" + initDongAccount);
     }
 
@@ -135,8 +167,7 @@ public class HomePagerFragment extends BaseFragment implements
     public void initData() {
         mFuncFile = new File(BaseApplication.context().getDir("funprop",
                 Context.MODE_PRIVATE), "funcprop.xml");
-        LogUtils.i("HomePagerFragment.clazz--->>>dir is exist "
-                + mFuncFile.exists());
+        LogUtils.i("HomePagerFragment.clazz--->>>dir is exist " + mFuncFile.exists());
         if (!mFuncFile.exists()) {
             mFunctionsList = AppContext.getFunctionsDatasInit();
             XmlUtils.createFunctionXml(mFuncFile, mFunctionsList, false);
@@ -146,6 +177,21 @@ public class HomePagerFragment extends BaseFragment implements
         LinkRoomDynamicLayoutAdapter dynamicAdapter = new LinkRoomDynamicLayoutAdapter(
                 getActivity(), mFunctionsList);
         mDynamicLayout.setAdapter(dynamicAdapter);
+
+        mBulletinViewPager = (CommonViewPager) mDynamicLayout.getBulletinViewPager().get("viewPager");
+        mBulletinViewPagerPoints = (ViewGroup) mDynamicLayout.getBulletinViewPager().get("viewGroup");
+
+        mBulletinViewPagerAdapter = new BulletinViewPagerAdapter(getActivity(),
+                mBulletinViewPager, mBulletinViewPagerPoints/*, mBulletinList*/);
+//        mBulletinViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
+        mBulletinViewPager.setAdapter(mBulletinViewPagerAdapter);
+//        mBulletinViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
+        LogUtils.i("HomePagerFragment.clazz-->initData()-->mBulletinViewPager:" + mBulletinViewPager);
+        mADViewPager = (CommonViewPager) mDynamicLayout.getADViewPager().get("viewPager");
+        mADPagerPoints = (ViewGroup) mDynamicLayout.getADViewPager().get("viewGroup");
+
+        //初始化广告
+        getADFromNet();
     }
 
     // 第二次进入此Fragment, onResume()方法没执行,需要加入此方法来重新设置accountName
@@ -153,21 +199,26 @@ public class HomePagerFragment extends BaseFragment implements
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            LogUtils.i("HomePagerFragment.clazz-->>>onHiddenChanged showTitleInfo" +
+            LogUtils.i("HomePagerFragment.clazz-->>>onHiddenChanged showTitleInfo & showBulletinInfo" +
                     " DongConfiguration.mUserInfo:" + DongConfiguration.mUserInfo);
             showTitleInfo(DongConfiguration.mUserInfo == null);
+            showBulletinInfo();
         }
         LogUtils.i("HomePagerFragment.clazz-->>>onHiddenChanged hidden:" + hidden);
     }
 
+    /**
+     * 显示标题栏的设备名称
+     *
+     * @param isNotLogin 是否登录
+     */
     private void showTitleInfo(boolean isNotLogin) {
         LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo isNotLogin " + isNotLogin);
         if (isNotLogin) {// 1.未登录
             mTitleBar.setTitleBarContent(getString(R.string.pleaseLogin));
         } else {//2.已登录
             ArrayList<DeviceInfo> deviceList;
-            DongConfiguration.mDeviceInfoList = deviceList = DongSDKProxy
-                    .requestGetDeviceListFromCache();// 这句话很重要!!!!
+            DongConfiguration.mDeviceInfoList = deviceList = DongSDKProxy.requestGetDeviceListFromCache();// 这句话很重要!!!!
             int size = deviceList.size();
             LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo size " + size
                     + ",DongConfiguration.mDeviceInfo:" + DongConfiguration.mDeviceInfo);
@@ -176,7 +227,7 @@ public class HomePagerFragment extends BaseFragment implements
                 //2.2默认设备序列号
                 int defaultDeviceId = (int) AppContext.mAppConfig.getConfigValue(
                         AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                        /*AppConfig.KEY_DEFAULT_DEVICE_ID*/DongConfiguration.mUserInfo.userID + "", 0);
+                        DongConfiguration.mUserInfo.userID + "", 0);
                 LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo defaultDeviceId:"
                         + defaultDeviceId + ",mDeviceID:" + mDeviceID + ",all device size:" + size);
                 if (!TextUtils.isEmpty(mDeviceID)) {//2.3离线推送
@@ -185,36 +236,177 @@ public class HomePagerFragment extends BaseFragment implements
                     UIHelper.showVideoViewActivity(getActivity(), false, mDeviceID);
                     mDeviceID = null;
                 } else if (defaultDeviceId != 0) {//2.4有默认设备
-                    boolean hasDefault = false;
                     for (DeviceInfo deviceInfo : deviceList) {
-                        LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo compare default" +
-                                " device and deviceInfo.dwDeviceID " + deviceInfo.dwDeviceID);
+                        LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo deviceInfo.dwDeviceID " + deviceInfo.dwDeviceID);
                         if (defaultDeviceId == deviceInfo.dwDeviceID) {
-                            hasDefault = true;
                             mTitleBar.setTitleBarContent(deviceInfo.deviceName);
-                            DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
-                            LogUtils.i("HomePagerFragment.clazz-->> ********** default !!!!mDeviceInfo " + mDeviceInfo);
+                            DongConfiguration.mDeviceInfo = deviceInfo;
+                            LogUtils.i("HomePagerFragment.clazz-->> ********** default" +
+                                    " !!!!DongConfiguration.mDeviceInfo  " + DongConfiguration.mDeviceInfo);
                         }
                     }
-                    if (!hasDefault) {//解决默认设备删除后界面显示的问题
+                    if (DongConfiguration.mDeviceInfo == null) {//如果循环遍历设备后发现本地默认设备值发生错误，那么选择第一台
                         DeviceInfo deviceInfo = deviceList.get(0);
                         mTitleBar.setTitleBarContent(deviceInfo.deviceName);
-                        DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
-                        LogUtils.i("HomePagerFragment.clazz-->>selected first deviceInfo:" + deviceInfo);
+                        DongConfiguration.mDeviceInfo = deviceInfo;
                     }
                 } else {//2.5没有默认设备，选择第一台
                     DeviceInfo deviceInfo = deviceList.get(0);
                     mTitleBar.setTitleBarContent(deviceInfo.deviceName);
-                    DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
-                    LogUtils.i("HomePagerFragment.clazz-->>selected first deviceInfo:" + deviceInfo);
+                    DongConfiguration.mDeviceInfo = deviceInfo;
                 }
+
             } else if (DongConfiguration.mDeviceInfo != null) {
-                mDeviceInfo = DongConfiguration.mDeviceInfo;
-                mTitleBar.setTitleBarContent(mDeviceInfo.deviceName);
+                mTitleBar.setTitleBarContent(DongConfiguration.mDeviceInfo.deviceName);
             } else {
                 mTitleBar.setTitleBarContent(getString(R.string.no_device));
             }
+
+            //向物业平台请求
+            if ((DongConfiguration.mDeviceInfo != null) && (!mHasDeviceInfo
+                    || mDeviceInfo != DongConfiguration.mDeviceInfo)) {//当用户登录并且没有去平台获取物业公告/设备变化后
+                LogUtils.i("HomePagerFragment.clazz-->getBulletinFromNet start......");
+                mHasDeviceInfo = true;
+                getBulletinFromNet();
+            }
+            mDeviceInfo = DongConfiguration.mDeviceInfo;
         }
+    }
+
+    public static boolean mHasDeviceInfo;
+
+    /**
+     * 获取广告
+     */
+    private void getADFromNet() {
+        ADViewPagerAdapter = new ADViewPagerAdapter(getActivity(), mADViewPager, mADPagerPoints);
+        mADViewPager.setAdapter(ADViewPagerAdapter);
+        ADViewPagerAdapter.showNoticeViewPoints();
+        mADViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
+    }
+
+    /**
+     * 获取物业公告
+     */
+    private void getBulletinFromNet() {
+        RequestParams params = getDVNotices(AppConfig.BASE_URL, DongConfiguration.mDeviceInfo.dwDeviceID, 0, 10);
+        LogUtils.i("HomePagerFragment.clazz-->getBulletinFromNet()-->" +
+                "DongConfiguration.mDeviceInfo.dwDeviceID:" + DongConfiguration.mDeviceInfo.dwDeviceID);
+
+        ApiHttpClient.postDirect(AppConfig.BASE_URL, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    List<BulletinBean> netDataList = new ArrayList<>();
+                    JSONObject receiveDataJson = new JSONObject(new String(responseBody));
+                    LogUtils.i("HomePagerFragment.clazz-->getBulletinFromNet()-->receiveDataJson:" + receiveDataJson);
+                    String resultCode = receiveDataJson.getString("result_code");
+                    if (resultCode.equals("200")) {
+                        String jsonInitData = receiveDataJson.getString("response_params");
+                        if (jsonInitData.equals("[]")) {
+                            return;
+                        }
+                        LogUtils.i("HomePagerFragment.clazz-->getBulletinFromNet()-->jsonInitData:" + jsonInitData);
+                        JSONArray jsonArray = new JSONObject(jsonInitData).getJSONArray("villagenotices");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            BulletinBean bulletinBean = new BulletinBean();
+                            bulletinBean.setTitle(jsonObject.getString("title"));
+                            bulletinBean.setNotice(jsonObject.getString("notice"));
+                            bulletinBean.setCreated(jsonObject.getString("created"));
+                            bulletinBean.setDeviceId(String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
+                            bulletinBean.setVillageId(jsonObject.getString("villageid"));
+                            netDataList.add(bulletinBean);
+                        }
+                        processBulletinData(netDataList);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers,
+                                  byte[] responseBody, Throwable error) {
+                LogUtils.i("HomePagerFragment.clazz-->getBulletinFromNet()onFailure");
+            }
+        });
+    }
+
+    /**
+     * 处理物业公告
+     */
+    private void processBulletinData(List<BulletinBean> netDataList) {
+        List<BulletinBean> localList = BulletinOpe.queryAll(BaseApplication.context());
+        LogUtils.i("HomePagerFragment.clazz--->>>processBulletinData localList" +
+                " = BulletinOpe.size " + localList.size());
+        String netVillageId = netDataList.get(0).getVillageId();
+        String localVillageId = VillageOpe.queryDataByDeviceId(BaseApplication.context(),
+                String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
+        //如果数据库中没有就不添加
+        if (localVillageId == null) {
+            LogUtils.i("HomePagerFragment.clazz--->>>processBulletinData()-->addVillage");
+            VillageBean villageBean = new VillageBean();
+            villageBean.setDeviceId(netDataList.get(0).getDeviceId());
+            villageBean.setVillageId(netVillageId);
+            VillageOpe.insertDataByVillageBean(BaseApplication.context(), villageBean);
+        }
+        for (BulletinBean netBean : netDataList) {
+            boolean isSame = false;
+            //2.1将本地数据库中的数据与平台返回数据对比
+            for (BulletinBean localBean : localList) {//2.1.2如果发布时间和小区id相同，那么就认为是相同物业公告
+                if (localBean.getCreated().equals(netBean.getCreated())
+                        && localBean.getVillageId().equals(netBean.getVillageId()))
+                    isSame = true;
+            }
+            //2.2不相同就添加到本地并且更新界面数据
+            if (!isSame) {
+                BulletinOpe.insert(BaseApplication.context(), netBean);
+            }
+        }
+        mBulletinList.clear();
+        mBulletinViewPagerPoints.removeAllViews();
+        List<BulletinBean> newLocalList = BulletinOpe.queryDataByVillageId(
+                BaseApplication.context(), netVillageId);
+        LogUtils.i("HomeFragment.clazz--->>>processBulletinData" +
+                " newLocalList.size " + newLocalList.size());
+        for (BulletinBean bulletinBean : newLocalList) {
+            mBulletinList.add(bulletinBean);
+        }
+        mBulletinViewPagerAdapter.setBulletinData(mBulletinList);
+    }
+
+    /**
+     * 显示物业公告
+     */
+    private void showBulletinInfo() {
+        if (DongConfiguration.mDeviceInfo == null) {// 1.登录后没选择设备
+            LogUtils.i("HomePagerFragment.clazz-->>showBulletinInfo " +
+                    "DongConfiguration.mDeviceInfo:" + DongConfiguration.mDeviceInfo);
+            mBulletinList.clear();
+            mBulletinViewPagerPoints.removeAllViews();
+            mBulletinViewPagerAdapter.hiddenADViewPoints();
+//            mBulletinViewPager.setCurrentItem(0);
+        } else {//2.已登录 判断有无设备
+            String villageId = VillageOpe.queryDataByDeviceId(BaseApplication.context(),
+                    String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
+            LogUtils.i("HomePagerFragment.clazz-->showBulletinInfo()-->villageId:"+villageId);
+            if (!TextUtils.isEmpty(villageId)) {
+                mBulletinList.clear();
+                mBulletinViewPagerPoints.removeAllViews();
+                List<BulletinBean> localBean = BulletinOpe.queryDataByVillageId(
+                        BaseApplication.context(), villageId);
+                for (BulletinBean bulletinBean : localBean) {
+                    mBulletinList.add(bulletinBean);
+                }
+                LogUtils.e("HomePagerFragment.clazz-->>showBulletinInfo Login mBulletinList.size:"
+                        + mBulletinList.size() + ",localBean,size:" + localBean.size());
+            } else {
+                mBulletinList.clear();
+                mBulletinViewPagerPoints.removeAllViews();
+            }
+        }
+        mBulletinViewPagerAdapter.setBulletinData(mBulletinList);
     }
 
     @Override
@@ -225,7 +417,7 @@ public class HomePagerFragment extends BaseFragment implements
             return;
         }
         //判断有无设备
-        if (mDeviceInfo == null) {
+        if (DongConfiguration.mDeviceInfo == null) {
             BaseApplication.showToastShortInCenter(R.string.no_device);
             return;
         }
@@ -234,21 +426,27 @@ public class HomePagerFragment extends BaseFragment implements
         String name = dynamicView.getName();
 
         if (name.equals(getString(R.string.message))) {
+            LogUtils.e("HomePagerFragment.clazz-->>DongConfiguration.mUserInfo:"
+                    + DongConfiguration.mUserInfo + ",DongConfiguration.mUserInfo.userId:" + DongConfiguration.mUserInfo.userID);
+            if (DongConfiguration.mUserInfo.userID < 1) {
+                BaseApplication.showToastShortInBottom("系统正在初始化，请稍后");
+                return;
+            }
             UIHelper.showMessageActivity(getActivity());
         } else if (name.equals(getString(R.string.monitor))) {
             //判断网络，只有在观看设备的时候需要网
             if (TDevice.getNetworkType() == 0) {
-                TipDialogManager.showWithoutNetDialog(getActivity(), null);
+                TipDialogManager.showWithoutNetworDialog(getActivity(), null);
                 return;
             }
             //解决第一次进入首页设备信息没及时更新的问题
             ArrayList<DeviceInfo> deviceInfoList = DongSDKProxy.requestGetDeviceListFromCache();
             for (DeviceInfo deviceInfo : deviceInfoList) {
-                if (mDeviceInfo.dwDeviceID == deviceInfo.dwDeviceID) {
+                if (DongConfiguration.mDeviceInfo.dwDeviceID == deviceInfo.dwDeviceID) {
                     DongConfiguration.mDeviceInfo = mDeviceInfo = deviceInfo;
                 }
             }
-            if (mDeviceInfo.isOnline) {
+            if (DongConfiguration.mDeviceInfo.isOnline) {
                 UIHelper.showVideoViewActivity(getActivity(), true, "");
             } else {
                 BaseApplication.showToastShortInCenter(R.string.device_offline);
@@ -260,8 +458,22 @@ public class HomePagerFragment extends BaseFragment implements
         } else if (name.equals(getString(R.string.repair))) {
             UIHelper.showRepairsActivity(getActivity());
         } else if (name.equals(getString(R.string.visitorphoto))) {
+            LogUtils.e("HomePagerFragment.clazz-->>DongConfiguration.mUserInfo:"
+                    + DongConfiguration.mUserInfo + ",DongConfiguration.mUserInfo.userId:"
+                    + DongConfiguration.mUserInfo.userID);
+            if (DongConfiguration.mUserInfo.userID < 1) {
+                BaseApplication.showToastShortInBottom("系统正在初始化，请稍后");
+                return;
+            }
             UIHelper.showHomeSafeActivity(getActivity());
         } else if (name.equals(getString(R.string.opendoor))) {
+            LogUtils.e("HomePagerFragment.clazz-->>DongConfiguration.mUserInfo:"
+                    + DongConfiguration.mUserInfo + ",DongConfiguration.mUserInfo.userId:"
+                    + DongConfiguration.mUserInfo.userID);
+            if (DongConfiguration.mUserInfo.userID < 1) {
+                BaseApplication.showToastShortInBottom("系统正在初始化，请稍后");
+                return;
+            }
             UIHelper.showVisitorRecordActivity(getActivity());
         } else if (name.equals(getString(R.string.phone))) {
             UIHelper.showCommonPhoneActivity(getActivity());
@@ -332,16 +544,19 @@ public class HomePagerFragment extends BaseFragment implements
         @Override
         public int onAuthenticate(InfoUser tInfo) {
             DongConfiguration.mUserInfo = tInfo;
-            LogUtils.i("HomePagerFragment.clazz--->>>OnAuthenticate........tInfo:" + tInfo);
-//            PushManager.getInstance().turnOnPush(HomePagerFragment.this.getActivity());
-//            com.baidu.android.pushservice.PushManager.resumeWork(HomePagerFragment.this.getActivity());
+            LogUtils.i("HomePagerFragment.clazz--->>>OnAuthenticate.......showBulletinInfo.tInfo:" + tInfo);
+            PushManager.getInstance().turnOnPush(HomePagerFragment.this.getActivity());
+            com.baidu.android.pushservice.PushManager.resumeWork(HomePagerFragment.this.getActivity());
             DongSDKProxy.requestSetPushInfo(InfoPush.PUSHTYPE_FORCE_ADD);
-//            DongSDKProxy.requestGetDeviceListFromPlatform();
+            DongSDKProxy.requestGetDeviceListFromPlatform();
+            // 设置物业公告信息
+            showBulletinInfo();
             return 0;
         }
 
         @Override
         public int onLoginOtherPlace(String tip) {
+            LogUtils.i("HomePageFragment.clazz -->>onLoginOtherPlace tip:" + tip);
             TipDialogManager.showOtherLoginDialog(getActivity(), tip);
             return 0;
         }
@@ -350,6 +565,7 @@ public class HomePagerFragment extends BaseFragment implements
         public int onNewListInfo() {
             LogUtils.i("HomePageFragment.clazz -->>OnNewListInfo");
             showTitleInfo(DongConfiguration.mUserInfo == null);
+//            showBulletinInfo();
             return 0;
         }
 

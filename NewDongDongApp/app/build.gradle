@@ -20,17 +20,22 @@ android {
     //App:ucilZA4JfMuw4YraheTQyFCJATjEx1QXsqsaiimFC7JS1P/0CLK9ZPVchVyzhfUJ
     //leelin:5MOdvgqhFLKeVEsLt7Gu/ueAsfeZK0Y8uuuyaaK1g6iZIEG5hGQcqRUi1ukSiAYr
 
-    //±àÒëÅäÖÃ£¬µÚÈı·½¼¯³ÉÎÒÃÇµÄSDK£¬Ö»ĞèÒª¿½±´AndroidMainfestÖĞµÄ²¿·ÖÅäÖÃ£¬ËùÓĞ¸Ä¶¯ÔÚÕâÀïĞŞ¸Ä¼´¿É
-    //±àÒëÅäÖÃ£¬µÚÈı·½¼¯³ÉÎÒÃÇµÄSDK£¬Ö»ĞèÒª¿½±´AndroidMainfestÖĞµÄ²¿·ÖÅäÖÃ£¬ËùÓĞ¸Ä¶¯ÔÚÕâÀïĞŞ¸Ä¼´¿É
+    //ç¼–è¯‘é…ç½®ï¼Œç¬¬ä¸‰æ–¹é›†æˆæˆ‘ä»¬çš„SDKï¼Œåªéœ€è¦æ‹·è´AndroidMainfestä¸­çš„éƒ¨åˆ†é…ç½®ï¼Œæ‰€æœ‰æ”¹åŠ¨åœ¨è¿™é‡Œä¿®æ”¹å³å¯
     defaultConfig {
         manifestPlaceholders = [BUILD_TIME_VALUE       : new Date().format('yyyyMMdd'),
-                                DONG_APPID_VALUE       : '5MOdvgqhFLKeVEsLt7Gu/ueAsfeZK0Y8uuuyaaK1g6iZIEG5hGQcqRUi1ukSiAYr',//ßËßËAppID(ßËßË¹«Ë¾Éú³É)
-                                GT_PUSH_APPID_VALUE    : 'mFIgANbqUQ7NFYy16ILrs6',//¸öÍÆAppID
-                                GT_PUSH_APPSECRET_VALUE: 'tsmDKU3n8t5OIF87K3gGu6',//¸öÍÆApp Secret
-                                GT_PUSH_APPKEY_VALUE   : 'z1j2UutS8AAQBIQDKmsxR9',//¸öÍÆApp Key
-                                BAIDU_API_KEY_VALUE    : '1iCYEhLzVXez2HlaKyHkhPLv']//°Ù¶Èapi key
+                                DONG_APPID_VALUE       : 'ucilZA4JfMuw4YraheTQyFCJATjEx1QXsqsaiimFC7JS1P/0CLK9ZPVchVyzhfUJ',//å’šå’šAppID(å’šå’šå…¬å¸ç”Ÿæˆ)
+                                GT_PUSH_APPID_VALUE    : 'mFIgANbqUQ7NFYy16ILrs6',//ä¸ªæ¨AppID
+                                GT_PUSH_APPSECRET_VALUE: 'tsmDKU3n8t5OIF87K3gGu6',//ä¸ªæ¨App Secret
+                                GT_PUSH_APPKEY_VALUE   : 'z1j2UutS8AAQBIQDKmsxR9',//ä¸ªæ¨App Key
+                                APP_PACKAGE_NAME_VALUE : 'com.dd121.community',//è‡ªå·±åº”ç”¨çš„åŒ…å
+                                BAIDU_API_KEY_VALUE    : '1iCYEhLzVXez2HlaKyHkhPLv',//ç™¾åº¦api key
+                                HUAWEI_APPID_VALUE     : '10789593',//åä¸ºAppId
+                                XIAOMI_APPID_VALUE     : '2882303761517541933',//å°ç±³AppId
+                                XIAOMI_APPKEY_VALUE    : '5721754166933',//å°ç±³AppKey
+                                JIGUANG_APPKEY_VALUE   : 'e117163211364ea71dfa5e00',//æå…‰AppKey
+                                MEIZU_APPID_VALUE      : '110227',//é­…æ—AppID
+                                MEIZU_APPKEY_VALUE     : '463c64bf9fd14fcd90937e130ab129e5']
     }
-
 
 }
 
@@ -61,6 +66,11 @@ dependencies {
     compile files('libs/DongDongSDK-1.1.1.0.jar')
     compile files('libs/recyclerview-v7-22.2.1-sources.jar')
     compile files('libs/GetuiSDK2.9.5.0.jar')
+    compile files('libs/MiPush_SDK_Client_3_1_2.jar')
+    compile files('libs/jpush-android_v3.0.1.jar')
+    compile files('libs/jcore-android_v1.1.0.jar')
+    compile 'com.meizu.flyme.internet:push-internal-publish:3.3.170110'
+    compile(name: 'HMS-SDK-2.4.0.300', ext: 'aar')
 }
 
 greendao {
@@ -76,4 +86,8 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+}
+
+repositories {
+    flatDir { dirs 'aars' }
 }

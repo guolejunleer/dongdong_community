@@ -37,8 +37,8 @@ import java.util.TimerTask;
 public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClickListener {
 
     public static final String INTENT_PHOTO_KEY = "photo";
-    public static final String INTENT_DEVICENAME_KEY = "device_name";
-    public static final String INTENT_ROOMNUM_KEY = "room_num";
+    public static final String INTENT_DEVICE_NAME_KEY = "device_name";
+    public static final String INTENT_ROOM_NUMBER_KEY = "room_num";
     public static final String INTENT_TIMESTAMP_KEY = "timestamp";
     public static final String INTENT_TYPE_KEY = "type";
 
@@ -56,7 +56,7 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
 
 
     //上拉加载所需要的最小高度
-    private static float mUpDownloadNeedHeight;
+//  private static float mUpDownloadNeedHeight;
     private static boolean mIsLoading;
     private int mStartIndex = 0;
     final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -93,15 +93,14 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
         mVisitorPhotoAdapter.setOnItemClickListener(onVisitorPhotoItemClickListener);
         mVisitorPhotoAdapter.changeLoadStatus(DO_NOT_LOAD);
 
-
-        float density = TDevice.getDensity();
-        int titleBarHeight = (int) (density * getResources().getDimension(R.dimen.title_bard_height));
-        mUpDownloadNeedHeight = TDevice.getScreenHeight() - TDevice.getStatusBarHeight()
-                - titleBarHeight;
-
-        LogUtils.i("VisitorPhotoActivity.clazz-->titleBarHeight:"
-                + titleBarHeight + ",density:" + density
-                + ",TDevice.getScreenHeight():" + TDevice.getScreenHeight());
+//        float density = TDevice.getDensity();
+//        int titleBarHeight = (int) (density * getResources().getDimension(R.dimen.title_bard_height));
+//        mUpDownloadNeedHeight = TDevice.getScreenHeight() - TDevice.getStatusBarHeight()
+//                - titleBarHeight;
+//
+//        LogUtils.i("VisitorPhotoActivity.clazz-->titleBarHeight:"
+//                + titleBarHeight + ",density:" + density
+//                + ",TDevice.getScreenHeight():" + TDevice.getScreenHeight());
     }
 
     @Override
@@ -211,8 +210,8 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
                     Intent intent = new Intent(VisitorPhotoActivity.this,
                             VisitorPhotoDetailActivity.class);
                     intent.putExtra(INTENT_PHOTO_KEY, photo);
-                    intent.putExtra(INTENT_DEVICENAME_KEY, visitorPhotoBean.getDeviceName());
-                    intent.putExtra(INTENT_ROOMNUM_KEY, visitorPhotoBean.getRoomValue());
+                    intent.putExtra(INTENT_DEVICE_NAME_KEY, visitorPhotoBean.getDeviceName());
+                    intent.putExtra(INTENT_ROOM_NUMBER_KEY, visitorPhotoBean.getRoomValue());
                     intent.putExtra(INTENT_TIMESTAMP_KEY, visitorPhotoBean.getPhotoTimestamp());
                     intent.putExtra(INTENT_TYPE_KEY, visitorPhotoBean.getType());
                     startActivity(intent);

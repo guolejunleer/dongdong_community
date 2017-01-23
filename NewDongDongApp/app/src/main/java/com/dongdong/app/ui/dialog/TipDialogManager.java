@@ -1,6 +1,5 @@
 package com.dongdong.app.ui.dialog;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -110,8 +109,8 @@ public class TipDialogManager {
      *
      * @param context 上下文Activity
      */
-    public static void showWithoutNetDialog(final Context context,
-                                            final OnTipDialogButtonClick callback) {
+    public static void showWithoutNetworDialog(final Context context,
+                                               final OnTipDialogButtonClick callback) {
         final CommonDialog tipDialog = new CommonDialog(context);
         tipDialog.setTitle(R.string.tip);
         tipDialog.setMessage(R.string.no_network);
@@ -139,10 +138,10 @@ public class TipDialogManager {
         tipDialog.show();
     }
 
-    public static void showNormalTipDialog(final Activity activity,
+    public static void showNormalTipDialog(final Context context,
                                            final OnTipDialogButtonClick callback, int titleResId,
                                            int msgResId, int positiveResId, int negativeResId) {
-        final CommonDialog tipDialog = new CommonDialog(activity);
+        final CommonDialog tipDialog = new CommonDialog(context);
         tipDialog.setTitle(titleResId);
         tipDialog.setMessage(msgResId);
         tipDialog.setPositiveButton(positiveResId, new OnClickListener() {

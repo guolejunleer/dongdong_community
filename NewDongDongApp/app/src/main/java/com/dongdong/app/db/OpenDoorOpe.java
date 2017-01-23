@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.dongdong.app.bean.OpenDoorRecordBean;
 import com.dongdong.app.bean.UserBean;
+import com.dongdong.app.db.gen.BulletinBeanDao;
 import com.dongdong.app.db.gen.OpenDoorRecordBeanDao;
 
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -30,6 +31,7 @@ public class OpenDoorOpe {
     public static void delete(Context context, List<Long> ids) {
         DBManager.getDaoSession(context).getOpenDoorRecordBeanDao().deleteByKeyInTx(ids);
     }
+
 
     /**
      * 查询所有数据

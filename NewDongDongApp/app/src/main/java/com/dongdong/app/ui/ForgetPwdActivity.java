@@ -119,7 +119,7 @@ public class ForgetPwdActivity extends BaseActivity implements OnTitleBarClickLi
         int id = v.getId();
         switch (id) {
             case R.id.bt_smush:
-                String phoneNum = mEtPhone.getText().toString();
+                String phoneNum = mEtPhone.getText().toString().trim();
                 if (TextUtils.isEmpty(phoneNum)) {
                     BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
                     return;
@@ -139,20 +139,20 @@ public class ForgetPwdActivity extends BaseActivity implements OnTitleBarClickLi
                 LogUtils.i("ForgetPwdActivity.clazz--->>>bt_get_code........initDongRegister:" + initDongRegister);
                 break;
             case R.id.bt_ok:
-                if (mEtPhone.getText().toString().equals("")) {
+                if (TextUtils.isEmpty(mEtPhone.getText().toString().trim())) {
                     BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
-                } else if (mEtSms.getText().toString().equals("")) {
+                } else if (TextUtils.isEmpty(mEtSms.getText().toString().trim())) {
                     BaseApplication.showToastShortInTop(R.string.verification_code_can_not_empty);
                 } else if (!mEtSms.getText().toString().equals(randomCode)) {
                     BaseApplication.showToastShortInTop(R.string.verification_code_mistake);
-                } else if (mEtPwd.getText().toString().equals("")) {
+                } else if (TextUtils.isEmpty(mEtPwd.getText().toString().trim())) {
                     BaseApplication.showToastShortInTop(R.string.user_pwd_can_not_empty);
-                } else if (mEtAgainPwd.getText().toString().equals("")) {
+                } else if (TextUtils.isEmpty(mEtAgainPwd.getText().toString().trim())) {
                     BaseApplication.showToastShortInTop(R.string.confrim_pwd_can_not_empty);
                 } else if (!mEtAgainPwd.getText().toString().equals(mEtPwd.getText().toString())) {
                     BaseApplication.showToastShortInTop(R.string.pwd_not_same);
                 } else {
-                    DongSDKProxy.requestSetSecret(mEtPwd.getText().toString(),
+                    DongSDKProxy.requestSetSecret(mEtPwd.getText().toString().trim(),
                             DongConfiguration.mPhoneNumber);
                 }
                 break;

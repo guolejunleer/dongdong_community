@@ -30,6 +30,7 @@ import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.UserBean;
 import com.dongdong.app.db.UserOpe;
+import com.dongdong.app.fragment.HomePagerFragment;
 import com.dongdong.app.ui.dialog.CommonDialog;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.CyptoUtils;
@@ -150,7 +151,7 @@ public class LoginActivity extends BaseActivity implements
                 break;
             case R.id.iv_login:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetDialog(this, null);
+                    TipDialogManager.showWithoutNetworDialog(this, null);
                     return;
                 }
                 mEtUserName = mEtName.getText();
@@ -303,12 +304,13 @@ public class LoginActivity extends BaseActivity implements
         @Override
         public int onAuthenticate(InfoUser tInfo) {
             DongConfiguration.mUserInfo = tInfo;
+            HomePagerFragment.mHasDeviceInfo = false;
             LogUtils.i("LoginActivity.clazz--->>>OnAuthenticate........tInfo:" + tInfo + ",mEtUserName:" + mEtUserName);
             if (TextUtils.isEmpty(mEtUserName) || TextUtils.isEmpty(mEtUserPwd)) {
                 return -1;
             }
-            String enUserName = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserName.toString());
-            String enUserPwd = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserPwd.toString());
+            String enUserName = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserName.toString().trim());
+            String enUserPwd = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserPwd.toString().trim());
             //1.查询所有表
             List<UserBean> rawUserBeanList = UserOpe.queryAll(BaseApplication.context());
             //2 如果表格有数据size>0,如果当前登陆账号不/存在，更新index=0，将其他用户index+1

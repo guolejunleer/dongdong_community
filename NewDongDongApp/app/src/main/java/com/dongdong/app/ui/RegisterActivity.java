@@ -121,7 +121,7 @@ public class RegisterActivity extends BaseActivity implements OnTitleBarClickLis
         int id = v.getId();
         switch (id) {
             case R.id.bt_smush:
-                String phoneNumber = mEtPhone.getText().toString();
+                String phoneNumber = mEtPhone.getText().toString().trim();
                 if (TextUtils.isEmpty(phoneNumber)) {
                     BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
                     return;

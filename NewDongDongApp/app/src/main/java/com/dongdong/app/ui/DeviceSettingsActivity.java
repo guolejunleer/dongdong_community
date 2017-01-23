@@ -2,6 +2,7 @@ package com.dongdong.app.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -128,13 +129,17 @@ public class DeviceSettingsActivity extends BaseActivity implements
         int id = v.getId();
         switch (id) {
             case R.id.bt_update:
+                String deviceNick = mEtDeviceName.getText().toString().trim();
+                if (TextUtils.isEmpty(deviceNick)) {
+                    BaseApplication.showToastShortInTop(R.string.empty_device_name);
+                    return;
+                }
                 View view = LayoutInflater.from(this).inflate(R.layout.loading_dialog, null);
                 TextView tipTextView = (TextView) view.findViewById(R.id.tv_tip);
                 tipTextView.setText(getString(R.string.wait));
                 mUpdateDialog.setContent(view);
                 mUpdateDialog.show();
-                DongSDKProxy.requestSetDeviceName(mDeviceInfo.dwDeviceID,
-                        mEtDeviceName.getText().toString());
+                DongSDKProxy.requestSetDeviceName(mDeviceInfo.dwDeviceID, deviceNick);
                 LogUtils.i("DeviceSettingsActivity.clazz--->>>onClick........mDeviceInfo.dwDeviceID:"
                         + mDeviceInfo.dwDeviceID
                         + ",mTvDeviceName.getText().toString():"

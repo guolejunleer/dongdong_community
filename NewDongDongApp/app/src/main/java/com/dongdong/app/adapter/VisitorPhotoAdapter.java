@@ -45,6 +45,7 @@ public class VisitorPhotoAdapter extends Adapter<ViewHolder> {
     private static final int TYPE_FOOTER = 2;
 
     private List<VisitorPhotoBean> mData;
+    private Context mContext;
     private LayoutInflater mLayoutInflater;
 
     /**
@@ -83,6 +84,7 @@ public class VisitorPhotoAdapter extends Adapter<ViewHolder> {
 
     public VisitorPhotoAdapter(Context context, List<VisitorPhotoBean> data, RecyclerView recyclerView) {
         this.mData = data;
+        this.mContext = context;
         this.mRecyclerView = recyclerView;
         this.mLayoutInflater = LayoutInflater.from(context);
         mCacheHelper = new CacheHelper();
@@ -126,13 +128,15 @@ public class VisitorPhotoAdapter extends Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (holder instanceof NormalItemHolder) {
-            ((NormalItemHolder) holder).mTvRoomNum.setText("房号 " + mData.get(position).getRoomValue());
+            ((NormalItemHolder) holder).mTvRoomNum.setText(String.format("%s",
+                    mContext.getString(R.string.room_number) + mData.get(position).getRoomValue()));
             ((NormalItemHolder) holder).mTvPhotoTimestamp.setText(mData.get(position).getPhotoTimestamp());
-            boolean ignore = mData.get(position).getType().equals(BaseApplication.context().getString(R.string.cloud_call_time_out));
+            boolean ignore = mData.get(position).getType().equals(
+                    BaseApplication.context().getString(R.string.cloud_call_time_out));
             ((NormalItemHolder) holder).mTvState.setTextColor(ignore ? Color.RED :
                     BaseApplication.context().getResources().getColor(R.color.day_textColor));
-            ((NormalItemHolder) holder).mTvState.setText((ignore ? "未接听" : "已接听"))
-            ;
+            ((NormalItemHolder) holder).mTvState.setText((ignore ?
+                    mContext.getString(R.string.ignore) : mContext.getString(R.string.unignore)));
             // 给ImageView设置一个Tag，保证异步加载图片时不会乱序
             ((NormalItemHolder) holder).mIvPhoto.setTag(mData.get(position).getPhotoUrl());
             ((NormalItemHolder) holder).mIvPhoto.setImageResource(R.mipmap.default_photo);
@@ -149,18 +153,18 @@ public class VisitorPhotoAdapter extends Adapter<ViewHolder> {
             }
 
         } else if (holder instanceof EmptyViewHolder) {
-            ((EmptyViewHolder) holder).mTvEmpty.setText("暂无访客留影");
+            ((EmptyViewHolder) holder).mTvEmpty.setText(mContext.getString(R.string.no_visitor_photo));
         } else if (holder instanceof FooterViewHolder) {
             switch (mLoadStatus) {
                 case LOAD_NO_DATA:
                     ((FooterViewHolder) holder).mPbLoad.setVisibility(View.GONE);
                     ((FooterViewHolder) holder).mTvLoad.setVisibility(View.VISIBLE);
-                    ((FooterViewHolder) holder).mTvLoad.setText("没有更多数据了");
+                    ((FooterViewHolder) holder).mTvLoad.setText(mContext.getString(R.string.no_more_data));
                     break;
                 case LOADING:
                     ((FooterViewHolder) holder).mPbLoad.setVisibility(View.VISIBLE);
                     ((FooterViewHolder) holder).mTvLoad.setVisibility(View.VISIBLE);
-                    ((FooterViewHolder) holder).mTvLoad.setText("加载中");
+                    ((FooterViewHolder) holder).mTvLoad.setText(mContext.getString(R.string.loading));
                     break;
                 case DO_NOT_LOAD:
                     ((FooterViewHolder) holder).mPbLoad.setVisibility(View.GONE);
@@ -169,7 +173,7 @@ public class VisitorPhotoAdapter extends Adapter<ViewHolder> {
                 case LOAD_DATA_FAILED:
                     ((FooterViewHolder) holder).mPbLoad.setVisibility(View.GONE);
                     ((FooterViewHolder) holder).mTvLoad.setVisibility(View.VISIBLE);
-                    ((FooterViewHolder) holder).mTvLoad.setText("加载数据失败了");
+                    ((FooterViewHolder) holder).mTvLoad.setText(mContext.getString(R.string.load_fail));
                     break;
             }
         }
@@ -242,23 +246,16 @@ public class VisitorPhotoAdapter extends Adapter<ViewHolder> {
         }
     }
 
-    static Bitmap resizeImage(Bitmap bitmap, int w, int h) {
-        Bitmap BitmapOrg = bitmap;
-        int width = BitmapOrg.getWidth();
-        int height = BitmapOrg.getHeight();
-        int newWidth = w;
-        int newHeight = h;
-
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-
+    private static Bitmap resizeImage(Bitmap bitmap, int w, int h) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float scaleWidth = ((float) w) / width;
+        float scaleHeight = ((float) h) / height;
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
         // if you want to rotate the Bitmap
         // matrix.postRotate(45);
-        Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0, width,
-                height, matrix, true);
-        return resizedBitmap;
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
     }
 
     /**

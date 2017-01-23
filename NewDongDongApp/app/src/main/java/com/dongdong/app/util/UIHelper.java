@@ -7,10 +7,10 @@ import android.os.Bundle;
 import com.dongdong.app.AppConfig;
 import com.dongdong.app.MainActivity;
 import com.dongdong.app.ui.ApplyKeyActivity;
+import com.dongdong.app.ui.BulletinActivity;
 import com.dongdong.app.ui.CommonPhoneActivity;
 import com.dongdong.app.ui.DeviceListActivity;
 import com.dongdong.app.ui.FinanceActivity;
-import com.dongdong.app.ui.MessageActivity;
 import com.dongdong.app.ui.ParkingActivity;
 import com.dongdong.app.ui.RepairsActivity;
 import com.dongdong.app.ui.ShakeOpenDoorActivity;
@@ -45,7 +45,7 @@ public class UIHelper {
     }
 
     public static void showMessageActivity(Context context) {
-        Intent intent = new Intent(context, MessageActivity.class);
+        Intent intent = new Intent(context, BulletinActivity.class);
         context.startActivity(intent);
     }
 

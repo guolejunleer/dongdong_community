@@ -16,18 +16,17 @@ import com.dongdong.app.util.LogUtils;
 
 import java.util.List;
 
-public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeListener {
+public class ADViewPagerAdapter extends PagerAdapter implements
+        OnPageChangeListener {
 
     private Context mContext;
     private ViewPager mViewPager;
-    private int[] mImgIdArray = new int[]{R.mipmap.ad_background, R.mipmap.ad_background, R.mipmap.ad_background};
+    private int[] mImgIdArray = new int[]{R.mipmap.notice1, R.mipmap.notice2, R.mipmap.notice3};
     private ImageView[] mImageViews;
     private ImageView[] mTips;
     private boolean mShouldShowPoint;
 
-    @SuppressWarnings("deprecation")
-    public ADViewPagerAdapter(Context context, ViewPager viewPager,
-                              List<String> datas, ViewGroup points) {
+    public ADViewPagerAdapter(Context context, ViewPager viewPager, ViewGroup points) {
         mContext = context;
         mViewPager = viewPager;
         mImageViews = new ImageView[mImgIdArray.length];
@@ -36,9 +35,7 @@ public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeList
             mImageViews[i] = imageView;
             imageView.setBackgroundResource(mImgIdArray[i]);
         }
-
         mViewPager.setOnPageChangeListener(this);
-
         mTips = new ImageView[mImgIdArray.length];
         for (int i = 0; i < mTips.length; i++) {
             ImageView imageView = new ImageView(context);
@@ -51,8 +48,7 @@ public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeList
             }
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    new LayoutParams(LayoutParams.WRAP_CONTENT,
-                            LayoutParams.WRAP_CONTENT));
+                    new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             layoutParams.leftMargin = 5;
             layoutParams.rightMargin = 5;
             points.addView(imageView, layoutParams);
@@ -71,30 +67,11 @@ public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeList
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-//        int des = position % mImageViews.length;
-//        View view = mImageViews[des];
-//        try {
-//            container.removeView(view);
-//        } catch (Exception e) {
-//            LogUtils.i("ADViewPagerAdapter.clazz--->>>destroyItem Exception:"
-//                    + e.toString());
-//            e.printStackTrace();
-//        }
         container.removeView((View) object);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-//        int des = position % mImageViews.length;
-//        View view = mImageViews[des];
-//        try {
-//            container.addView(view, 0);
-//        } catch (Exception e) {
-//            LogUtils.i("ADViewPagerAdapter.clazz--->>>instantiateItem Exception:"
-//                    + e.toString());
-//            e.printStackTrace();
-//        }
-//        return view;
         int des = position % mImageViews.length;
         View channelView = LayoutInflater.from(mContext).inflate(
                 R.layout.viewpager_item, container, false);
@@ -107,6 +84,7 @@ public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeList
 
     @Override
     public void onPageScrollStateChanged(int arg0) {
+
     }
 
     @Override
@@ -130,8 +108,7 @@ public class ADViewPagerAdapter extends PagerAdapter implements OnPageChangeList
         }
     }
 
-    public void showADViewPoints() {
+    public void showNoticeViewPoints() {
         mShouldShowPoint = true;
     }
-
 }

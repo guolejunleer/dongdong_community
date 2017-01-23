@@ -36,11 +36,11 @@ public class DynamicItemContainView extends RelativeLayout {
 		this.name = name;
 	}
 
-	public void setDragStatu(boolean dragStatu) {
-		mDragState = dragStatu;
+	public void setDragState(boolean dragState) {
+		mDragState = dragState;
 	}
 
-	public boolean getDragStatu() {
+	public boolean getDragState() {
 		return mDragState;
 	}
 

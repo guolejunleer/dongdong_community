@@ -1048,14 +1048,15 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                         }
                         int networkType = TDevice.getNetworkType();
                         if (networkType == 0) {// 10s后发现无网
-                            TipDialogManager.showWithoutNetDialog(
+                            TipDialogManager.showWithoutNetworDialog(
                                     VideoViewActivity.this, null);
                         } else {// 10s后还没有视频数据
                             mTipDialog.setTitle(R.string.tip);
                             mTipDialog
                                     .setMessage(R.string.video_get_data_error);
                             mTipDialog.setPositiveButton(R.string.i_know, null);
-                            mTipDialog.show();
+                            if (!VideoViewActivity.this.isFinishing())
+                                mTipDialog.show();
                         }
                         LogUtils.i("VideoViewActivity.clazz--->>>MyTimerTask coming!!!!!!! mShouldPlayNextDeviceCount ..."
                                 + mShouldPlayNextDeviceCount);

@@ -18,6 +18,7 @@ import com.ddclient.configuration.DongConfiguration;
 import com.ddclient.dongsdk.DeviceInfo;
 import com.ddclient.dongsdk.DongSDK;
 import com.ddclient.dongsdk.DongSDKProxy;
+import com.ddclient.push.DongPushMsgManager;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.fragment.HomePagerFragment;
 import com.dongdong.app.fragment.MyPagerFragment;
@@ -50,7 +51,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
 
     private long mLastTime;
 
-    private String mDeviceID;
+    private String mDeviceID = "";
     private String mPushTime;
 
 
@@ -58,7 +59,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DongSDK.initializePush(this, DongSDK.PUSH_TYPE_ALL);// 1.初始化推送
+        DongSDK.initializePush(this, DongPushMsgManager.PUSH_TYPE_ALL);// 1.初始化推送
 //        PushManager.getInstance().turnOffPush(this);
 //        com.baidu.android.pushservice.PushManager.stopWork(this);
         AppManager.getAppManager().addActivity(this);
@@ -112,7 +113,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         //7.检查网络
         int networkType = TDevice.getNetworkType();
         if (networkType == 0) {
-            TipDialogManager.showWithoutNetDialog(this, this);
+            TipDialogManager.showWithoutNetworDialog(this, this);
         } else if (networkType == 2 || networkType == 3) {
             TipDialogManager.showNormalTipDialog(this, this,
                     R.string.tip, R.string.tip_choose_net,
@@ -194,7 +195,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
                 break;
             case R.id.iv_unclock:// 点击了开锁操作按钮
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetDialog(this, null);
+                    TipDialogManager.showWithoutNetworDialog(this, null);
                     return;
                 }
                 if (Math.abs(System.currentTimeMillis() - mLastTime) <= 1000) {

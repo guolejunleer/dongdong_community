@@ -12,6 +12,7 @@ import java.util.TreeMap;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
@@ -22,11 +23,15 @@ import com.loopj.android.http.RequestParams;
 
 public class ApiHttpClient {
 
-    //    private final static String HOST = "www.dd121.com";
-    private final static String HOST = "192.168.68.55";
-    private static String API_URL = "http://www.dd121.com/%s";
-    // public final static String HOST = "192.168.1.101";
-    // private static String API_URL = "http://192.168.1.101/%s";
+    //正式服务器
+    //private final static String HOST = "www.dd121.com";
+    //55测试服务器
+    //private final static String HOST = "192.168.68.55";
+    //private static String API_URL = "http://www.dd121.com/%s";
+
+    //新服务器
+    public final static String HOST = "192.168.1.101";
+    private static String API_URL = "http://192.168.1.101/%s";
     public static final String DELETE = "DELETE";
     public static final String GET = "GET";
     public static final String POST = "POST";
@@ -260,4 +265,35 @@ public class ApiHttpClient {
 
         return params;
     }
+
+    /**
+     * 获取物业公告的参数
+     */
+    public static RequestParams getDVNotices(String url, int deviceId, int offset, int size) {
+        Calendar calendar = Calendar.getInstance();
+        RequestParams params = new RequestParams();
+        params.put("apikey", API_KEY);
+        params.put("timestamp", "" + calendar.getTimeInMillis() / 1000);
+        params.put("id", "435");
+        params.put("method", "getDVNotices");
+        params.put("deviceid", deviceId);
+        params.put("offset", offset);
+        params.put("size", size);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("apikey", API_KEY);
+        map.put("timestamp", "" + calendar.getTimeInMillis() / 1000);
+        map.put("id", "435");
+        map.put("method", "getDVNotices");
+        map.put("deviceid", String.valueOf(deviceId));
+        map.put("offset", String.valueOf(offset));
+        map.put("size", String.valueOf(size));
+
+        String sign = getSign(url, map, "utf-8");
+        Log.e("GT", "ApiHttpClient.clazz-->getDVNotices()-->sign:" + sign);
+        params.put("sign", sign);
+
+        return params;
+    }
+
 }

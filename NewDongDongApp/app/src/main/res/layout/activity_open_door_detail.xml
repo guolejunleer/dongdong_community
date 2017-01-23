@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <com.dongdong.app.widget.TitleBar
         android:id="@+id/tb_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -28,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="房  号"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
 
             <TextView
                 android:id="@+id/tv_room_number"
@@ -37,10 +39,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
         </RelativeLayout>
 
-        <View style="@style/h_line" />
+        <View style="@style/h_line"/>
 
         <RelativeLayout
             style="@style/option_item_ro"
@@ -55,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="类  型"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
 
             <TextView
                 android:id="@+id/tv_type"
@@ -64,10 +66,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
         </RelativeLayout>
 
-        <View style="@style/h_line" />
+        <View style="@style/h_line"/>
 
         <RelativeLayout
             style="@style/option_item_ro"
@@ -82,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="时  间"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
 
             <TextView
                 android:id="@+id/tv_timestamp"
@@ -91,10 +93,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
         </RelativeLayout>
 
-        <View style="@style/h_line" />
+        <View style="@style/h_line"/>
 
         <RelativeLayout
             style="@style/option_item_ro"
@@ -109,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="设  备"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
 
             <TextView
                 android:id="@+id/tv_device_name"
@@ -118,10 +120,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
         </RelativeLayout>
 
-        <View style="@style/h_line" />
+        <View style="@style/h_line"/>
 
         <RelativeLayout
             style="@style/option_item_ro"
@@ -136,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="业  主"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
 
             <TextView
                 android:id="@+id/tv_member_name"
@@ -145,10 +147,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
         </RelativeLayout>
 
-        <View style="@style/h_line" />
+        <View style="@style/h_line"/>
 
         <RelativeLayout
             style="@style/option_item_ro"
@@ -163,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="门卡/手机"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
 
             <TextView
                 android:id="@+id/tv_com_number"
@@ -172,10 +174,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
         </RelativeLayout>
 
-        <View style="@style/h_line" />
+        <View style="@style/h_line"/>
 
         <RelativeLayout
             style="@style/option_item_ro"
@@ -190,7 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="身份证号:"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
 
             <TextView
                 android:id="@+id/tv_id_number"
@@ -198,10 +200,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
         </RelativeLayout>
 
-        <View style="@style/h_line" />
+        <View style="@style/h_line"/>
 
         <RelativeLayout
             style="@style/option_item_ro"
@@ -216,7 +218,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="手机号码:"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
 
             <TextView
                 android:id="@+id/tv_mobile_phone"
@@ -224,7 +226,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
         </RelativeLayout>
     </LinearLayout>
 
