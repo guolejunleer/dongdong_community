@@ -198,6 +198,23 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         mConnDeviceStateDialog = new CommonDialog(this);
         mTipDialog = new CommonDialog(this);
         mDongDeviceCallBackImpl.initTipDialog();
+
+        //决定显示界面（横屏/竖屏）
+        if (TDevice.isLandscape()) {
+            mLlControl.setOrientation(LinearLayout.HORIZONTAL);
+            mLlFunction.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            mLlAccept.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            mIvScreenChange.setImageResource(R.mipmap.screen2);
+        } else {
+            mLlControl.setOrientation(LinearLayout.VERTICAL);
+            mLlFunction.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            mLlAccept.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            mIvScreenChange.setImageResource(R.mipmap.screen_1);
+        }
     }
 
     @Override
@@ -314,6 +331,9 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;
+        }
+        if (mConnDeviceStateDialog != null) {
+            mConnDeviceStateDialog.dismiss();
         }
         LogUtils.i("VideoViewActivity.clazz-->>onDestroy...");
     }
@@ -511,7 +531,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                     stopVideo();
                 }
                 mAudioManager.setMode(AudioManager.MODE_NORMAL);// 扬声器
-                finish();
+                VideoViewActivity.this.finish();
                 LogUtils.i("VideoViewActivity.clazz-->>onClick tv_hang_up isVideoSuccess:"
                         + isVideoSuccess);
                 break;
@@ -968,6 +988,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 
     @Override
     public void onLongPress(MotionEvent e) {
+
     }
 
     @Override

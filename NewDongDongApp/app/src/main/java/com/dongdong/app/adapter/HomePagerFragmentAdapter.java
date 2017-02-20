@@ -15,7 +15,7 @@ import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.FunctionBean;
 import com.dongdong.app.widget.DynamicItemContainView;
 
-public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
+public class HomePagerFragmentAdapter extends BaseAdapter {
 
     private static final int FUNCTION_TEMP_COUNT = 14;
     public static final int COMMON_VIEWPAGER = 100;
@@ -30,17 +30,17 @@ public class LinkRoomDynamicLayoutAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
 
-//	public LinkRoomDynamicLayoutAdapter(Context context) {
+//	public HomePagerFragmentAdapter(Context context) {
 //	}
 
-    public LinkRoomDynamicLayoutAdapter(Context context, List<FunctionBean> funcs) {
+    public HomePagerFragmentAdapter(Context context, List<FunctionBean> funcs) {
         mContext = context;
         mInflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mFuncs = funcs;
-        // LogUtils.v("LinkRoomDynamicLayoutAdapter size:" + mFuncs.size());
+        // LogUtils.v("HomePagerFragmentAdapter size:" + mFuncs.size());
         int needView = mFuncs.size() % FUNCTION_TEMP_COUNT;
-        // LogUtils.v("LinkRoomDynamicLayoutAdapter size:" + mFuncs.size()+ "; needView:" + needView);
+        // LogUtils.v("HomePagerFragmentAdapter size:" + mFuncs.size()+ "; needView:" + needView);
         if (needView != 0) {
             for (int i = 0; i < FUNCTION_TEMP_COUNT - needView; i++) {
                 mFuncs.add(new FunctionBean("transprent", 0, Integer.MAX_VALUE));

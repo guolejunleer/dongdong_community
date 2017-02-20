@@ -49,15 +49,17 @@ public class BulletinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public int getItemCount() {return mData.size() == 0 ? 1 : mData.size() + 1;}
+    public int getItemCount() {
+        return mData.size() == 0 ? 1 : mData.size() + 1;
+    }
 
     @Override
     public int getItemViewType(int position) {
         if (mData.size() == 0) {
             return TYPE_EMPTY;
-        }else if (position + 1 == getItemCount()) {
+        } else if (position + 1 == getItemCount()) {
             return TYPE_FOOTER;
-        }else {
+        } else {
             return TYPE_NORMAL_ITEM;
         }
     }
@@ -94,7 +96,7 @@ public class BulletinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         } else if (holder instanceof EmptyViewHolder) {
             ((EmptyViewHolder) holder).mTvEmpty.setText(mContext.getString(R.string.no_bulletin));
-        }else if (holder instanceof FooterViewHolder) {
+        } else if (holder instanceof FooterViewHolder) {
             switch (mLoadStatus) {
                 case LOAD_NO_DATA:
                     ((FooterViewHolder) holder).mPbLoad.setVisibility(View.GONE);

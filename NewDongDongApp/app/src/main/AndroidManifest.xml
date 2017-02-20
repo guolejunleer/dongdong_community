@@ -180,7 +180,7 @@
             android:name="com.zbar.lib.CaptureActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.dongdong.app.ui.FileManagerActivity"
+            android:name="com.dongdong.app.ui.MyAlbumActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.dongdong.app.ui.MoreSettingActivity"

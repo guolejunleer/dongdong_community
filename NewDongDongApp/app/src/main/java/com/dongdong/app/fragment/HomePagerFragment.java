@@ -22,7 +22,7 @@ import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.adapter.ADViewPagerAdapter;
 import com.dongdong.app.adapter.BulletinViewPagerAdapter;
-import com.dongdong.app.adapter.LinkRoomDynamicLayoutAdapter;
+import com.dongdong.app.adapter.HomePagerFragmentAdapter;
 import com.dongdong.app.api.ApiHttpClient;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.base.BaseFragment;
@@ -53,7 +53,9 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -97,7 +99,7 @@ public class HomePagerFragment extends BaseFragment implements
         LogUtils.i("HomePagerFragment.clazz--->>>onCreateView befor...mDeviceID:"
                 + mDeviceID + ",bundle:" + bundle);
         if (bundle != null)
-        mDeviceID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID);
+            mDeviceID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID);
         LogUtils.i("HomePagerFragment.clazz--->>>onCreateView ...mDeviceID:" + mDeviceID);
         return view;
     }
@@ -135,7 +137,6 @@ public class HomePagerFragment extends BaseFragment implements
                 LogUtils.i("HomePagerFragment.clazz--->>>onResume login start ....:");
             }
         }
-
         // 1.设置标题栏信息
         showTitleInfo(!initDongAccount);
         // 2.登录后查看设置物业公告信息
@@ -174,7 +175,7 @@ public class HomePagerFragment extends BaseFragment implements
         } else {
             mFunctionsList = XmlUtils.getFunctionsDatasByProp(mFuncFile);
         }
-        LinkRoomDynamicLayoutAdapter dynamicAdapter = new LinkRoomDynamicLayoutAdapter(
+        HomePagerFragmentAdapter dynamicAdapter = new HomePagerFragmentAdapter(
                 getActivity(), mFunctionsList);
         mDynamicLayout.setAdapter(dynamicAdapter);
 
@@ -289,7 +290,7 @@ public class HomePagerFragment extends BaseFragment implements
      * 获取物业公告
      */
     private void getBulletinFromNet() {
-        RequestParams params = getDVNotices(AppConfig.BASE_URL, DongConfiguration.mDeviceInfo.dwDeviceID, 0, 10);
+        RequestParams params = getDVNotices(AppConfig.BASE_URL, DongConfiguration.mDeviceInfo.dwDeviceID, 0, 3);
         LogUtils.i("HomePagerFragment.clazz-->getBulletinFromNet()-->" +
                 "DongConfiguration.mDeviceInfo.dwDeviceID:" + DongConfiguration.mDeviceInfo.dwDeviceID);
 
@@ -306,7 +307,7 @@ public class HomePagerFragment extends BaseFragment implements
                         if (jsonInitData.equals("[]")) {
                             return;
                         }
-                        LogUtils.i("HomePagerFragment.clazz-->getBulletinFromNet()-->jsonInitData:" + jsonInitData);
+                        LogUtils.i("HomePagerFrag ment.clazz-->getBulletinFromNet()-->jsonInitData:" + jsonInitData);
                         JSONArray jsonArray = new JSONObject(jsonInitData).getJSONArray("villagenotices");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -370,8 +371,16 @@ public class HomePagerFragment extends BaseFragment implements
                 BaseApplication.context(), netVillageId);
         LogUtils.i("HomeFragment.clazz--->>>processBulletinData" +
                 " newLocalList.size " + newLocalList.size());
-        for (BulletinBean bulletinBean : newLocalList) {
-            mBulletinList.add(bulletinBean);
+        //倒序排列(按时间)
+        Collections.sort(newLocalList, Collections.reverseOrder());
+        if (newLocalList.size() > 3) {
+            for (int i = 0; i < 3; i++) {
+                mBulletinList.add(newLocalList.get(i));
+            }
+        } else {
+            for (BulletinBean bulletinBean : newLocalList) {
+                mBulletinList.add(bulletinBean);
+            }
         }
         mBulletinViewPagerAdapter.setBulletinData(mBulletinList);
     }
@@ -387,23 +396,32 @@ public class HomePagerFragment extends BaseFragment implements
             mBulletinViewPagerPoints.removeAllViews();
             mBulletinViewPagerAdapter.hiddenADViewPoints();
 //            mBulletinViewPager.setCurrentItem(0);
-        } else {//2.已登录 判断有无设备
+        } else {//2.已登录 判断设备是否有物业公告
             String villageId = VillageOpe.queryDataByDeviceId(BaseApplication.context(),
                     String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
-            LogUtils.i("HomePagerFragment.clazz-->showBulletinInfo()-->villageId:"+villageId);
+            LogUtils.i("HomePagerFragment.clazz-->showBulletinInfo()-->villageId:" + villageId);
             if (!TextUtils.isEmpty(villageId)) {
                 mBulletinList.clear();
                 mBulletinViewPagerPoints.removeAllViews();
                 List<BulletinBean> localBean = BulletinOpe.queryDataByVillageId(
                         BaseApplication.context(), villageId);
-                for (BulletinBean bulletinBean : localBean) {
-                    mBulletinList.add(bulletinBean);
+                //倒序排列(按时间)
+                Collections.sort(localBean, Collections.reverseOrder());
+                if (localBean.size() > 3) {
+                    for (int i = 0; i < 3; i++) {
+                        mBulletinList.add(localBean.get(i));
+                    }
+                } else {
+                    for (BulletinBean bulletinBean : localBean) {
+                        mBulletinList.add(bulletinBean);
+                    }
                 }
                 LogUtils.e("HomePagerFragment.clazz-->>showBulletinInfo Login mBulletinList.size:"
                         + mBulletinList.size() + ",localBean,size:" + localBean.size());
             } else {
                 mBulletinList.clear();
                 mBulletinViewPagerPoints.removeAllViews();
+                mBulletinViewPagerAdapter.hiddenADViewPoints();
             }
         }
         mBulletinViewPagerAdapter.setBulletinData(mBulletinList);
@@ -416,6 +434,7 @@ public class HomePagerFragment extends BaseFragment implements
             startActivity(new Intent(getActivity(), LoginActivity.class));
             return;
         }
+
         //判断有无设备
         if (DongConfiguration.mDeviceInfo == null) {
             BaseApplication.showToastShortInCenter(R.string.no_device);
@@ -427,7 +446,8 @@ public class HomePagerFragment extends BaseFragment implements
 
         if (name.equals(getString(R.string.message))) {
             LogUtils.e("HomePagerFragment.clazz-->>DongConfiguration.mUserInfo:"
-                    + DongConfiguration.mUserInfo + ",DongConfiguration.mUserInfo.userId:" + DongConfiguration.mUserInfo.userID);
+                    + DongConfiguration.mUserInfo + ",DongConfiguration.mUserInfo.userId:"
+                    + DongConfiguration.mUserInfo.userID);
             if (DongConfiguration.mUserInfo.userID < 1) {
                 BaseApplication.showToastShortInBottom("系统正在初始化，请稍后");
                 return;
@@ -565,7 +585,6 @@ public class HomePagerFragment extends BaseFragment implements
         public int onNewListInfo() {
             LogUtils.i("HomePageFragment.clazz -->>OnNewListInfo");
             showTitleInfo(DongConfiguration.mUserInfo == null);
-//            showBulletinInfo();
             return 0;
         }
 
@@ -595,7 +614,8 @@ public class HomePagerFragment extends BaseFragment implements
         public int onUserError(int nErrNo) {
             LogUtils.i("HomePagerFragment.clazz--->>>OnUserError.....nErrNo:" + nErrNo);
             TipDialogManager.showTipDialog(HomePagerFragment.this.getActivity(),
-                    R.string.tip, R.string.pwd_error_tip);
+                    BaseApplication.context().getString(R.string.tip),
+                    BaseApplication.context().getString(R.string.pwd_error_tip, String.valueOf(nErrNo)));
             return 0;
         }
     }

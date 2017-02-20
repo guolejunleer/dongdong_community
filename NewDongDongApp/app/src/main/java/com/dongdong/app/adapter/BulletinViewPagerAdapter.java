@@ -88,8 +88,7 @@ public class BulletinViewPagerAdapter extends PagerAdapter implements OnPageChan
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = LayoutInflater.from(mContext).inflate(
-                R.layout.bulletin_view_pager_item, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.bulletin_view_pager_item, null);
         TextView tvViewTitle = (TextView) view.findViewById(R.id.tv_view_title);
         TextView tvViewTime = (TextView) view.findViewById(R.id.tv_view_time);
         LogUtils.i("BulletinViewPagerAdapter.clazz-->>>instantiateItem position:"
@@ -106,12 +105,18 @@ public class BulletinViewPagerAdapter extends PagerAdapter implements OnPageChan
             tvViewTitle.setText(bean.getTitle());
             tvViewTime.setText(bean.getCreated());
             tvViewTime.setVisibility(View.VISIBLE);
-            mViewPager.setIsRefresh(true);
-            mViewPager.setIsScroll(true);
+            if (mBulletinBeanList.size() == 1) {
+                mViewPager.setIsRefresh(false);
+                mViewPager.setIsScroll(false);
+            } else {
+                mViewPager.setIsRefresh(true);
+                mViewPager.setIsScroll(true);
+            }
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LogUtils.i("BulletinViewPagerAdapter.clazz-->>>instantiateItem onClick-->>>>>>>>>>>>>newPosition:" + newPosition);
+                    LogUtils.i("BulletinViewPagerAdapter.clazz-->>>instantiateItem onClick" +
+                            "-->>>>>>>>>>>>>newPosition:" + newPosition);
                     Intent intent = new Intent(mContext, BulletinDetailActivity.class);
                     intent.putExtra(BulletinDetailActivity.BULLETIN_TITLE, bean.getTitle());
                     intent.putExtra(BulletinDetailActivity.BULLETIN_NOTICE, bean.getNotice());
@@ -130,7 +135,6 @@ public class BulletinViewPagerAdapter extends PagerAdapter implements OnPageChan
 
     @Override
     public void onPageScrolled(int arg0, float arg1, int arg2) {
-
     }
 
     @Override

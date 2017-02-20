@@ -347,7 +347,7 @@ public class TDevice {
     }
 
     /**
-     * 判断是否坚屏
+     * 判断是否竖屏
      *
      * @return
      */

@@ -1,6 +1,7 @@
 package com.dongdong.app.ui;
 
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -20,8 +21,11 @@ import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.ui.dialog.CommonDialog;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.LogUtils;
+import com.dongdong.app.util.TDevice;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
+
+import static com.dongdong.app.util.PhoneMessUtils.isMobile;
 
 public class ForgetPwdActivity extends BaseActivity implements OnTitleBarClickListener,
         OnClickListener {
@@ -117,13 +121,21 @@ public class ForgetPwdActivity extends BaseActivity implements OnTitleBarClickLi
     @Override
     public void onClick(View v) {
         int id = v.getId();
+        String phoneNumber = mEtPhone.getText().toString().trim();
+        if (TDevice.getNetworkType() == 0) {
+            TipDialogManager.showWithoutNetworDialog(this, null);
+            return;
+        }
+        if (TextUtils.isEmpty(phoneNumber)) {
+            BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
+            return;
+        }
+        if (phoneNumber.length() != 11 || !isMobile(phoneNumber)) {
+            BaseApplication.showToastShortInTop(R.string.un_know_user_name);
+            return;
+        }
         switch (id) {
             case R.id.bt_smush:
-                String phoneNum = mEtPhone.getText().toString().trim();
-                if (TextUtils.isEmpty(phoneNum)) {
-                    BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
-                    return;
-                }
                 mDialog = new CommonDialog(ForgetPwdActivity.this);
                 View view = LayoutInflater.from(ForgetPwdActivity.this).
                         inflate(R.layout.loading_dialog, null);
@@ -132,16 +144,15 @@ public class ForgetPwdActivity extends BaseActivity implements OnTitleBarClickLi
                 mDialog.setContent(view);
                 mDialog.show();
                 randomCode = (new Random().nextInt(999999) + 100000) + "";
-                DongConfiguration.mPhoneNumber = phoneNum;
+                DongConfiguration.mPhoneNumber = phoneNumber;
                 boolean initDongRegister = DongSDKProxy.initCompleteDongRegister();
                 DongSDKProxy.intDongRegister(mDongRegisterProxy);
-                DongSDKProxy.requestQueryUser(phoneNum);
-                LogUtils.i("ForgetPwdActivity.clazz--->>>bt_get_code........initDongRegister:" + initDongRegister);
+                DongSDKProxy.requestQueryUser(phoneNumber);
+                LogUtils.i("ForgetPwdActivity.clazz--->>>bt_get_code........initDongRegister:"
+                        + initDongRegister);
                 break;
             case R.id.bt_ok:
-                if (TextUtils.isEmpty(mEtPhone.getText().toString().trim())) {
-                    BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
-                } else if (TextUtils.isEmpty(mEtSms.getText().toString().trim())) {
+                if (TextUtils.isEmpty(mEtSms.getText().toString().trim())) {
                     BaseApplication.showToastShortInTop(R.string.verification_code_can_not_empty);
                 } else if (!mEtSms.getText().toString().equals(randomCode)) {
                     BaseApplication.showToastShortInTop(R.string.verification_code_mistake);
@@ -211,10 +222,8 @@ public class ForgetPwdActivity extends BaseActivity implements OnTitleBarClickLi
                 mDialog.dismiss();
             TipDialogManager.showTipDialog(ForgetPwdActivity.this,
                     BaseApplication.context().getString(R.string.tip),
-                    BaseApplication.context()
-                            .getString(R.string.register_error) + nErrNo);
+                    BaseApplication.context().getString(R.string.register_error) + nErrNo);
             return 0;
         }
     }
-
 }

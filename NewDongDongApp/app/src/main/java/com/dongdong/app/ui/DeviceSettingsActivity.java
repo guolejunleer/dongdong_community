@@ -78,12 +78,13 @@ public class DeviceSettingsActivity extends BaseActivity implements
 
         int defaultDeviceId = (int) AppContext.mAppConfig.getConfigValue(
                 AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                AppConfig.KEY_DEFAULT_DEVICE_ID, 0);
+                DongConfiguration.mUserInfo.userID + "", 0);
         if (defaultDeviceId == mDeviceInfo.dwDeviceID) {
-            mTvDefaultDevice.setText(getString(R.string.yes));
+            mTvDefaultDevice.setText(DeviceSettingsActivity.this.getResources().
+                    getString(R.string.yes));
         } else {
-            mTvDefaultDevice.setText(DeviceSettingsActivity.this.getResources()
-                    .getString(R.string.no));
+            mTvDefaultDevice.setText(DeviceSettingsActivity.this.getResources().
+                    getString(R.string.no));
         }
         mBtUpdateDeviceName.setOnClickListener(this);
         mTvDeleteDevice.setOnClickListener(this);
@@ -92,7 +93,6 @@ public class DeviceSettingsActivity extends BaseActivity implements
 
         LogUtils.i("DeviceSettingsActivity.clazz--->>>initData mDeviceInfo:"
                 + mDeviceInfo + ",defaultDeviceId:" + defaultDeviceId);
-
     }
 
     @Override
@@ -130,6 +130,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
         switch (id) {
             case R.id.bt_update:
                 String deviceNick = mEtDeviceName.getText().toString().trim();
+
                 if (TextUtils.isEmpty(deviceNick)) {
                     BaseApplication.showToastShortInTop(R.string.empty_device_name);
                     return;

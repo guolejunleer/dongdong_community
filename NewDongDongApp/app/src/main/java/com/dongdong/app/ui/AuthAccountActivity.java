@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -154,8 +155,8 @@ public class AuthAccountActivity extends BaseActivity implements
         switch (id) {
             case R.id.bt_auth:
                 mAccountName = mEtAccount.getText().toString();
-                if (mAccountName.equals("")) {
-                    AppContext.showToastShortInBottom(R.string.empty_tip);
+                if (TextUtils.isEmpty(mAccountName)) {
+                    BaseApplication.showToastShortInTop(R.string.empty_authorization);
                     return;
                 }
                 for (InfoUser info : mUserList) {

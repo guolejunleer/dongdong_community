@@ -21,6 +21,7 @@ import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.LogUtils;
+import com.dongdong.app.util.TDevice;
 import com.dongdong.app.util.UIHelper;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
@@ -34,7 +35,6 @@ public class DeviceListActivity extends BaseActivity implements OnTitleBarClickL
     private DeviceInfoAdapter mInfoAdapter;
     private DeviceListActivityDongAccountProxy mAccountProxy
             = new DeviceListActivityDongAccountProxy();
-    ;
 
     @Override
     protected int getLayoutId() {
@@ -69,6 +69,11 @@ public class DeviceListActivity extends BaseActivity implements OnTitleBarClickL
                 LogUtils.i("DeviceListActivity.clazz--->>>IsOnline:"
                         + deviceInfo.isOnline);
                 if (deviceInfo.isOnline) {
+                    //判断网络，只有在观看设备的时候需要网
+                    if (TDevice.getNetworkType() == 0) {
+                        TipDialogManager.showWithoutNetworDialog(DeviceListActivity.this, null);
+                        return;
+                    }
                     UIHelper.showVideoViewActivity(DeviceListActivity.this, true, "");
                 } else {
                     Intent intent = new Intent(DeviceListActivity.this,

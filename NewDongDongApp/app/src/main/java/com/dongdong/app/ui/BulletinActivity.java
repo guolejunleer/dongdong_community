@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.dd121.community.R;
@@ -17,6 +18,7 @@ import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.BulletinBean;
 import com.dongdong.app.db.BulletinOpe;
+import com.dongdong.app.db.VillageOpe;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
@@ -82,14 +84,13 @@ public class BulletinActivity extends BaseActivity implements OnTitleBarClickLis
 
     @Override
     public void initData() {
-        //1.查询本地数据库
-        List<BulletinBean> localList = BulletinOpe.queryAll(BaseApplication.context());
-        if (localList.size() > 0) {//1.1有本地数据，先在界面显示
+        String villageId = VillageOpe.queryDataByDeviceId(BaseApplication.context(),
+                String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
+        if (!TextUtils.isEmpty(villageId)) {
+            List<BulletinBean> localList = BulletinOpe.queryDataByVillageId(BaseApplication.context(), villageId);
             mBeanList.clear();
             for (BulletinBean localBean : localList) {
-                if (Integer.parseInt(localBean.getDeviceId()) == DongConfiguration.mDeviceInfo.dwDeviceID) {
-                    mBeanList.add(localBean);
-                }
+                mBeanList.add(localBean);
             }
             notifyDataSetChanged();
         }
@@ -178,22 +179,32 @@ public class BulletinActivity extends BaseActivity implements OnTitleBarClickLis
                 setSwipeRefreshLoadedState();
                 try {
                     List<BulletinBean> netDataList = new ArrayList<>();
-                    String jsonInitData = new JSONObject(new String(responseBody)).getString("response_params");
-                    LogUtils.i("BulletinActivity.clazz-->getBulletinFromNet()-->jsonInitData:" + jsonInitData);
-                    JSONArray jsonArray = new JSONObject(jsonInitData).getJSONArray("villagenotices");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        BulletinBean bulletinBean = new BulletinBean();
-                        bulletinBean.setTitle(jsonObject.getString("title"));
-                        bulletinBean.setNotice(jsonObject.getString("notice"));
-                        bulletinBean.setCreated(jsonObject.getString("created"));
-                        bulletinBean.setDeviceId(String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
-                        netDataList.add(bulletinBean);
+                    JSONObject receiveDataJson = new JSONObject(new String(responseBody));
+                    LogUtils.i("BulletinActivity.clazz-->getBulletinFromNet()-->receiveDataJson:" + receiveDataJson);
+                    String resultCode = receiveDataJson.getString("result_code");
+                    if (resultCode.equals("200")) {
+                        String jsonInitData = receiveDataJson.getString("response_params");
+                        if (jsonInitData.equals("[]")) {
+                            mIsNoMoreData = true;
+                            mBulletinAdapter.changeLoadStatus(LOAD_NO_DATA);
+                            if (mStartIndex == 0)
+                                BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
+                            return;
+                        }
+                        LogUtils.i("BulletinActivity.clazz-->getBulletinFromNet()-->jsonInitData:" + jsonInitData);
+                        JSONArray jsonArray = new JSONObject(jsonInitData).getJSONArray("villagenotices");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            BulletinBean bulletinBean = new BulletinBean();
+                            bulletinBean.setTitle(jsonObject.getString("title"));
+                            bulletinBean.setNotice(jsonObject.getString("notice"));
+                            bulletinBean.setCreated(jsonObject.getString("created"));
+                            bulletinBean.setDeviceId(String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
+                            bulletinBean.setVillageId(jsonObject.getString("villageid"));
+                            netDataList.add(bulletinBean);
+                        }
+                        processJsonData(netDataList);
                     }
-                    if (jsonInitData.equals("[]")) {
-                        return;
-                    }
-                    processJsonData(netDataList);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     mIsLoading = false;
@@ -261,7 +272,8 @@ public class BulletinActivity extends BaseActivity implements OnTitleBarClickLis
                 boolean isSame = false;
                 //2.1.1将本地数据库中的数据与平台返回数据对比
                 for (BulletinBean localBean : localList) {
-                    if (localBean.getCreated().equals(netBean.getCreated()))
+                    if (localBean.getCreated().equals(netBean.getCreated())
+                            && localBean.getVillageId().equals(netBean.getVillageId()))
                         isSame = true;
                 }
                 //2.1.2不相同就添加到本地并且更新界面数据
@@ -278,10 +290,9 @@ public class BulletinActivity extends BaseActivity implements OnTitleBarClickLis
                 mBeanList.size() + ",newLocalList.size:" + newLocalList.size()
                 + ",netDataList.size():" + netDataList.size() + ",mIsNoMoreData:" + mIsNoMoreData);
         //删除本地数据
-//        deleteLocal(newLocalList);
+        //deleteLocal(newLocalList);
         notifyDataSetChanged();
     }
-
 
     /**
      * 物业公告下拉刷新(下拉刷新过程中不能继续下拉)

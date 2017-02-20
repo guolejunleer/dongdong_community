@@ -48,12 +48,14 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.dongdong.app.util.PhoneMessUtils.isMobile;
+
 public class LoginActivity extends BaseActivity implements
         OnTitleBarClickListener, OnClickListener, AdapterView.OnItemClickListener {
 
     private LinearLayout mLlLoginParent;
     private TextView mTvForgetPsw, mTvRegister, mTvLocalDevice;
-    private CharSequence mEtUserName, mEtUserPwd;
+    private String mEtUserName, mEtUserPwd;
     private CommonDialog mDialog;
 
     private ImageView mIvSelectedUser;
@@ -147,15 +149,14 @@ public class LoginActivity extends BaseActivity implements
                 startActivity(new Intent(this, RegisterActivity.class));
                 break;
             case R.id.tv_local:
-//              startActivity(new Intent(this, LocalDeviceActivity.class));
                 break;
             case R.id.iv_login:
                 if (TDevice.getNetworkType() == 0) {
                     TipDialogManager.showWithoutNetworDialog(this, null);
                     return;
                 }
-                mEtUserName = mEtName.getText();
-                mEtUserPwd = mEtPwd.getText();
+                mEtUserName = mEtName.getText().toString().trim();
+                mEtUserPwd = mEtPwd.getText().toString();
                 if (TextUtils.isEmpty(mEtUserName)) {
                     BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
                 } else if (TextUtils.isEmpty(mEtUserPwd)) {
@@ -169,7 +170,7 @@ public class LoginActivity extends BaseActivity implements
                     mDialog.show();
                     DongSDKProxy.initDongAccount(mDongAccountProxy);
                     // 后续可能要加入取消回调引用接口
-                    DongSDKProxy.login(mEtUserName.toString().trim(), mEtUserPwd.toString().trim());
+                    DongSDKProxy.login(mEtUserName.trim(), mEtUserPwd);
                     mTimer = new Timer();
                     mTimer.schedule(new MyTimerTask(), new Date(), 1000);
                 }
@@ -201,25 +202,18 @@ public class LoginActivity extends BaseActivity implements
         //去本地获取数据
         List<UserBean> rawUserBeanList = UserOpe.queryAll(BaseApplication.context());
         List<UserBean> decUserBeanList = new ArrayList<>();
-        int size = rawUserBeanList.size();
-        LogUtils.i("LoginActivity.clazz--->>>showPopupWindow sort before rawUserBeanList:"
-                + rawUserBeanList + ",width:" + width);
-        if (size > 0) {
-            Collections.sort(rawUserBeanList, new Comparator<UserBean>() {
-                @Override
-                public int compare(UserBean lhs, UserBean rhs) {
-                    return lhs.getIndex() - rhs.getIndex();
-                }
-            });
-            LogUtils.i("LoginActivity.clazz--->>>showPopupWindow sort after rawUserBeanList:"
-                    + rawUserBeanList);
-            // 判断账户个数
-//            if (size > 5) {
-//                UserOpe.deleteDataById(LoginActivity.this, rawUserBeanList.get(0).getId());//????
-//                rawUserBeanList.remove(0);
-//            }
-            for (int i = 0; i < size; i++) {
-                UserBean rawUserBean = rawUserBeanList.get(i);
+        if (rawUserBeanList.size() > 0) {
+            if (rawUserBeanList.size() == 6) {
+                //顺序排列集合（按Index）
+                Collections.sort(rawUserBeanList, Collections.reverseOrder());
+                UserOpe.deleteDataById(BaseApplication.context(), rawUserBeanList.get(5).getId());
+            }
+            //从数据库查出的数据需要解码
+            List<UserBean> newRawUserBeanList = UserOpe.queryAll(BaseApplication.context());
+            //顺序排列集合（按Index）
+            Collections.sort(newRawUserBeanList, Collections.reverseOrder());
+            for (int i = 0; i < newRawUserBeanList.size(); i++) {
+                UserBean rawUserBean = newRawUserBeanList.get(i);
                 UserBean decUserBean = new UserBean();
                 decUserBean.setId(rawUserBean.getId());
                 decUserBean.setUserName(CyptoUtils.decode(AppConfig.DES_KEY, rawUserBean.getUserName()));
@@ -284,12 +278,13 @@ public class LoginActivity extends BaseActivity implements
 
         @Override
         public void onPositiveButtonClick() {
-//            DongSDK.reInitDongSDK();
+            //DongSDK.reInitDongSDK();
+            mIvLogin.performClick();
         }
 
         @Override
         public void onNegativeButtonClick() {
-//            DongSDK.reInitDongSDK();
+            //DongSDK.reInitDongSDK();
         }
     }
 
@@ -309,16 +304,16 @@ public class LoginActivity extends BaseActivity implements
             if (TextUtils.isEmpty(mEtUserName) || TextUtils.isEmpty(mEtUserPwd)) {
                 return -1;
             }
-            String enUserName = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserName.toString().trim());
-            String enUserPwd = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserPwd.toString().trim());
+            String enUserName = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserName.trim());
+            String enUserPwd = CyptoUtils.encode(AppConfig.DES_KEY, mEtUserPwd.trim());
             //1.查询所有表
             List<UserBean> rawUserBeanList = UserOpe.queryAll(BaseApplication.context());
             //2 如果表格有数据size>0,如果当前登陆账号不/存在，更新index=0，将其他用户index+1
             boolean isOldUser = false;
-            int temIndex = 0;
             if (rawUserBeanList.size() > 0) {
                 for (UserBean temUserBean : rawUserBeanList) {
                     if (!temUserBean.getUserName().equals(enUserName)) {
+                        int temIndex = temUserBean.getIndex();
                         temIndex++;
                         temUserBean.setIndex(temIndex);
                     } else {
@@ -330,6 +325,7 @@ public class LoginActivity extends BaseActivity implements
                 }
             }
             if (!isOldUser) {//如果数据库不存在将插入登陆的用户
+                LogUtils.i("LoginActivity.clazz->insert user");
                 UserBean userBean = new UserBean();
                 userBean.setUserName(enUserName);
                 userBean.setPassWord(enUserPwd);
@@ -344,10 +340,10 @@ public class LoginActivity extends BaseActivity implements
             // 保存用户登录信息
             AppContext.mAppConfig.setConfigValue(
                     AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                    AppConfig.KEY_USER_NAME, mEtUserName.toString().trim());
+                    AppConfig.KEY_USER_NAME, mEtUserName.trim());
             AppContext.mAppConfig.setConfigValue(
                     AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                    AppConfig.KEY_USER_PWD, mEtUserPwd.toString().trim());
+                    AppConfig.KEY_USER_PWD, mEtUserPwd.trim());
             AppContext.mAppConfig.setConfigValue(
                     AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
                     AppConfig.KEY_IS_LOGIN, true);

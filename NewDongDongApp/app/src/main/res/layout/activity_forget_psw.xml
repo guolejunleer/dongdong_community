@@ -23,6 +23,7 @@
             android:drawableLeft="@mipmap/phonenumber"
             android:drawablePadding="@dimen/space_10"
             android:hint="@string/pleaseInputPhone"
+            android:maxLength="11"
             android:inputType="numberSigned"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_16" />
@@ -45,6 +46,7 @@
                 android:drawableLeft="@mipmap/smush"
                 android:drawablePadding="@dimen/space_10"
                 android:hint="@string/pleaseInputVerificationCode"
+                android:maxLength="4"
                 android:inputType="numberSigned"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_16" />

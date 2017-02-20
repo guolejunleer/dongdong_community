@@ -54,7 +54,6 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
     private VisitorPhotoAdapter mVisitorPhotoAdapter;
     private CacheHelper mCacheHelper = new CacheHelper();
 
-
     //上拉加载所需要的最小高度
 //  private static float mUpDownloadNeedHeight;
     private static boolean mIsLoading;
@@ -289,7 +288,7 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
                 mAdapterList.size() + ",newLocalList.size:" + newLocalList.size()
                 + ",netList.size():" + netList.size() + ",mIsNoMoreData:" + mIsNoMoreData);
         //3.删除本地数据
-        // delete(newLocalList);
+        delete(newLocalList);
         notifyDataSetChanged();
     }
 

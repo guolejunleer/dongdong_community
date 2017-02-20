@@ -147,7 +147,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
         Bitmap bitmap = getBitmapFromMemoryCache(imageUrl);
         if (bitmap != null) {
             Bitmap roundBitmap = BitmapUtil.getRoundedCornerBitmap(bitmap, ROUND_VALUE_PX);
-            imageView.setImageBitmap(roundBitmap);
+            if (roundBitmap != null)
+                imageView.setImageBitmap(roundBitmap);
         } else {
             imageView.setImageBitmap(mDefaultBitmap);
             BitmapWorkerTask task = new BitmapWorkerTask(imageView);
@@ -178,8 +179,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
         protected Bitmap doInBackground(String... arg0) {
             imageUrl = arg0[0];
             // LogUtils.i("DeviceInfoAdapter.clazz--->>imageUrl:" + imageUrl);
-            Bitmap bitmap = BitmapFactory.decodeFile(mImagePath
-                    + "/" + AppConfig.CACH_IMAGE_PATH + "/image/" + imageUrl + ".jpg");
+            String filePath = mImagePath + "/" + AppConfig.CACH_IMAGE_PATH + "/image/" + imageUrl + ".jpg";
+            Bitmap bitmap = BitmapUtil.decodeSampledBitmapFromSD(filePath, 400, 300);
             if (bitmap != null) {
                 addBitmapToMemoryCache(imageUrl, bitmap);
             }

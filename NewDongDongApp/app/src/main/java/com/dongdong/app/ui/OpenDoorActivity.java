@@ -332,7 +332,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
                 mAdapterList.size() + ",newLocalList.size:" + newLocalList.size()
                 + ",netDataList.size():" + netDataList.size() + ",mIsNoMoreData:" + mIsNoMoreData);
         //删除本地数据
-//        deleteLocal(newLocalList);
+        deleteLocal(newLocalList);
         notifyDataSetChanged();
     }
 

@@ -10,7 +10,7 @@ import org.greenrobot.greendao.annotation.Generated;
  * created at 2016/11/24 11:24
  */
 @Entity(generateConstructors = false)
-public class UserBean {
+public class UserBean implements Comparable<UserBean> {
     @Id(autoincrement = true)
     private Long id;
 
@@ -64,6 +64,14 @@ public class UserBean {
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
+    }
+
+    @Override
+    public int compareTo(UserBean u) {
+        if (u != null) {
+            return u.getIndex() - this.getIndex();
+        }
+        return 0;
     }
 
     @Override

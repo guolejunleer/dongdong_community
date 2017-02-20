@@ -54,7 +54,7 @@ public class AppContext extends BaseApplication {
         ApiHttpClient.setCookie(ApiHttpClient.getCookie(mAppConfig));
         DongSDK.dongSdk_Init();
 
-//        DongSDK.initDongSDK(this);
+        //DongSDK.initDongSDK(this);
         // DongSDK.initializePush(this, DongSDK.PUSH_TYPE_ALL);// 初始化推送
         LogUtils.i("AppContext.clazz DongSDK.initDongSDK!!!");
     }

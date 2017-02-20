@@ -14,7 +14,7 @@ import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.base.BaseFragment;
-import com.dongdong.app.ui.FileManagerActivity;
+import com.dongdong.app.ui.MyAlbumActivity;
 import com.dongdong.app.ui.LoginActivity;
 import com.dongdong.app.ui.SettingsActivity;
 import com.dongdong.app.ui.dialog.TipDialogManager;
@@ -156,7 +156,7 @@ public class MyPagerFragment extends BaseFragment {
                     TipDialogManager.showTipDialog(getActivity(), R.string.warn, R.string.OPENFILE_ERROR);
                     return;
                 }
-                startActivity(new Intent(getActivity(), FileManagerActivity.class));
+                startActivity(new Intent(getActivity(), MyAlbumActivity.class));
                 break;
             case R.id.ll_settings:
                 startActivity(new Intent(getActivity(), SettingsActivity.class));

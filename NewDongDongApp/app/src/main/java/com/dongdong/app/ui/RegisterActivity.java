@@ -20,8 +20,11 @@ import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.ui.dialog.CommonDialog;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.LogUtils;
+import com.dongdong.app.util.TDevice;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
+
+import static com.dongdong.app.util.PhoneMessUtils.isMobile;
 
 public class RegisterActivity extends BaseActivity implements OnTitleBarClickListener,
         OnClickListener {
@@ -104,12 +107,10 @@ public class RegisterActivity extends BaseActivity implements OnTitleBarClickLis
 
     @Override
     public void onTitleClick() {
-
     }
 
     @Override
     public void onAddClick() {
-
     }
 
     @Override
@@ -119,13 +120,21 @@ public class RegisterActivity extends BaseActivity implements OnTitleBarClickLis
     @Override
     public void onClick(View v) {
         int id = v.getId();
+        String phoneNumber = mEtPhone.getText().toString().trim();
+        if (TDevice.getNetworkType() == 0) {
+            TipDialogManager.showWithoutNetworDialog(this, null);
+            return;
+        }
+        if (TextUtils.isEmpty(phoneNumber)) {
+            BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
+            return;
+        }
+        if (phoneNumber.length() != 11 || !isMobile(phoneNumber)) {
+            BaseApplication.showToastShortInTop(R.string.un_know_user_name);
+            return;
+        }
         switch (id) {
             case R.id.bt_smush:
-                String phoneNumber = mEtPhone.getText().toString().trim();
-                if (TextUtils.isEmpty(phoneNumber)) {
-                    BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
-                    return;
-                }
                 mDialog = new CommonDialog(RegisterActivity.this);
                 View view = LayoutInflater.from(RegisterActivity.this).
                         inflate(R.layout.loading_dialog, null);
@@ -141,9 +150,7 @@ public class RegisterActivity extends BaseActivity implements OnTitleBarClickLis
                         + mRandomCode + ",phoneNumber:" + phoneNumber);
                 break;
             case R.id.bt_ok:
-                if (mEtPhone.getText().toString().equals("")) {
-                    BaseApplication.showToastShortInTop(R.string.user_name_can_not_empty);
-                } else if (mEtSms.getText().toString().equals("")) {
+                if (mEtSms.getText().toString().equals("")) {
                     BaseApplication.showToastShortInTop(R.string.verification_code_can_not_empty);
                 } else if (!mEtSms.getText().toString().equals(mRandomCode)) {
                     BaseApplication.showToastShortInTop(R.string.verification_code_mistake);
