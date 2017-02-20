@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/white"
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="horizontal">
 
     <ImageView
-        android:layout_width="0dp"
-        android:layout_height="@dimen/space_25"
+        android:layout_width="@dimen/space_30"
+        android:layout_height="@dimen/space_30"
         android:layout_weight="0.3"
-        android:src="@mipmap/bulletin_icon"
-        android:contentDescription="@null"/>
+        android:contentDescription="@null"
+        android:src="@mipmap/bulletin_icon" />
 
     <TextView
         android:id="@+id/tv_view_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="物业公告"
+        android:layout_weight="2"
         android:gravity="start"
-        android:textSize="@dimen/text_size_16"
-        android:textColor="@color/status_color"/>
+        android:text="物业公告"
+        android:textColor="@color/status_color"
+        android:textSize="@dimen/text_size_14" />
 
     <TextView
         android:id="@+id/tv_view_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:text="2017-1-10"
         android:layout_marginRight="@dimen/space_10"
-        android:gravity="center"/>
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="2017-1-10" />
 </LinearLayout>
