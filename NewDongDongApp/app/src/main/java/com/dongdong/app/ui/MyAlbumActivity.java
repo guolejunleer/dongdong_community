@@ -24,7 +24,7 @@ public class MyAlbumActivity extends BaseActivity implements OnTitleBarClickList
 
     private GridView mGvPhoto;
     private String mRootPath;
-    private MyAlbumAdapter openfileAdapter;
+    private MyAlbumAdapter myAlbumAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -48,8 +48,8 @@ public class MyAlbumActivity extends BaseActivity implements OnTitleBarClickList
     protected void onDestroy() {
         super.onDestroy();
         // 退出程序时结束所有的下载任务
-        openfileAdapter.cancelAllTasks();
-        openfileAdapter.recycle();
+        myAlbumAdapter.cancelAllTasks();
+        myAlbumAdapter.recycle();
     }
 
     public void initData() {
@@ -58,7 +58,7 @@ public class MyAlbumActivity extends BaseActivity implements OnTitleBarClickList
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String filePath = openfileAdapter.getFilePath(position);
+        String filePath = myAlbumAdapter.getFilePath(position);
         File file = new File(filePath);
         if (file.isDirectory()) {
             getFileCatalog(filePath);
@@ -85,15 +85,15 @@ public class MyAlbumActivity extends BaseActivity implements OnTitleBarClickList
         for (File subFile : files) {
             paths.add(subFile.getPath());
         }
-        openfileAdapter = new MyAlbumAdapter(this, 0, paths, mGvPhoto);
-        mGvPhoto.setAdapter(openfileAdapter);
+        myAlbumAdapter = new MyAlbumAdapter(this, 0, paths, mGvPhoto);
+        mGvPhoto.setAdapter(myAlbumAdapter);
     }
 
     private void openFile(File file) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
-        String type = openfileAdapter.getMIMEType(file);
+        String type = myAlbumAdapter.getMIMEType(file);
         intent.setDataAndType(Uri.fromFile(file), type);
         startActivity(intent);
     }

@@ -40,8 +40,8 @@ import com.dongdong.app.util.UIHelper;
 import com.dongdong.app.util.XmlUtils;
 import com.dongdong.app.widget.CommonViewPager;
 import com.dongdong.app.widget.DynamicItemContainView;
-import com.dongdong.app.widget.LinkRoomDynamicLayout;
-import com.dongdong.app.widget.LinkRoomDynamicLayout.OnDynamicViewChangedPositionListener;
+import com.dongdong.app.widget.HomePagerFragmentLayout;
+import com.dongdong.app.widget.HomePagerFragmentLayout.OnDynamicViewChangedPositionListener;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 import com.igexin.sdk.PushManager;
@@ -55,7 +55,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -78,7 +77,7 @@ public class HomePagerFragment extends BaseFragment implements
     private TitleBar mTitleBar;
     private File mFuncFile;
     private List<FunctionBean> mFunctionsList = new ArrayList<>();
-    private LinkRoomDynamicLayout mDynamicLayout;
+    private HomePagerFragmentLayout mDynamicLayout;
 
     private String mDeviceID;//推送传过來的值
 
@@ -159,7 +158,7 @@ public class HomePagerFragment extends BaseFragment implements
         mTitleBar.setOnTitleBarClickListener(this);
         mTitleBar.setTitleAnimator();
 
-        mDynamicLayout = (LinkRoomDynamicLayout) view.findViewById(R.id.link_drag_grid_view);
+        mDynamicLayout = (HomePagerFragmentLayout) view.findViewById(R.id.link_drag_grid_view);
         mDynamicLayout.setOnItemClickListener(this);
         mDynamicLayout.OnDynamicViewChangedPositionListener(this);
     }
@@ -307,7 +306,7 @@ public class HomePagerFragment extends BaseFragment implements
                         if (jsonInitData.equals("[]")) {
                             return;
                         }
-                        LogUtils.i("HomePagerFrag ment.clazz-->getBulletinFromNet()-->jsonInitData:" + jsonInitData);
+                        LogUtils.i("HomePagerFragment.clazz-->getBulletinFromNet()-->jsonInitData:" + jsonInitData);
                         JSONArray jsonArray = new JSONObject(jsonInitData).getJSONArray("villagenotices");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -395,7 +394,7 @@ public class HomePagerFragment extends BaseFragment implements
             mBulletinList.clear();
             mBulletinViewPagerPoints.removeAllViews();
             mBulletinViewPagerAdapter.hiddenADViewPoints();
-//            mBulletinViewPager.setCurrentItem(0);
+            //mBulletinViewPager.setCurrentItem(0);
         } else {//2.已登录 判断设备是否有物业公告
             String villageId = VillageOpe.queryDataByDeviceId(BaseApplication.context(),
                     String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
@@ -412,6 +411,10 @@ public class HomePagerFragment extends BaseFragment implements
                         mBulletinList.add(localBean.get(i));
                     }
                 } else {
+                    if (localBean.size() == 1) {
+                        mBulletinViewPagerPoints.removeAllViews();
+                        mBulletinViewPagerAdapter.hiddenADViewPoints();
+                    }
                     for (BulletinBean bulletinBean : localBean) {
                         mBulletinList.add(bulletinBean);
                     }
@@ -452,7 +455,7 @@ public class HomePagerFragment extends BaseFragment implements
                 BaseApplication.showToastShortInBottom("系统正在初始化，请稍后");
                 return;
             }
-            UIHelper.showMessageActivity(getActivity());
+            UIHelper.showBulletinActivity(getActivity());
         } else if (name.equals(getString(R.string.monitor))) {
             //判断网络，只有在观看设备的时候需要网
             if (TDevice.getNetworkType() == 0) {

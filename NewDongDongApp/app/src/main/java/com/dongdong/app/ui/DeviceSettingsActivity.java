@@ -22,6 +22,7 @@ import com.dongdong.app.AppContext;
 import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.ui.dialog.CommonDialog;
+import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.TDevice;
 import com.dongdong.app.widget.TitleBar;
@@ -129,10 +130,18 @@ public class DeviceSettingsActivity extends BaseActivity implements
         int id = v.getId();
         switch (id) {
             case R.id.bt_update:
+                if (TDevice.getNetworkType() == 0) {
+                    TipDialogManager.showWithoutNetworDialog(DeviceSettingsActivity.this, null);
+                    return;
+                }
                 String deviceNick = mEtDeviceName.getText().toString().trim();
 
                 if (TextUtils.isEmpty(deviceNick)) {
                     BaseApplication.showToastShortInTop(R.string.empty_device_name);
+                    return;
+                }
+                if (deviceNick.length() > 12) {
+                    BaseApplication.showToastShortInTop(R.string.device_name_too_length);
                     return;
                 }
                 View view = LayoutInflater.from(this).inflate(R.layout.loading_dialog, null);
@@ -147,6 +156,10 @@ public class DeviceSettingsActivity extends BaseActivity implements
                         + mEtDeviceName.getText().toString());
                 break;
             case R.id.tv_delete_device:
+                if (TDevice.getNetworkType() == 0) {
+                    TipDialogManager.showWithoutNetworDialog(DeviceSettingsActivity.this, null);
+                    return;
+                }
                 mUpdateDialog.setMessage(R.string.deldeteDevice);
                 mUpdateDialog.setPositiveButton(getString(R.string.sure),
                         new DialogInterface.OnClickListener() {
@@ -189,6 +202,10 @@ public class DeviceSettingsActivity extends BaseActivity implements
                         DongConfiguration.mUserInfo.userID + "", deviceId);
                 break;
             case R.id.tv_authorizationaccount:
+                if (TDevice.getNetworkType() == 0) {
+                    TipDialogManager.showWithoutNetworDialog(DeviceSettingsActivity.this, null);
+                    return;
+                }
                 if (TDevice.deviceType(mDeviceInfo, 23)) {
                     BaseApplication.showToastShortInBottom(R.string.no_permissions);
                     return;

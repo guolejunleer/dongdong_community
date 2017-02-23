@@ -397,8 +397,6 @@ public class TDevice {
 
     /**
      * 在View中显示输入法
-     *
-     * @param dialog
      */
     public static void showSoftKeyboard(View view) {
         ((InputMethodManager) BaseApplication.context().getSystemService(
@@ -414,8 +412,6 @@ public class TDevice {
 
     /**
      * 判断SD卡是否可用
-     *
-     * @return
      */
     public static boolean isSdcardReady() {
         return Environment.MEDIA_MOUNTED.equals(Environment
@@ -424,8 +420,6 @@ public class TDevice {
 
     /**
      * 获取当前系统语言模式
-     *
-     * @return
      */
     public static String getCurCountryLan() {
         return BaseApplication.context().getResources().getConfiguration().locale
@@ -437,8 +431,6 @@ public class TDevice {
 
     /**
      * 判断是否为中文
-     *
-     * @return
      */
     public static boolean isZhCN() {
         String lang = BaseApplication.context().getResources()
@@ -451,10 +443,6 @@ public class TDevice {
 
     /**
      * 获取两个小数的百分比，小数点后取两位
-     *
-     * @param p1
-     * @param p2
-     * @return
      */
     public static String percent(double p1, double p2) {
         String str;
@@ -467,10 +455,6 @@ public class TDevice {
 
     /**
      * 获取两个小数的百分比，小数点后取0位
-     *
-     * @param p1
-     * @param p2
-     * @return
      */
     public static String percent2(double p1, double p2) {
         String str;
@@ -483,8 +467,6 @@ public class TDevice {
 
     /**
      * 设置Activity全屏
-     *
-     * @param activity
      */
     public static void setFullScreen(Activity activity) {
         WindowManager.LayoutParams params = activity.getWindow()
@@ -497,8 +479,6 @@ public class TDevice {
 
     /**
      * 取消Activity全屏
-     *
-     * @param activity
      */
     public static void cancelFullScreen(Activity activity) {
         WindowManager.LayoutParams params = activity.getWindow()
@@ -511,9 +491,6 @@ public class TDevice {
 
     /**
      * 获取系统对包名的PackageInfo
-     *
-     * @param pckName
-     * @return
      */
     public static PackageInfo getPackageInfo(String pckName) {
         try {
@@ -527,8 +504,6 @@ public class TDevice {
 
     /**
      * 获取本程序的VersionCode
-     *
-     * @return
      */
     public static int getVersionCode() {
         int versionCode = 0;
@@ -544,9 +519,6 @@ public class TDevice {
 
     /**
      * 获取包名对应的VersionCode
-     *
-     * @param packageName
-     * @return
      */
     public static int getVersionCode(String packageName) {
         int versionCode = 0;
@@ -561,8 +533,6 @@ public class TDevice {
 
     /**
      * 获取本程序的VersionName
-     *
-     * @return
      */
     public static String getVersionName() {
         String name;
@@ -577,8 +547,6 @@ public class TDevice {
 
     /**
      * 判断屏幕是否亮着
-     *
-     * @return
      */
     public static boolean isScreenOn() {
         PowerManager pm = (PowerManager) BaseApplication.context()
@@ -589,8 +557,6 @@ public class TDevice {
     /**
      * 安装File目录下的应用
      *
-     * @param context
-     * @param file
      */
     public static void installAPK(Context context, File file) {
         if (file == null || !file.exists())

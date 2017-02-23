@@ -44,7 +44,7 @@ public class UIHelper {
         context.startActivity(intent);
     }
 
-    public static void showMessageActivity(Context context) {
+    public static void showBulletinActivity(Context context) {
         Intent intent = new Intent(context, BulletinActivity.class);
         context.startActivity(intent);
     }

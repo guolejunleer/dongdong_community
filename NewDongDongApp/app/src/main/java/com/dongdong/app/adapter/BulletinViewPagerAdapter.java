@@ -25,11 +25,18 @@ public class BulletinViewPagerAdapter extends PagerAdapter implements OnPageChan
 
     private Context mContext;
     private CommonViewPager mViewPager;
-    private List<BulletinBean> mBulletinBeanList = new ArrayList<>();
+    private static List<BulletinBean> mBulletinBeanList = new ArrayList<>();
     private ImageView[] mTips;
     private boolean mShouldShowPoint = true;
 
     private ViewGroup mPoints;
+
+    /**
+     * 判断是否能自动滚动
+     */
+    public static boolean isEnableRefresh() {
+        return (mBulletinBeanList.size() == 0 || mBulletinBeanList.size() == 1);
+    }
 
     public BulletinViewPagerAdapter(Context context, CommonViewPager viewPager, ViewGroup points) {
         mContext = context;
@@ -43,27 +50,28 @@ public class BulletinViewPagerAdapter extends PagerAdapter implements OnPageChan
         for (BulletinBean bean : list) {
             mBulletinBeanList.add(bean);
         }
-        mTips = new ImageView[mBulletinBeanList.size()];
-        mPoints.removeAllViews();
-        for (int i = 0; i < mTips.length; i++) {
-            ImageView imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new LayoutParams(10, 10));
-            mTips[i] = imageView;
-            if (i == 0) {
-                mTips[i].setBackgroundResource(R.mipmap.checked);
-            } else {
-                mTips[i].setBackgroundResource(R.mipmap.unchecked);
-            }
+        if (mBulletinBeanList.size() > 1) {
+            mTips = new ImageView[mBulletinBeanList.size()];
+            mPoints.removeAllViews();
+            for (int i = 0; i < mTips.length; i++) {
+                ImageView imageView = new ImageView(mContext);
+                imageView.setLayoutParams(new LayoutParams(10, 10));
+                mTips[i] = imageView;
+                if (i == 0) {
+                    mTips[i].setBackgroundResource(R.mipmap.checked);
+                } else {
+                    mTips[i].setBackgroundResource(R.mipmap.unchecked);
+                }
 
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-            layoutParams.leftMargin = 5;
-            layoutParams.rightMargin = 5;
-            mPoints.addView(imageView, layoutParams);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                layoutParams.leftMargin = 5;
+                layoutParams.rightMargin = 5;
+                mPoints.addView(imageView, layoutParams);
+            }
         }
         notifyDataSetChanged();
-        LogUtils.i("BulletinViewPagerAdapter.clazz-->>>setBulletinData list.size():"
-                + list.size());
+        LogUtils.i("BulletinViewPagerAdapter.clazz-->>>setBulletinData list.size():" + list.size());
     }
 
     @Override
@@ -99,12 +107,6 @@ public class BulletinViewPagerAdapter extends PagerAdapter implements OnPageChan
             mViewPager.setIsRefresh(false);
             mViewPager.setIsScroll(false);
         } else {
-            //对ViewPager页号求模取出View列表中要显示的项
-            final int newPosition = position % mBulletinBeanList.size();
-            final BulletinBean bean = mBulletinBeanList.get(newPosition);
-            tvViewTitle.setText(bean.getTitle());
-            tvViewTime.setText(bean.getCreated());
-            tvViewTime.setVisibility(View.VISIBLE);
             if (mBulletinBeanList.size() == 1) {
                 mViewPager.setIsRefresh(false);
                 mViewPager.setIsScroll(false);
@@ -112,6 +114,12 @@ public class BulletinViewPagerAdapter extends PagerAdapter implements OnPageChan
                 mViewPager.setIsRefresh(true);
                 mViewPager.setIsScroll(true);
             }
+            //对ViewPager页号求模取出View列表中要显示的项
+            final int newPosition = position % mBulletinBeanList.size();
+            final BulletinBean bean = mBulletinBeanList.get(newPosition);
+            tvViewTitle.setText(bean.getTitle());
+            tvViewTime.setText(bean.getCreated());
+            tvViewTime.setVisibility(View.VISIBLE);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -140,7 +148,7 @@ public class BulletinViewPagerAdapter extends PagerAdapter implements OnPageChan
     @Override
     public void onPageSelected(int position) {
         if (!mShouldShowPoint) {
-            if (mBulletinBeanList.size() == 0) {
+            if (mBulletinBeanList.size() == 0 || mBulletinBeanList.size() == 1) {
                 setImageBackground(0);
             } else {
                 setImageBackground(position % mBulletinBeanList.size());

@@ -29,9 +29,10 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.FrameLayout;
 
 import com.dd121.community.R;
+import com.dongdong.app.adapter.BulletinViewPagerAdapter;
 import com.dongdong.app.util.LogUtils;
 
-public class LinkRoomDynamicLayout extends FrameLayout {
+public class HomePagerFragmentLayout extends FrameLayout {
 
     private static final String TAG = "leer";
     private static final boolean DEBUG = false;
@@ -159,18 +160,18 @@ public class LinkRoomDynamicLayout extends FrameLayout {
         }
     }
 
-    public LinkRoomDynamicLayout(Context context, AttributeSet attrs,
-                                 int defStyleAttr) {
+    public HomePagerFragmentLayout(Context context, AttributeSet attrs,
+                                   int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    public LinkRoomDynamicLayout(Context context, AttributeSet attrs) {
+    public HomePagerFragmentLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public LinkRoomDynamicLayout(Context context) {
+    public HomePagerFragmentLayout(Context context) {
         super(context);
         init();
     }
@@ -219,7 +220,6 @@ public class LinkRoomDynamicLayout extends FrameLayout {
                             int bottom) {
         mWidth = mScreenWidthPixels;
         mHeight = getHeight();
-
         mEdgeSize = mNormalViewWidth / 4;
 
         newPositions.clear();
@@ -331,38 +331,23 @@ public class LinkRoomDynamicLayout extends FrameLayout {
     private View tempView;
 
     /*
-     * 判断广告是否自动滚动
+     * 判断公告是否自动滚动
      */
-    private void setIsrefresh(boolean b) {
-        int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View test = getChildAt(i);
-            if (test != null && (test instanceof DynamicItemContainView)) {
-                DynamicItemContainView a = (DynamicItemContainView) test;
-                CommonViewPager pager = (CommonViewPager) a
-                        .findViewById(R.id.adview_pager);
-                if (pager != null) {
-                    pager.setIsRefresh(b);
-                }
-            }
+    private void setIsRefresh(boolean b) {
+        CommonViewPager bulletinViewPager = (CommonViewPager) getBulletinViewPager().get("viewPager");
+        if (bulletinViewPager != null) {
+            bulletinViewPager.setIsRefresh(b);
         }
     }
 
     /*
      * 设置viewpager跟着手指抬起，进行刷新操作
      */
-    private void setNextview() {
-        int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View test = getChildAt(i);
-            if (test != null && (test instanceof DynamicItemContainView)) {
-                DynamicItemContainView a = (DynamicItemContainView) test;
-                CommonViewPager pager = (CommonViewPager) a.findViewById(R.id.adview_pager);
-                if (pager != null) {
-                    int mcurrentId = pager.getCurrentItem();
-                    pager.setCurrentItem(mcurrentId + 1);
-                }
-            }
+    private void setNextView() {
+        CommonViewPager bulletinViewPager = (CommonViewPager) getBulletinViewPager().get("viewPager");
+        if (bulletinViewPager != null) {
+            int mCurrentId = bulletinViewPager.getCurrentItem();
+            bulletinViewPager.setCurrentItem(mCurrentId);
         }
     }
 
@@ -384,8 +369,8 @@ public class LinkRoomDynamicLayout extends FrameLayout {
             switch (action & MotionEventCompat.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN: {
 
-                    // 设定广告不自动播放
-                    setIsrefresh(false);
+                    // 设定公告不自动播放
+                    setIsRefresh(false);
 
                     // Remember where the motion event started
                     mLastMotionX = mInitialMotionX = ev.getX();
@@ -403,15 +388,10 @@ public class LinkRoomDynamicLayout extends FrameLayout {
                         DynamicItemContainView childAt = (DynamicItemContainView) getChildAt(mLastPosition);
                         if (mLastPosition >= getChildCount()
                                 || (childAt != null && !childAt.getDragState())) {// Don't
-                            // handle
-                            // out
-                            // of
-                            // range views
                             return false;
                         }
                         tempView = getChildAt(mLastPosition);
                         tempView.setBackgroundColor(Color.parseColor("#f0f0f0"));
-                        // tempView.setBackgroundResource(R.drawable.abc_btn_borderless_material);
                     } else {
                         mLastPosition = -1;
                     }
@@ -421,19 +401,10 @@ public class LinkRoomDynamicLayout extends FrameLayout {
                         mLastDownTime = Long.MAX_VALUE;
                     }
                     DEBUG_LOG("Down at mLastPosition=" + mLastPosition);
-
-                    // if(){
-                    //
-                    // }
                     mLastDragged = -1;
                     break;
                 }
                 case MotionEvent.ACTION_MOVE: {
-                    // final int pointerIndex =
-                    // MotionEventCompat.findPointerIndex(ev,
-                    // /* mActivePointerId */0);
-                    // final float x = MotionEventCompat.getX(ev, pointerIndex);
-                    // final float y = MotionEventCompat.getY(ev, pointerIndex);
                     final float x = ev.getX();
                     final float y = ev.getY();
                     if (mLastDragged >= 0) {
@@ -452,7 +423,6 @@ public class LinkRoomDynamicLayout extends FrameLayout {
                                 mLastTarget = target;
                                 DEBUG_LOG("Moved to mLastTarget=" + mLastTarget);
                             }
-                            // edge holding
                             HomePagerHorizontalScrollView parent = (HomePagerHorizontalScrollView) getParent();
 
                             int relY = (int) (y - parent.getScrollY());
@@ -489,7 +459,6 @@ public class LinkRoomDynamicLayout extends FrameLayout {
                                     + mTouchSlop
                                     : mInitialMotionY - mTouchSlop;
                             setScrollState(SCROLL_STATE_DRAGGING);
-                            // setScrollingCacheEnabled(true);
                         }
                     }
                     // Not else! Note that mIsBeingDragged can be set above.
@@ -524,9 +493,8 @@ public class LinkRoomDynamicLayout extends FrameLayout {
                     break;
                 }
                 case MotionEvent.ACTION_UP: {
-
-                    // 设定广告自动播放
-                    setIsrefresh(true);
+                    // 设定公告自动滚动
+                    setIsRefresh(true);
 
                     tempView.setBackgroundColor(Color.WHITE);
                     // tempView.setBackgroundResource(Color.WHITE);
@@ -565,30 +533,19 @@ public class LinkRoomDynamicLayout extends FrameLayout {
                     break;
                 }
                 case MotionEvent.ACTION_CANCEL:
-
-                    setIsrefresh(true);
-
-                    // tempView.setBackgroundResource(0);
+                    setIsRefresh(true);
                     tempView.setBackgroundColor(Color.WHITE);
                     DEBUG_LOG("Touch cancel!!!");
                     if (mLastDragged >= 0) {
                         rearrange();
                     } else if (mIsBeingDragged) {
-                        // mActivePointerId = INVALID_POINTER;
                         endDrag();
                     }
                     break;
                 case MotionEventCompat.ACTION_POINTER_DOWN: {
-                    // final int index = MotionEventCompat.getActionIndex(ev);
-                    // final float x = MotionEventCompat.getX(ev, index);
-                    // mLastMotionX = x;
-                    // mActivePointerId = MotionEventCompat.getPointerId(ev, index);
                     break;
                 }
                 case MotionEventCompat.ACTION_POINTER_UP:
-                    // onSecondaryPointerUp(ev);
-                    // mLastMotionX = MotionEventCompat.getX(ev, MotionEventCompat
-                    // .findPointerIndex(ev, mActivePointerId));
                     break;
             }
             if (needsInvalidate) {
@@ -596,7 +553,7 @@ public class LinkRoomDynamicLayout extends FrameLayout {
             }
             return true;
         } catch (Exception e) {
-            DEBUG_LOG("onTouchEevent had fatal!!!!" + e.toString());
+            DEBUG_LOG("onTouchEvent had fatal!!!!" + e.toString());
             return true;
         }
     }
@@ -604,7 +561,6 @@ public class LinkRoomDynamicLayout extends FrameLayout {
     private void triggerSwipe(int edge) {
         HomePagerHorizontalScrollView parent = (HomePagerHorizontalScrollView) getParent();
         DEBUG_LOG("triggerSwipe parent.getScrollY():" + parent.getScrollY());
-        // parent.smoothScrollTo(0, edge == 1 ? 200 : -200);
         parent.smoothScrollBy(0, edge == 1 ? 400 : -400);
     }
 
@@ -730,7 +686,7 @@ public class LinkRoomDynamicLayout extends FrameLayout {
             final View childNever = getChildAt(8);
             removeView(childNever);
             addView(childNever, 9);
-            setNextview();
+            setNextView();
         } else if (mLastDragged > 9 && mLastTarget < 9) {
             // //以viewpager为界线，从下布局拖到上布局
             removeViewAt(mLastDragged);
@@ -738,7 +694,7 @@ public class LinkRoomDynamicLayout extends FrameLayout {
             final View childNever = getChildAt(10);
             removeView(childNever);
             addView(childNever, 9);
-            setNextview();
+            setNextView();
         }
 
     }
@@ -919,11 +875,11 @@ public class LinkRoomDynamicLayout extends FrameLayout {
             if (test != null && (test instanceof DynamicItemContainView) && i == 9) {
                 LogUtils.i("LinkRoomDynamicLayout.clazz-->getBulletinViewPager()");
                 DynamicItemContainView a = (DynamicItemContainView) test;
-                CommonViewPager pager = (CommonViewPager) a.findViewById(R.id.adview_pager);
+                CommonViewPager pager = (CommonViewPager) a.findViewById(R.id.vp_view_pager);
                 ViewGroup points = (ViewGroup) a.findViewById(R.id.ll_point);
                 LogUtils.i("LinkRoomDynamicLayout.clazz-->getBulletinViewPager()-->ViewPager:" + pager);
 
-                Map<String,Object> map = new HashMap<>();
+                Map<String, Object> map = new HashMap<>();
                 map.put("viewPager", pager);
                 map.put("viewGroup", points);
                 return map;
@@ -944,10 +900,10 @@ public class LinkRoomDynamicLayout extends FrameLayout {
             if (test != null && (test instanceof DynamicItemContainView) && i == 0) {
                 LogUtils.i("LinkRoomDynamicLayout.clazz-->getADViewPager()");
                 DynamicItemContainView a = (DynamicItemContainView) test;
-                CommonViewPager pager = (CommonViewPager) a.findViewById(R.id.adview_pager);
+                CommonViewPager pager = (CommonViewPager) a.findViewById(R.id.vp_view_pager);
                 ViewGroup points = (ViewGroup) a.findViewById(R.id.ll_point);
                 LogUtils.i("LinkRoomDynamicLayout.clazz-->getADViewPager()-->ViewPager:" + pager);
-                Map<String,Object> map = new HashMap<>();
+                Map<String, Object> map = new HashMap<>();
                 map.put("viewPager", pager);
                 map.put("viewGroup", points);
                 return map;

@@ -11,12 +11,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 
+import com.dongdong.app.adapter.BulletinViewPagerAdapter;
 import com.dongdong.app.util.TDevice;
 
+import static com.dongdong.app.adapter.BulletinViewPagerAdapter.isEnableRefresh;
+
 public class CommonViewPager extends ViewPager {
-
-    private Timer mTimer;
-
     private boolean isRefresh = true;
     private boolean isScroll = true;
 
@@ -32,29 +32,27 @@ public class CommonViewPager extends ViewPager {
         super(context, attrs);
         getViewTreeObserver().addOnGlobalLayoutListener(
                 new OnGlobalLayoutListener() {
-
                     @SuppressLint("NewApi")
                     @Override
                     public void onGlobalLayout() {
-                        getViewTreeObserver()
-                                .removeOnGlobalLayoutListener(this);
+                        getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         int d = (int) (TDevice.getScreenWidth() / 4);
                         if (getHeight() < 2 * d) {
-                                startAutoNextPager();
+                            startAutoNextPager();
                         }
                     }
                 });
     }
 
     protected void startAutoNextPager() {
-        mTimer = new Timer();
+        Timer mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 CommonViewPager.this.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (isRefresh) {
+                        if (isRefresh && !isEnableRefresh()) {
                             CommonViewPager.this.setCurrentItem(CommonViewPager.this.getCurrentItem() + 1);
                         }
                     }
@@ -79,12 +77,9 @@ public class CommonViewPager extends ViewPager {
     }
 
     @Override
-    public boolean onInterceptHoverEvent(MotionEvent event) {
-        return isScroll && super.onInterceptHoverEvent(event);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        return isScroll && super.onTouchEvent(ev);
+    public void scrollTo(int x, int y) {
+        if (isScroll) {
+            super.scrollTo(x, y);
+        }
     }
 }

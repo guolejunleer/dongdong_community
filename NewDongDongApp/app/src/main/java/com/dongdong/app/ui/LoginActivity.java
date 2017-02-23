@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,12 +18,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dd121.community.R;
-import com.ddclient.dongsdk.AbstractDongCallbackProxy;
-import com.ddclient.jnisdk.InfoUser;
 import com.ddclient.configuration.DongConfiguration;
-import com.ddclient.dongsdk.DongSDK;
+import com.ddclient.dongsdk.AbstractDongCallbackProxy;
 import com.ddclient.dongsdk.DongSDKProxy;
 import com.ddclient.dongsdk.PushInfo;
+import com.ddclient.jnisdk.InfoUser;
 import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.adapter.UserPreferenceAdapter;
@@ -36,25 +36,21 @@ import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.CyptoUtils;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.TDevice;
-import com.dongdong.app.widget.TitleBar;
-import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 import com.igexin.sdk.PushManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.dongdong.app.util.PhoneMessUtils.isMobile;
-
 public class LoginActivity extends BaseActivity implements
-        OnTitleBarClickListener, OnClickListener, AdapterView.OnItemClickListener {
+        OnClickListener, AdapterView.OnItemClickListener {
 
     private LinearLayout mLlLoginParent;
     private TextView mTvForgetPsw, mTvRegister, mTvLocalDevice;
+    private Button mBtBack;
     private String mEtUserName, mEtUserPwd;
     private CommonDialog mDialog;
 
@@ -74,6 +70,7 @@ public class LoginActivity extends BaseActivity implements
 
     @Override
     public void initView() {
+        mBtBack = (Button) findViewById(R.id.bt_back);
         mEtName = (EditText) findViewById(R.id.et_name);
         mEtPwd = (EditText) findViewById(R.id.et_pwd);
         mTvForgetPsw = (TextView) findViewById(R.id.tv_forget_pwd);
@@ -86,10 +83,7 @@ public class LoginActivity extends BaseActivity implements
 
     @Override
     public void initData() {
-        TitleBar titleBar = (TitleBar) findViewById(R.id.tb_title);
-        titleBar.setTitleBarContent(getString(R.string.login));
-        titleBar.setAddArrowShowing(false);
-        titleBar.setOnTitleBarClickListener(this);
+        mBtBack.setOnClickListener(this);
         mTvForgetPsw.setOnClickListener(this);
         mTvRegister.setOnClickListener(this);
         mTvLocalDevice.setOnClickListener(this);
@@ -100,8 +94,7 @@ public class LoginActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        refreshUI(UserOpe.queryDataByUserIndex(BaseApplication.context(),
-                UserOpe.FIRST_INDEX), true);
+        refreshUI(UserOpe.queryDataByUserIndex(BaseApplication.context(), UserOpe.FIRST_INDEX), true);
         DongSDKProxy.registerAccountCallback(mDongAccountProxy);
     }
 
@@ -121,27 +114,12 @@ public class LoginActivity extends BaseActivity implements
     }
 
     @Override
-    public void onBackClick() {
-        finish();
-    }
-
-    @Override
-    public void onTitleClick() {
-    }
-
-    @Override
-    public void onAddClick() {
-    }
-
-    @Override
-    public void onFinishClick() {
-
-    }
-
-    @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
+            case R.id.bt_back:
+                finish();
+                break;
             case R.id.tv_forget_pwd:
                 startActivity(new Intent(this, ForgetPwdActivity.class));
                 break;

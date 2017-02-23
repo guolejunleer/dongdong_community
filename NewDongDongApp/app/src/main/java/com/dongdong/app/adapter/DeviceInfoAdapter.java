@@ -25,6 +25,8 @@ import com.dongdong.app.util.TDevice;
 
 import java.util.ArrayList;
 
+import static com.dongdong.app.util.BitmapUtil.zoom;
+
 public class DeviceInfoAdapter extends BaseAdapter {
 
     private static final int ROUND_VALUE_PX = (int) (10 * TDevice.getDensity());
@@ -39,7 +41,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
      * 图片缓存技术的核心类，用于缓存所有下载好的图片，在程序内存达到设定值时会将最少最近使用的图片移除掉。
      */
     private LruCache<String, Bitmap> mMemoryCache;
-    private final Bitmap mDefaultBitmap;
+    private Bitmap mDefaultBitmap;
 
     public DeviceInfoAdapter(Context context) {
         this.mContext = context;
@@ -62,9 +64,9 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 decodeResource(mContext.getResources(), R.mipmap.dongdongicon), ROUND_VALUE_PX);
     }
 
-    public void setData(ArrayList<DeviceInfo> devicelist) {
+    public void setData(ArrayList<DeviceInfo> deviceList) {
         mDataList.clear();
-        for (DeviceInfo deviceInfo : devicelist) {
+        for (DeviceInfo deviceInfo : deviceList) {
             if (deviceInfo != null) {
                 mDataList.add(deviceInfo);
             }
@@ -103,15 +105,15 @@ public class DeviceInfoAdapter extends BaseAdapter {
                     .findViewById(R.id.tv_device_state);
             mHold.deviceSettings = (TextView) convertView
                     .findViewById(R.id.tv_device_setting);
-            mHold.backgroud = (ImageView) convertView
+            mHold.backGround = (ImageView) convertView
                     .findViewById(R.id.iv_backgroud);
         } else {
             mHold = (Holder) convertView.getTag();
         }
 
         final DeviceInfo deviceInfo = getData().get(position);
-        mHold.backgroud.setTag(deviceInfo.deviceSerialNO);
-        setImageView(deviceInfo.deviceSerialNO, mHold.backgroud);
+        mHold.backGround.setTag(deviceInfo.deviceSerialNO);
+        setImageView(deviceInfo.deviceSerialNO, mHold.backGround);
         mHold.deviceName.setText(deviceInfo.deviceName);
         if (deviceInfo.isOnline) {
             if (TDevice.deviceType(deviceInfo, 23)) {
@@ -132,7 +134,6 @@ public class DeviceInfoAdapter extends BaseAdapter {
         }
         // 设置点击事件
         mHold.deviceSettings.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
                 Intent intent = new Intent(mContext, DeviceSettingsActivity.class);
@@ -150,7 +151,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
             if (roundBitmap != null)
                 imageView.setImageBitmap(roundBitmap);
         } else {
-            imageView.setImageBitmap(mDefaultBitmap);
+            imageView.setImageBitmap(BitmapUtil.getRoundedCornerBitmap(
+                    zoom(mDefaultBitmap, 400, 300), ROUND_VALUE_PX));
             BitmapWorkerTask task = new BitmapWorkerTask(imageView);
             task.execute(imageUrl);
         }
@@ -195,19 +197,20 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 if (roundBitmap != null) imageView.setImageBitmap(roundBitmap);
             }
         }
-
     }
 
     public void recycle() {
-        if (mDefaultBitmap != null && !mDefaultBitmap.isRecycled())
+        if (mDefaultBitmap != null && !mDefaultBitmap.isRecycled()) {
             mDefaultBitmap.recycle();
+            mDefaultBitmap = null;
+        }
     }
 
     private static class Holder {
         TextView deviceName;
         TextView deviceState;
         TextView deviceSettings;
-        ImageView backgroud;
+        ImageView backGround;
     }
 
 }

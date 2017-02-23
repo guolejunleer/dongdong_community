@@ -47,8 +47,8 @@
                 android:drawablePadding="@dimen/space_10"
                 android:hint="@string/pleaseInputVerificationCode"
                 android:inputType="numberSigned"
+                android:maxLength="6"
                 android:textColor="@color/black"
-                android:maxLength="4"
                 android:textSize="@dimen/text_size_16"/>
 
             <Button

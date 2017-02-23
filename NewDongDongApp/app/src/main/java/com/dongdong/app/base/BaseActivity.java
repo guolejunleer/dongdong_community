@@ -10,8 +10,10 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.dongdong.app.AppManager;
+import com.dongdong.app.MainActivity;
 import com.dongdong.app.interf.BaseViewInterface;
 import com.dongdong.app.ui.LoadActivity;
+import com.dongdong.app.ui.LoginActivity;
 import com.dongdong.app.ui.VideoViewActivity;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.StatusBarCompatUtils;
@@ -36,6 +38,9 @@ public abstract class BaseActivity extends Activity implements
             StatusBarCompatUtils.compat(this, Color.parseColor("#00000000"));
             LogUtils.i("BaseActivity.clazz--->>> we don't compat status color and " +
                     "set navigation bar transparent");
+        } else if (this instanceof LoginActivity) {
+            StatusBarCompatUtils.compat(this, Color.parseColor("#0178d7"));
+//            StatusBarCompatUtils.compat(this, Color.parseColor("#000178d7"));
         } else {
             StatusBarCompatUtils.compat(this);
         }

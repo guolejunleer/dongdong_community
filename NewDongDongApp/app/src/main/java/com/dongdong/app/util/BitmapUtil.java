@@ -96,17 +96,16 @@ public class BitmapUtil {
      */
     public static Bitmap compressImage(Bitmap image) {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, bao);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到bao中
         int options = 100;
-        while (baos.toByteArray().length / 1024 > 100) { // 循环判断如果压缩后图片是否大于100kb,大于继续压缩
-            baos.reset();// 重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);// 这里压缩options%，把压缩后的数据存放到baos中
+        while (bao.toByteArray().length / 1024 > 100) { // 循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            bao.reset();// 重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, options, bao);// 这里压缩options%，把压缩后的数据存放到bao中
             options -= 10;// 每次都减少10
         }
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());// 把压缩后的数据baos存放到ByteArrayInputStream中
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
-        return bitmap;
+        ByteArrayInputStream isBm = new ByteArrayInputStream(bao.toByteArray());// 把压缩后的数据bao存放到ByteArrayInputStream中
+        return BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
     }
 
     /**
@@ -121,12 +120,10 @@ public class BitmapUtil {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         Matrix matrix = new Matrix();
-        float scaleWidht = ((float) w / width);
+        float scaleWidth = ((float) w / width);
         float scaleHeight = ((float) h / height);
-        matrix.postScale(scaleWidht, scaleHeight);
-        Bitmap newbmp = Bitmap.createBitmap(bitmap, 0, 0, width, height,
-                matrix, true);
-        return newbmp;
+        matrix.postScale(scaleWidth, scaleHeight);
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
     }
 
     /**

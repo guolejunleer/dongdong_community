@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <com.dongdong.app.widget.LinkRoomDynamicLayout
+        <com.dongdong.app.widget.HomePagerFragmentLayout
             android:id="@+id/link_drag_grid_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

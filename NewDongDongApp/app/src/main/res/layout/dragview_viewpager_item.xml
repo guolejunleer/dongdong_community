@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.dongdong.app.widget.DynamicItemContainView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.dongdong.app.widget.DynamicItemContainView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/space_10"
             android:background="@android:color/transparent"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -21,9 +22,9 @@
             android:layout_weight="1">
 
             <com.dongdong.app.widget.CommonViewPager
-                android:id="@+id/adview_pager"
+                android:id="@+id/vp_view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
 
             <LinearLayout
                 android:id="@+id/ll_point"
@@ -33,7 +34,7 @@
                 android:layout_marginBottom="@dimen/space_5"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </FrameLayout>
 
         <View
@@ -41,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="10dp"
             android:background="@android:color/transparent"
-            android:visibility="gone" />
+            android:visibility="gone"/>
     </LinearLayout>
 
 </com.dongdong.app.widget.DynamicItemContainView>

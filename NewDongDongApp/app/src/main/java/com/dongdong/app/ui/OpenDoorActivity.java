@@ -315,7 +315,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
                 netBean.setType(ProcessDataUtils.openDoorType(Integer.parseInt(netBean.getType())));
                 //2.1.1将本地数据库中的数据与平台返回数据对比
                 for (OpenDoorRecordBean localBean : localList) {
-                    if (localBean.getTimestamp().equals(netBean.getTimestamp()))
+                    if (localBean.getTimestamp().trim().equals(netBean.getTimestamp().trim()))
                         isSame = true;
                 }
                 //2.1.2不相同就添加到本地并且更新界面数据

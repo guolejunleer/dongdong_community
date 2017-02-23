@@ -42,7 +42,7 @@ public class BulletinActivity extends BaseActivity implements OnTitleBarClickLis
     private static final int DO_NOT_LOAD = 2;
     private static final int LOADING = 3;
 
-    private static final int MAX_DATA_COUNT = 10;
+    private static final int MAX_DATA_COUNT = 3;
 
     private static boolean mIsNoMoreData;
 
@@ -136,7 +136,7 @@ public class BulletinActivity extends BaseActivity implements OnTitleBarClickLis
                     LogUtils.i("BulletinActivity.clazz-->onScrollStateChanged is down upload!!!");
                     mIsLoading = true;
                     mBulletinAdapter.changeLoadStatus(LOADING);
-                    getBulletinFromNet(mStartIndex += 10);
+                    getBulletinFromNet(mStartIndex += MAX_DATA_COUNT);
                     LogUtils.i("BulletinActivity.clazz-->onScrollStateChanged mStartIndex:" + mStartIndex);
                 }
             }
@@ -171,7 +171,7 @@ public class BulletinActivity extends BaseActivity implements OnTitleBarClickLis
      */
     public void getBulletinFromNet(int startIndex) {
         RequestParams params = getDVNotices(AppConfig.BASE_URL, DongConfiguration.mDeviceInfo.dwDeviceID,
-                startIndex, 10);
+                startIndex, MAX_DATA_COUNT);
         ApiHttpClient.postDirect(AppConfig.BASE_URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

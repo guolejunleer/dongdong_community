@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.dongdong.app.util.BitmapUtil.zoom;
+
 public class MyAlbumAdapter extends ArrayAdapter<String> implements AbsListView.OnScrollListener {
     /**
      * 记录所有正在执行或等待执行的任务。
@@ -51,9 +53,18 @@ public class MyAlbumAdapter extends ArrayAdapter<String> implements AbsListView.
      * 记录是否是第一次进入该界面
      */
     private boolean isFirstEnterThisActivity = true;
-
+    /**
+     * SD里图片的路径集合
+     */
     private List<String> mPaths;
+    /**
+     * 默认图片
+     */
     private Bitmap mDefaultBitmap;
+    /**
+     * 我的显示图片
+     */
+    private Bitmap mBitmap;
 
     public MyAlbumAdapter(Context context, int textViewResourceId, List<String> paths, GridView gridView) {
         super(context, textViewResourceId, paths);
@@ -67,7 +78,7 @@ public class MyAlbumAdapter extends ArrayAdapter<String> implements AbsListView.
         mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(String key, Bitmap bitmap) {
-                return bitmap.getByteCount()/1024;
+                return bitmap.getByteCount() / 1024;
             }
         };
         mGridView.setOnScrollListener(this);
@@ -93,17 +104,17 @@ public class MyAlbumAdapter extends ArrayAdapter<String> implements AbsListView.
 
     /**
      * 给ImageView设置图片。首先从LruCache中取出图片的缓存，设置到ImageView上。如果LruCache中没有该图片的缓存，
-     * 就给ImageView设置一张默认图片。
+     * 就先给ImageView设置一张默认图片。
      *
      * @param imageUrl  图片的URL地址，用于作为LruCache的键。
      * @param imageView 用于显示图片的控件。
      */
     private void setImageView(String imageUrl, ImageView imageView) {
-        Bitmap bitmap = getBitmapFromMemoryCache(imageUrl);
-        if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);
+        mBitmap = getBitmapFromMemoryCache(imageUrl);
+        if (mBitmap != null) {
+            imageView.setImageBitmap(mBitmap);
         } else {
-            imageView.setImageBitmap(mDefaultBitmap);
+            imageView.setImageBitmap(zoom(mDefaultBitmap, 100, 100));
         }
     }
 
@@ -162,9 +173,9 @@ public class MyAlbumAdapter extends ArrayAdapter<String> implements AbsListView.
         try {
             for (int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++) {
                 String imagePath = getFilePath(i);
-                Bitmap bitmap = getBitmapFromMemoryCache(imagePath);
+                mBitmap = getBitmapFromMemoryCache(imagePath);
                 ImageView imageView = (ImageView) mGridView.findViewWithTag(imagePath);
-                if (bitmap == null) {
+                if (mBitmap == null) {
                     BitmapWorkerTask task = new BitmapWorkerTask(imageView);
                     taskCollection.add(task);
                     task.execute(imagePath);
@@ -172,7 +183,7 @@ public class MyAlbumAdapter extends ArrayAdapter<String> implements AbsListView.
                     LogUtils.i("The Photo is exist in cache");
                     //依据Tag找到对应的ImageView显示图片
                     if (imageView != null) {
-                        imageView.setImageBitmap(bitmap);
+                        imageView.setImageBitmap(mBitmap);
                     }
                 }
             }
@@ -210,12 +221,12 @@ public class MyAlbumAdapter extends ArrayAdapter<String> implements AbsListView.
         protected Bitmap doInBackground(String... params) {
             imageUrl = params[0];
             // 在后台开始加载图片
-            Bitmap bitmap = BitmapUtil.decodeSampledBitmapFromSD(imageUrl,100,100);
-            if (bitmap != null) {
+            mBitmap = BitmapUtil.decodeSampledBitmapFromSD(imageUrl, 100, 100);
+            if (mBitmap != null) {
                 // 图片下载完成后缓存到LruCache中
-                addBitmapToMemoryCache(imageUrl, bitmap);
+                addBitmapToMemoryCache(imageUrl, mBitmap);
             }
-            return bitmap;
+            return mBitmap;
         }
 
         @Override
@@ -230,9 +241,17 @@ public class MyAlbumAdapter extends ArrayAdapter<String> implements AbsListView.
         }
     }
 
+    /**
+     * 回收Bitmap对象
+     */
     public void recycle() {
-        if (mDefaultBitmap != null && !mDefaultBitmap.isRecycled())
+        if (mDefaultBitmap != null && !mDefaultBitmap.isRecycled()
+                && mBitmap != null && !mBitmap.isRecycled()) {
             mDefaultBitmap.recycle();
+            mBitmap.recycle();
+            mDefaultBitmap = null;
+            mBitmap = null;
+        }
     }
 
     public String getFilePath(int position) {
