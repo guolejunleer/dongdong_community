@@ -31,14 +31,27 @@ public class VisitorPhotoOpe {
     }
 
     /**
-     * 查询所有数据
+     * 查询所有数据（按时间倒序）
      *
      * @param context 上下文
      * @return 数据库所有数据
      */
-    public static List<VisitorPhotoBean> queryAll(Context context) {
+    public static List<VisitorPhotoBean> queryAllDesc(Context context) {
         QueryBuilder<VisitorPhotoBean> builder = DBManager.getDaoSession(context).
                 getVisitorPhotoBeanDao().queryBuilder().orderDesc(VisitorPhotoBeanDao.
+                Properties.PhotoTimestamp);
+        return builder.build().list();
+    }
+
+    /**
+     * 查询所有数据（按时间顺序）
+     *
+     * @param context 上下文
+     * @return 数据库所有数据
+     */
+    public static List<VisitorPhotoBean> queryAllAsc(Context context) {
+        QueryBuilder<VisitorPhotoBean> builder = DBManager.getDaoSession(context).
+                getVisitorPhotoBeanDao().queryBuilder().orderAsc(VisitorPhotoBeanDao.
                 Properties.PhotoTimestamp);
         return builder.build().list();
     }

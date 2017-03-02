@@ -4,8 +4,10 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.dd121.community.R;
 import com.ddclient.configuration.DongConfiguration;
 import com.ddclient.dongsdk.PushMsgBean;
+import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.util.UIHelper;
 import com.gViewerX.util.LogUtils;
 
@@ -65,12 +67,12 @@ public class ProcessPushMsgProxy {
         LogUtils.i("ProcessPushMsgProxy.clazz-->delSecond " + delSecond);
         int pushState = pushMsgBean.getPushState();
         if (pushState == 8) {
-            Toast.makeText(context, "设备呼叫", Toast.LENGTH_LONG).show();
+            BaseApplication.showToastShortInCenter(R.string.equipment_call);
         } else if (pushState == 11) {
-            Toast.makeText(context, " 呼叫已接听", Toast.LENGTH_LONG).show();
+            BaseApplication.showToastShortInCenter(R.string.call_answered);
             return;
         } else if (pushState == 12) {
-            Toast.makeText(context, "呼叫已结束", Toast.LENGTH_LONG).show();
+            BaseApplication.showToastShortInCenter(R.string.call_over);
             return;
         }
         if (delSecond > 10) {//2.如果离线推送大于3分钟，那么我们就在首页提示用户多少分钟前有人呼叫过
@@ -86,7 +88,6 @@ public class ProcessPushMsgProxy {
                 UIHelper.showMainActivity(context, deviceID);
             }
         }
-
     }
 
     /**

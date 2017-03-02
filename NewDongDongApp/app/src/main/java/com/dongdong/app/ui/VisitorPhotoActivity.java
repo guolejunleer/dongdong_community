@@ -23,7 +23,6 @@ import com.dongdong.app.cache.CacheHelper;
 import com.dongdong.app.db.VisitorPhotoOpe;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.ProcessDataUtils;
-import com.dongdong.app.util.TDevice;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
@@ -106,7 +105,7 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
     public void initData() {
         DongSDKProxy.registerAccountCallback(mAccountProxy);
         //1查询本地数据库
-        List<VisitorPhotoBean> localDataList = VisitorPhotoOpe.queryAll(BaseApplication.context());
+        List<VisitorPhotoBean> localDataList = VisitorPhotoOpe.queryAllDesc(BaseApplication.context());
         if (localDataList.size() > 0) {//1.1有本地数据，先在界面显示
             mAdapterList.clear();
             for (VisitorPhotoBean localBean : localDataList) {
@@ -236,6 +235,7 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
             List<Long> visitorPhotoIndex = new ArrayList<>();
             for (int i = 0; i < count; i++) {
                 long visitorPhotoId = localData.get(i).getId();
+                LogUtils.i("VisitorPhotoActivity.clazz->delete()->visitorPhotoId:" + visitorPhotoId);
                 visitorPhotoIndex.add(visitorPhotoId);
             }
             VisitorPhotoOpe.delete(BaseApplication.context(), visitorPhotoIndex);
@@ -249,7 +249,7 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
      */
     public void processData(List<VisitorPhotoBean> netList) {
         //1.查询本地数据
-        List<VisitorPhotoBean> localList = VisitorPhotoOpe.queryAll(BaseApplication.context());
+        List<VisitorPhotoBean> localList = VisitorPhotoOpe.queryAllDesc(BaseApplication.context());
 
         //2对比本地和平台数据
         boolean isAllSame = localList.containsAll(netList);
@@ -283,7 +283,7 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
         }
         mIsNoMoreData = netList.size() < MAX_DATA_COUNT;
         if (mIsNoMoreData) mVisitorPhotoAdapter.changeLoadStatus(VisitorPhotoAdapter.LOAD_NO_DATA);
-        List<VisitorPhotoBean> newLocalList = VisitorPhotoOpe.queryAll(BaseApplication.context());
+        List<VisitorPhotoBean> newLocalList = VisitorPhotoOpe.queryAllAsc(BaseApplication.context());
         LogUtils.i("VisitorPhotoActivity.clazz-->processData() mAdapterList.size:" +
                 mAdapterList.size() + ",newLocalList.size:" + newLocalList.size()
                 + ",netList.size():" + netList.size() + ",mIsNoMoreData:" + mIsNoMoreData);

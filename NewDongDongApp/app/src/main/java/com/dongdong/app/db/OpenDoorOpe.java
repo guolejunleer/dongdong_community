@@ -39,9 +39,21 @@ public class OpenDoorOpe {
      * @param context 上下文
      * @return 数据库所有数据
      */
-    public static List<OpenDoorRecordBean> queryAll(Context context) {
+    public static List<OpenDoorRecordBean> queryAllDesc(Context context) {
         QueryBuilder<OpenDoorRecordBean> builder = DBManager.getDaoSession(context).
                 getOpenDoorRecordBeanDao().queryBuilder().orderDesc(OpenDoorRecordBeanDao.
+                Properties.Timestamp);
+        return builder.build().list();
+    }
+    /**
+     * 查询所有数据(按时间顺序)
+     *
+     * @param context 上下文
+     * @return 数据库所有数据
+     */
+    public static List<OpenDoorRecordBean> queryAllAsc(Context context) {
+        QueryBuilder<OpenDoorRecordBean> builder = DBManager.getDaoSession(context).
+                getOpenDoorRecordBeanDao().queryBuilder().orderAsc(OpenDoorRecordBeanDao.
                 Properties.Timestamp);
         return builder.build().list();
     }

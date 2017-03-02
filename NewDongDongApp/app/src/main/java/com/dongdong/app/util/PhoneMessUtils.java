@@ -73,12 +73,6 @@ public class PhoneMessUtils {
         }
     }
 
-    /**
-     * 验证手机号码
-     *
-     * @param phoneNumber 手机号码
-     * @return boolean
-     */
     public static boolean isMobile(String phoneNumber) {
         Pattern pattern = Pattern.compile("^1[0-9]{10}$");
         Matcher matcher = pattern.matcher(phoneNumber);

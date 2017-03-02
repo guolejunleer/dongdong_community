@@ -48,11 +48,11 @@ public class AppConfig {
     public static final int MAX_BULLETIN_COUNT = 100;
 
     //正式服务器
-    //public static final String BASE_URL = "http://wuye.dd121.com/dd/wuye_api/2.0";
+    public static final String BASE_URL = "http://wuye.dd121.com/dd/wuye_api/2.0/";
     // 测试服务器
     //public static final String BASE_URL = "http://192.168.68.55/web/wuye_api/apiserver/2.0/";
     //新服务器
-    public static final String BASE_URL = "http://wuye.dd121.com/dd/wuye_api_d/2.0/";
+    //public static final String BASE_URL = "http://wuye.dd121.com/dd/wuye_api_d/2.0/";
 
     private Context mContext;
     private static AppConfig mAppConfig;

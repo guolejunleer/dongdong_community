@@ -55,7 +55,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
     private OpenDoorAdapter mOpenDoorAdapter;
 
     //上拉加载所需要的最小高度
-//    private static float mUpDownloadNeedHeight;
+    //private static float mUpDownloadNeedHeight;
     private boolean mIsLoading;
     private int mStartIndex = 0;
     final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -102,7 +102,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
     @Override
     public void initData() {
         //1.查询本地数据库
-        List<OpenDoorRecordBean> localList = OpenDoorOpe.queryAll(BaseApplication.context());
+        List<OpenDoorRecordBean> localList = OpenDoorOpe.queryAllDesc(BaseApplication.context());
         if (localList.size() > 0) {//1.1有本地数据，先在界面显示
             mAdapterList.clear();
             for (OpenDoorRecordBean localBean : localList) {
@@ -195,9 +195,9 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
                     intent.putExtra(INTENT_TIMESTAMP_KEY, openDoorRecordBean.getTimestamp());
                     intent.putExtra(INTENT_DEVICE_NAME_KEY, openDoorRecordBean.getDeviceName());
                     intent.putExtra(INTENT_MEMBER_NAME_KEY, openDoorRecordBean.getMemberName());
-//                  intent.putExtra("idNumber", openDoorRecordBean.getIdNumber());
+                    //intent.putExtra("idNumber", openDoorRecordBean.getIdNumber());
                     intent.putExtra(INTENT_COM_NUMBER_KEY, openDoorRecordBean.getComNumber());
-//                  intent.putExtra("mobilePhone", openDoorRecordBean.getMobilePhone());
+                    //intent.putExtra("mobilePhone", openDoorRecordBean.getMobilePhone());
                     startActivity(intent);
                 }
             };
@@ -224,19 +224,22 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
                 mIsLoading = false;
                 setSwipeRefreshLoadedState();
                 try {
-                    String jsonInitData = new JSONObject(new String(responseBody)).
-                            getString("response_params");
-                    String jsonData = new JSONObject(jsonInitData).getString("unlockrecords3");
-                    LogUtils.i("OpenDoorActivity.clazz-->getDataOpenDoorRecord()-->" +
-                            "jsonData:" + jsonData);
-                    if (jsonData.equals("[]")) {//2.1这里只会在平台没有数据了时候才会进来
-                        mIsNoMoreData = true;
-                        mOpenDoorAdapter.changeLoadStatus(LOAD_NO_DATA);
-                        if (mStartIndex == 0)
-                            BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
-                        return;
+                    JSONObject receiveDataJson = new JSONObject(new String(responseBody));
+                    LogUtils.i("BulletinActivity.clazz-->getBulletinFromNet()-->receiveDataJson:" + receiveDataJson);
+                    String resultCode = receiveDataJson.getString("result_code");
+                    if (resultCode.equals("200")) {
+                        String jsonInitData = new JSONObject(new String(responseBody)).
+                                getString("response_params");
+                        String jsonData = new JSONObject(jsonInitData).getString("unlockrecords3");
+                        if (jsonData.equals("[]")) {//2.1这里只会在平台没有数据了时候才会进来
+                            mIsNoMoreData = true;
+                            mOpenDoorAdapter.changeLoadStatus(LOAD_NO_DATA);
+                            if (mStartIndex == 0)
+                                BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
+                            return;
+                        }
+                        processJsonData(jsonData);//2.1平台数据处理
                     }
-                    processJsonData(jsonData);//2.1平台数据处理
                 } catch (JSONException e) {
                     e.printStackTrace();
                     mIsLoading = false;
@@ -292,7 +295,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
      */
     public void processJsonData(String jsonData) {
         //1.获取本地数据
-        List<OpenDoorRecordBean> localList = OpenDoorOpe.queryAll(BaseApplication.context());
+        List<OpenDoorRecordBean> localList = OpenDoorOpe.queryAllDesc(BaseApplication.context());
         List<OpenDoorRecordBean> netDataList = JSON.parseArray(jsonData, OpenDoorRecordBean.class);
 
         //2对比本地和平台数据
@@ -327,7 +330,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
         }
         mIsNoMoreData = netDataList.size() < MAX_DATA_COUNT;
         if (mIsNoMoreData) mOpenDoorAdapter.changeLoadStatus(OpenDoorAdapter.LOAD_NO_DATA);
-        List<OpenDoorRecordBean> newLocalList = OpenDoorOpe.queryAll(BaseApplication.context());
+        List<OpenDoorRecordBean> newLocalList = OpenDoorOpe.queryAllAsc(BaseApplication.context());
         LogUtils.i("OpenDoorActivity.clazz-->processJsonData() mAdapterList.size:" +
                 mAdapterList.size() + ",newLocalList.size:" + newLocalList.size()
                 + ",netDataList.size():" + netDataList.size() + ",mIsNoMoreData:" + mIsNoMoreData);

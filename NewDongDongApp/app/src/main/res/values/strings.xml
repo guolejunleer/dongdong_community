@@ -165,7 +165,7 @@
     <string name="no_network">无法连接到网络，请检查网络设置</string>
     <string name="network_settings">网络设置</string>
     <string name="switchWIFI">WLAN</string>
-    <string name="tip_choose_net">目前处于2G/3G/4G网络,观看视频会产生大量流量费,建议使用WLAN网络!</string>
+    <string name="tip_choose_net">目前处于3G/4G网络,观看视频会产生大量流量费,建议使用WLAN网络!</string>
     <string name="continues">继续</string>
 
     <string name="no_camera">已经没有下一个设备了</string>
@@ -265,7 +265,7 @@
     <string name="ignore">未接听</string>
     <string name="unignore">已接听</string>
 
-    <string name="pwd_error_tip">密码错误,请确认密码后重新登录!错误码为:%s</string>
+    <string name="pwd_error_tip">平台连接断开!错误码为:%s</string>
     <string name="no_bulletin">暂无物业公告，下拉界面获取最新数据</string>
     <string name="bulletin_detail">物业公告详情</string>
     <string name="empty_device_name">设备名称不能为空</string>
@@ -274,4 +274,8 @@
     <string name="device_name_too_length">设备名称过长</string>
     <string name="empty_authorization">授权帐号不能为空</string>
     <string name="authorization_too_length">授权帐号过长</string>
+    <string name="equipment_call">设备呼叫</string>
+    <string name="call_answered">呼叫已接听</string>
+
+    <string name="call_over">呼叫已结束</string>
 </resources>
