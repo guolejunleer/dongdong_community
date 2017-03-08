@@ -185,8 +185,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
                 if (mMyFragment == null) {
                     mMyFragment = new MyPagerFragment();
                 }
-                addOrShowFragment(getSupportFragmentManager().beginTransaction(),
-                        mMyFragment);
+                addOrShowFragment(getSupportFragmentManager().beginTransaction(), mMyFragment);
                 mHomeImg.setImageResource(R.mipmap.btn_know_nor);
                 mHomeTv.setTextColor(getResources().getColor(
                         R.color.bottomtab_normal));

@@ -320,7 +320,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         }
         DongSDKProxy.unRegisterDongDeviceCallback(mDongDeviceCallBackImpl);
         DongSDKProxy.unRegisterDongDeviceSettingCallback(mDongDeviceSettingImpl);
-        LogUtils.i("log5", "VideoViewActivity.clazz-->>onPause...unregister");
         if (DongSDKProxy.initCompleteDongDeviceSetting()) {
             // 用户没点击挂断后也要停止播放，释放资源等操作
             stopVideo();

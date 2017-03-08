@@ -67,7 +67,7 @@ public class ProcessPushMsgProxy {
         LogUtils.i("ProcessPushMsgProxy.clazz-->delSecond " + delSecond);
         int pushState = pushMsgBean.getPushState();
         if (pushState == 8) {
-            BaseApplication.showToastShortInCenter(R.string.equipment_call);
+//            BaseApplication.showToastShortInCenter(R.string.equipment_call);
         } else if (pushState == 11) {
             BaseApplication.showToastShortInCenter(R.string.call_answered);
             return;
@@ -80,7 +80,7 @@ public class ProcessPushMsgProxy {
         } else {//3.如果离线推送在规定时间内，那么跳转到对应界面
             if (DongConfiguration.mUserInfo != null) {//3.1在线推送进入监视界面
                 LogUtils.i("ProcessPushMsgProxy.clazz-->>is login will" +
-                        " showVideoViewActivity push time is 0 and deviceID:" + deviceID);
+                        "showVideoViewActivity push time is 0 and deviceID:" + deviceID);
                 UIHelper.showVideoViewActivity(context, false, deviceID);
             } else {//3.2离线推送先进入首页，再进入监视界面
                 LogUtils.i("ProcessPushMsgProxy.clazz-->>not login and we will jump " +
