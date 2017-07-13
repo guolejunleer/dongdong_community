@@ -28,12 +28,13 @@ import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.base.BaseFragment;
 import com.dongdong.app.bean.BulletinBean;
 import com.dongdong.app.bean.FunctionBean;
-import com.dongdong.app.bean.VillageBean;
+import com.dongdong.app.bean.DeviceVillageBean;
 import com.dongdong.app.db.BulletinOpe;
-import com.dongdong.app.db.VillageOpe;
+import com.dongdong.app.db.DeviceVillageOpe;
 import com.dongdong.app.interf.OnTabReselectListener;
 import com.dongdong.app.ui.LoginActivity;
 import com.dongdong.app.ui.dialog.TipDialogManager;
+import com.dongdong.app.util.FileUtils;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.TDevice;
 import com.dongdong.app.util.UIHelper;
@@ -58,20 +59,20 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-import static com.dongdong.app.api.ApiHttpClient.get;
 import static com.dongdong.app.api.ApiHttpClient.getDVNotices;
+import static com.dongdong.app.util.TDevice.getLoginMessage;
+import static com.dongdong.app.widget.HomePagerFragmentLayout.KEY_VIEW_GROUP;
+import static com.dongdong.app.widget.HomePagerFragmentLayout.KEY_VIEW_PAGER;
 
 public class HomePagerFragment extends BaseFragment implements
         OnTabReselectListener, OnTitleBarClickListener, OnItemClickListener,
         OnDynamicViewChangedPositionListener {
 
-    private CommonViewPager mBulletinViewPager;//物业公告轮播图
     private List<BulletinBean> mBulletinList = new ArrayList<>();
     private BulletinViewPagerAdapter mBulletinViewPagerAdapter;
     private ViewGroup mBulletinViewPagerPoints;
 
     private CommonViewPager mADViewPager;//广告轮播图
-    private ADViewPagerAdapter ADViewPagerAdapter;
     private ViewGroup mADPagerPoints;
 
     private TitleBar mTitleBar;
@@ -114,7 +115,7 @@ public class HomePagerFragment extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        mTitleBar.setTitleAnimator();
+//        mTitleBar.setTitleAnimator();
         boolean initDongAccount = DongConfiguration.mUserInfo != null;
         if (initDongAccount) {
             DongSDKProxy.registerAccountCallback(mDongAccountProxy);
@@ -146,7 +147,7 @@ public class HomePagerFragment extends BaseFragment implements
     @Override
     public void onPause() {
         super.onPause();
-        // DongSDKProxy.unRegisterAccountCallback(mDongAccountProxy);
+        DongSDKProxy.unRegisterAccountCallback(mDongAccountProxy);
         LogUtils.i("HomePagerFragment.clazz--->>>onPause...");
     }
 
@@ -156,7 +157,7 @@ public class HomePagerFragment extends BaseFragment implements
         mTitleBar.setBackArrowShowing(false);
         mTitleBar.setAddArrowShowing(false);
         mTitleBar.setOnTitleBarClickListener(this);
-        mTitleBar.setTitleAnimator();
+//        mTitleBar.setTitleAnimator();
 
         mDynamicLayout = (HomePagerFragmentLayout) view.findViewById(R.id.link_drag_grid_view);
         mDynamicLayout.setOnItemClickListener(this);
@@ -165,28 +166,21 @@ public class HomePagerFragment extends BaseFragment implements
 
     @Override
     public void initData() {
-        mFuncFile = new File(BaseApplication.context().getDir("funprop",
-                Context.MODE_PRIVATE), "funcprop.xml");
-        LogUtils.i("HomePagerFragment.clazz--->>>dir is exist " + mFuncFile.exists());
-        if (!mFuncFile.exists()) {
-            mFunctionsList = AppContext.getFunctionsDatasInit();
-            XmlUtils.createFunctionXml(mFuncFile, mFunctionsList, false);
-        } else {
-            mFunctionsList = XmlUtils.getFunctionsDatasByProp(mFuncFile);
-        }
+        //解决本地功能配置模块文件的更新问题
+        dealWithFunctionXml();
         HomePagerFragmentAdapter dynamicAdapter = new HomePagerFragmentAdapter(
                 getActivity(), mFunctionsList);
         mDynamicLayout.setAdapter(dynamicAdapter);
 
-        mBulletinViewPager = (CommonViewPager) mDynamicLayout.getBulletinViewPager().get("viewPager");
-        mBulletinViewPagerPoints = (ViewGroup) mDynamicLayout.getBulletinViewPager().get("viewGroup");
+        CommonViewPager bulletinViewPager = (CommonViewPager) mDynamicLayout.getBulletinViewPager().get(KEY_VIEW_PAGER);
+        mBulletinViewPagerPoints = (ViewGroup) mDynamicLayout.getBulletinViewPager().get(KEY_VIEW_GROUP);
 
         mBulletinViewPagerAdapter = new BulletinViewPagerAdapter(getActivity(),
-                mBulletinViewPager, mBulletinViewPagerPoints/*, mBulletinList*/);
+                bulletinViewPager, mBulletinViewPagerPoints/*, mBulletinList*/);
 //        mBulletinViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
-        mBulletinViewPager.setAdapter(mBulletinViewPagerAdapter);
+        bulletinViewPager.setAdapter(mBulletinViewPagerAdapter);
 //        mBulletinViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
-        LogUtils.i("HomePagerFragment.clazz-->initData()-->mBulletinViewPager:" + mBulletinViewPager);
+        LogUtils.i("HomePagerFragment.clazz-->initData()-->bulletinViewPager:" + bulletinViewPager);
         mADViewPager = (CommonViewPager) mDynamicLayout.getADViewPager().get("viewPager");
         mADPagerPoints = (ViewGroup) mDynamicLayout.getADViewPager().get("viewGroup");
 
@@ -205,6 +199,37 @@ public class HomePagerFragment extends BaseFragment implements
             showBulletinInfo();
         }
         LogUtils.i("HomePagerFragment.clazz-->>>onHiddenChanged hidden:" + hidden);
+    }
+
+    /**
+     * 解决本地功能配置模块文件的更新问题
+     */
+    private void dealWithFunctionXml() {
+        //首页界面配置文件
+        mFuncFile = new File(BaseApplication.context().getDir("funprop", Context.MODE_PRIVATE),
+                "funcprop.xml");
+        LogUtils.i("HomePagerFragment.clazz--->>>dir is exist " + mFuncFile.exists());
+        int versionCode = (int) AppContext.mAppConfig.getConfigValue(
+                AppConfig.DONG_CONFIG_SHARE_PREF_NAME, AppConfig.KEY_VERSION_CODE, 0);
+        boolean mIsNotSameVersion = false;
+        if (versionCode /*!= TDevice.getVersionCode()*/ < 8) {// every update function should changed it
+            mIsNotSameVersion = true;
+            //储存对应的versionCode
+            AppContext.mAppConfig.setConfigValue(
+                    AppConfig.DONG_CONFIG_SHARE_PREF_NAME, AppConfig.KEY_VERSION_CODE,
+                    TDevice.getVersionCode());
+        }
+        if (!mFuncFile.exists()) {
+            mFunctionsList = AppContext.getFunctionsDataInit();
+            XmlUtils.createFunctionXml(mFuncFile, mFunctionsList, false);
+        } else if (mIsNotSameVersion) {
+            //删除本地xml文件
+            mFuncFile.delete();
+            mFunctionsList = AppContext.getFunctionsDataInit();
+            XmlUtils.createFunctionXml(mFuncFile, mFunctionsList, false);
+        } else {
+            mFunctionsList = XmlUtils.getFunctionsDataByProp(mFuncFile);
+        }
     }
 
     /**
@@ -231,7 +256,7 @@ public class HomePagerFragment extends BaseFragment implements
                 LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo defaultDeviceId:"
                         + defaultDeviceId + ",mDeviceID:" + mDeviceID + ",all device size:" + size);
                 if (!TextUtils.isEmpty(mDeviceID)) {//2.3离线推送
-                    LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo is offline push and we will jump " +
+                    LogUtils.i("HomePagerFragment.clazz-->>showTitleInfo is online push and we will jump " +
                             "monitor activity deviceID:" + mDeviceID);
                     UIHelper.showVideoViewActivity(getActivity(), false, mDeviceID);
                     mDeviceID = null;
@@ -279,9 +304,9 @@ public class HomePagerFragment extends BaseFragment implements
      * 获取广告
      */
     private void getADFromNet() {
-        ADViewPagerAdapter = new ADViewPagerAdapter(getActivity(), mADViewPager, mADPagerPoints);
-        mADViewPager.setAdapter(ADViewPagerAdapter);
-        ADViewPagerAdapter.showNoticeViewPoints();
+        ADViewPagerAdapter adViewPagerAdapter = new ADViewPagerAdapter(getActivity(), mADViewPager, mADPagerPoints);
+        mADViewPager.setAdapter(adViewPagerAdapter);
+        adViewPagerAdapter.showNoticeViewPoints();
         mADViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
     }
 
@@ -341,15 +366,15 @@ public class HomePagerFragment extends BaseFragment implements
         LogUtils.i("HomePagerFragment.clazz--->>>processBulletinData localList" +
                 " = BulletinOpe.size " + localList.size());
         String netVillageId = netDataList.get(0).getVillageId();
-        String localVillageId = VillageOpe.queryDataByDeviceId(BaseApplication.context(),
+        String localVillageId = DeviceVillageOpe.queryDataByDeviceId(BaseApplication.context(),
                 String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
-        //如果数据库中没有就不添加
+        //如果数据库中没有就添加
         if (localVillageId == null) {
             LogUtils.i("HomePagerFragment.clazz--->>>processBulletinData()-->addVillage");
-            VillageBean villageBean = new VillageBean();
+            DeviceVillageBean villageBean = new DeviceVillageBean();
             villageBean.setDeviceId(netDataList.get(0).getDeviceId());
             villageBean.setVillageId(netVillageId);
-            VillageOpe.insertDataByVillageBean(BaseApplication.context(), villageBean);
+            DeviceVillageOpe.insertDataByVillageBean(BaseApplication.context(), villageBean);
         }
         for (BulletinBean netBean : netDataList) {
             boolean isSame = false;
@@ -396,7 +421,7 @@ public class HomePagerFragment extends BaseFragment implements
             mBulletinViewPagerAdapter.hiddenADViewPoints();
             //mBulletinViewPager.setCurrentItem(0);
         } else {//2.已登录 判断设备是否有物业公告
-            String villageId = VillageOpe.queryDataByDeviceId(BaseApplication.context(),
+            String villageId = DeviceVillageOpe.queryDataByDeviceId(BaseApplication.context(),
                     String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
             LogUtils.i("HomePagerFragment.clazz-->showBulletinInfo()-->villageId:" + villageId);
             if (!TextUtils.isEmpty(villageId)) {
@@ -448,13 +473,6 @@ public class HomePagerFragment extends BaseFragment implements
         String name = dynamicView.getName();
 
         if (name.equals(getString(R.string.message))) {
-            LogUtils.e("HomePagerFragment.clazz-->>DongConfiguration.mUserInfo:"
-                    + DongConfiguration.mUserInfo + ",DongConfiguration.mUserInfo.userId:"
-                    + DongConfiguration.mUserInfo.userID);
-            if (DongConfiguration.mUserInfo.userID < 1) {
-                BaseApplication.showToastShortInBottom("系统正在初始化，请稍后");
-                return;
-            }
             UIHelper.showBulletinActivity(getActivity());
         } else if (name.equals(getString(R.string.monitor))) {
             //判断网络，只有在观看设备的时候需要网
@@ -481,22 +499,8 @@ public class HomePagerFragment extends BaseFragment implements
         } else if (name.equals(getString(R.string.repair))) {
             UIHelper.showRepairsActivity(getActivity());
         } else if (name.equals(getString(R.string.visitorphoto))) {
-            LogUtils.e("HomePagerFragment.clazz-->>DongConfiguration.mUserInfo:"
-                    + DongConfiguration.mUserInfo + ",DongConfiguration.mUserInfo.userId:"
-                    + DongConfiguration.mUserInfo.userID);
-            if (DongConfiguration.mUserInfo.userID < 1) {
-                BaseApplication.showToastShortInBottom("系统正在初始化，请稍后");
-                return;
-            }
             UIHelper.showHomeSafeActivity(getActivity());
         } else if (name.equals(getString(R.string.opendoor))) {
-            LogUtils.e("HomePagerFragment.clazz-->>DongConfiguration.mUserInfo:"
-                    + DongConfiguration.mUserInfo + ",DongConfiguration.mUserInfo.userId:"
-                    + DongConfiguration.mUserInfo.userID);
-            if (DongConfiguration.mUserInfo.userID < 1) {
-                BaseApplication.showToastShortInBottom("系统正在初始化，请稍后");
-                return;
-            }
             UIHelper.showVisitorRecordActivity(getActivity());
         } else if (name.equals(getString(R.string.phone))) {
             UIHelper.showCommonPhoneActivity(getActivity());
@@ -504,6 +508,8 @@ public class HomePagerFragment extends BaseFragment implements
             UIHelper.showParkingActivity(getActivity());
         } else if (name.equals(getString(R.string.dd_function_finance))) {
             UIHelper.showFinanceActivity(getActivity());
+        } else if (name.equals(getString(R.string.my_device))) {
+            UIHelper.showDeviceListActivity(getActivity());
         } else if (name.equals(getString(R.string.dd_function_more))) {
             System.out.print("消除警告用");
         }
@@ -522,8 +528,10 @@ public class HomePagerFragment extends BaseFragment implements
         if (DongConfiguration.mUserInfo == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         } else {
-            UIHelper.showDeviceListActivity(getActivity());
+//            UIHelper.showDeviceListActivity(getActivity());
+            BaseApplication.showToastShortInCenter(R.string.join_device_list);
         }
+
     }
 
     @Override
@@ -586,7 +594,7 @@ public class HomePagerFragment extends BaseFragment implements
 
         @Override
         public int onNewListInfo() {
-            LogUtils.i("HomePageFragment.clazz -->>OnNewListInfo");
+            LogUtils.e("HomePageFragment.clazz -->>OnNewListInfo");
             showTitleInfo(DongConfiguration.mUserInfo == null);
             return 0;
         }
@@ -609,7 +617,11 @@ public class HomePagerFragment extends BaseFragment implements
         @Override
         public int onTunnelUnlock(int result) {//暂时只会回调0成功
             LogUtils.i("HomePagerFragment.clazz--->>>onTunnelUnlock....result:" + result);
-            BaseApplication.showToastShortInCenter(R.string.openlock);
+            if (result != 0) {
+                BaseApplication.showToastShortInCenter(R.string.openLockFail);
+            } else {
+                BaseApplication.showToastShortInCenter(R.string.openlock);
+            }
             return 0;
         }
 
@@ -617,8 +629,7 @@ public class HomePagerFragment extends BaseFragment implements
         public int onUserError(int nErrNo) {
             LogUtils.i("HomePagerFragment.clazz--->>>OnUserError.....nErrNo:" + nErrNo);
             TipDialogManager.showTipDialog(HomePagerFragment.this.getActivity(),
-                    BaseApplication.context().getString(R.string.tip),
-                    BaseApplication.context().getString(R.string.pwd_error_tip, String.valueOf(nErrNo)));
+                    BaseApplication.context().getString(R.string.tip), getLoginMessage(nErrNo, HomePagerFragment.this.getActivity()));
             return 0;
         }
     }

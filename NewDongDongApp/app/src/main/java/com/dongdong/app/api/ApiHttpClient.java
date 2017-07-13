@@ -237,8 +237,8 @@ public class ApiHttpClient {
     /**
      * 获取开门记录的参数：
      */
-    public static RequestParams getUnlockRecords3(
-            String url, int userId, int deviceId, int startIndex, int endIndex) {
+    public static RequestParams getUnlockRecords3(String url, int userId, int deviceId,
+                                                  int startIndex, int endIndex) {
         Calendar calendar = Calendar.getInstance();
         RequestParams params = new RequestParams();
         params.put("apikey", API_KEY);
@@ -291,6 +291,36 @@ public class ApiHttpClient {
 
         String sign = getSign(url, map, "utf-8");
         Log.e("GT", "ApiHttpClient.clazz-->getDVNotices()-->sign:" + sign);
+        params.put("sign", sign);
+
+        return params;
+    }
+
+    /**
+     * 获取常用电话的参数
+     */
+    public static RequestParams getDVComphones(String url, int deviceId, int offset, int size) {
+        Calendar calendar = Calendar.getInstance();
+        RequestParams params = new RequestParams();
+        params.put("apikey", API_KEY);
+        params.put("timestamp", "" + calendar.getTimeInMillis() / 1000);
+        params.put("id", "435");
+        params.put("method", "getDVComphones");
+        params.put("deviceid", deviceId);
+        params.put("offset", offset);
+        params.put("size", size);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("apikey", API_KEY);
+        map.put("timestamp", "" + calendar.getTimeInMillis() / 1000);
+        map.put("id", "435");
+        map.put("method", "getDVComphones");
+        map.put("deviceid", String.valueOf(deviceId));
+        map.put("offset", String.valueOf(offset));
+        map.put("size", String.valueOf(size));
+
+        String sign = getSign(url, map, "utf-8");
+        Log.e("GT", "ApiHttpClient.clazz-->getDVComphones()-->sign:" + sign);
         params.put("sign", sign);
 
         return params;

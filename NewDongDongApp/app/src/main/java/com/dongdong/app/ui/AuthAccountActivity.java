@@ -28,24 +28,21 @@ import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.UserInfoBean;
 import com.dongdong.app.ui.dialog.CommonDialog;
 import com.dongdong.app.util.LogUtils;
-import com.dongdong.app.util.PhoneMessUtils;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
 public class AuthAccountActivity extends BaseActivity implements
-        OnTitleBarClickListener, OnClickListener {
+        OnTitleBarClickListener, OnClickListener, OnItemClickListener {
 
     private TitleBar mTitleBar;
     private Button mBtAuth;
     private EditText mEtAccount;
     private ListView mListView;
     private AuthorizedAccountListAdapter mListAdapter;
-    private ArrayList<InfoUser> mUserList;
+    private ArrayList<InfoUser> mUserList = new ArrayList<>();
     private UserInfoBean mUserInfoBean;
     private String mAccountName;
     private CommonDialog mDialog, mDialog2;
-
-    private PhoneMessUtils mPhoneMess;
 
     private DeviceInfo mDeviceInfo;
     private AuthAccountActivityDongAccountProxy mAccountProxy
@@ -67,10 +64,8 @@ public class AuthAccountActivity extends BaseActivity implements
     @Override
     public void initData() {
         Intent intent = getIntent();
-        mDeviceInfo = (DeviceInfo) intent
-                .getSerializableExtra(AppConfig.BUNDLE_KEY_DEVICE_INFO);
+        mDeviceInfo = (DeviceInfo) intent.getSerializableExtra(AppConfig.BUNDLE_KEY_DEVICE_INFO);
         LogUtils.i("AuthAccountActivity.clazz--->>> initData mDeviceInfo:" + mDeviceInfo);
-        DongSDKProxy.requestGetDeviceAuthorizeAccounts(mDeviceInfo.dwDeviceID);
 
         mDialog = new CommonDialog(this);
         mDialog2 = new CommonDialog(this);
@@ -78,47 +73,19 @@ public class AuthAccountActivity extends BaseActivity implements
         mTitleBar.setTitleBarContent(mDeviceInfo.deviceName);
         mTitleBar.setAddArrowShowing(false);
         mTitleBar.setOnTitleBarClickListener(this);
+
         mListAdapter = new AuthorizedAccountListAdapter(this);
         mListView.setAdapter(mListAdapter);
 
         mBtAuth.setOnClickListener(this);
-        mListView.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                mUserInfoBean = mListAdapter.getItem(arg2);
-                mDialog.setMessage(R.string.deleteAuthorization);
-                mDialog.setPositiveButton(R.string.sure,
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                View view = LayoutInflater.from(
-                                        AuthAccountActivity.this).inflate(
-                                        R.layout.loading_dialog, null);
-                                TextView tipTextView = (TextView) view
-                                        .findViewById(R.id.tv_tip);
-                                tipTextView.setText(getString(R.string.wait));
-                                mDialog2.setContent(view);
-                                mDialog2.show();
-                                DongSDKProxy.requestDeleteDevice(
-                                        mUserInfoBean.getUserInfo().userID,
-                                        mDeviceInfo.dwDeviceID);
-                            }
-                        });
-                mDialog.setNegativeButton(getString(R.string.cancel), null);
-                mDialog.show();
-            }
-        });
-
+        mListView.setOnItemClickListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         DongSDKProxy.registerAccountCallback(mAccountProxy);
+        DongSDKProxy.requestGetDeviceAuthorizeAccounts(mDeviceInfo.dwDeviceID);
     }
 
     @Override
@@ -154,7 +121,7 @@ public class AuthAccountActivity extends BaseActivity implements
         int id = v.getId();
         switch (id) {
             case R.id.bt_auth:
-                mAccountName = mEtAccount.getText().toString();
+                mAccountName = mEtAccount.getText().toString().trim();
                 if (TextUtils.isEmpty(mAccountName)) {
                     BaseApplication.showToastShortInTop(R.string.empty_authorization);
                     return;
@@ -178,26 +145,26 @@ public class AuthAccountActivity extends BaseActivity implements
         }
     }
 
-    private class CheckPhoneMessThread extends Thread {
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        mUserInfoBean = mListAdapter.getItem(position);
+        mDialog.setMessage(R.string.deleteAuthorization);
+        mDialog.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
 
-        @Override
-        public void run() {
-            mPhoneMess = new PhoneMessUtils(AuthAccountActivity.this);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                View view = LayoutInflater.from(AuthAccountActivity.this).inflate(
+                        R.layout.loading_dialog, null);
+                TextView tipTextView = (TextView) view.findViewById(R.id.tv_tip);
+                tipTextView.setText(getString(R.string.wait));
+                mDialog2.setContent(view);
+                mDialog2.show();
+                DongSDKProxy.requestDeleteDevice(mUserInfoBean.getUserInfo().userID,
+                        mDeviceInfo.dwDeviceID);
             }
-            AuthAccountActivity.this.runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    mListAdapter.setConnectUsernameAndPhoneNum(mPhoneMess
-                            .getPhoneMessBeanList());
-                    mListAdapter.notifyDataSetChanged();
-                }
-            });
-        }
+        });
+        mDialog.setNegativeButton(getString(R.string.cancel), null);
+        mDialog.show();
     }
 
     private class AuthAccountActivityDongAccountProxy extends
@@ -240,8 +207,7 @@ public class AuthAccountActivity extends BaseActivity implements
                 mDialog2.dismiss();
             }
             for (InfoUser infoUser : mUserList) {
-                if (infoUser.userName
-                        .equals(mUserInfoBean.getUserInfo().userName)) {
+                if (infoUser.userName.equals(mUserInfoBean.getUserInfo().userName)) {
                     mUserList.remove(infoUser);
                     break;
                 }
@@ -267,7 +233,6 @@ public class AuthAccountActivity extends BaseActivity implements
             }
             mListAdapter.setData(mUserList);
             mListAdapter.notifyDataSetChanged();
-            new CheckPhoneMessThread().start();// 查找手机上存在手机号的人的名称
             LogUtils.i("AuthAccountActivity.clazz--->>>OnGetDeviceUserInfo infoUsers:" + infoUsers);
             return 0;
         }

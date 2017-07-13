@@ -4,7 +4,6 @@ import com.dd121.community.R;
 import com.dongdong.app.base.BaseApplication;
 
 public class ProcessDataUtils {
-
     //开门记录
     private static final int APP_OPEN_DOOR = 1;//手机开门
     private static final int CARD_OPEN_DOOR = 2;//刷卡开门
@@ -16,7 +15,7 @@ public class ProcessDataUtils {
     private static final int PHONE_OPEN_DOOR = 10;//电话呼叫住户开门
 
     //访客留影
-    private static final int CLOUD_CALL_TIME_OUT =21;//呼叫超时，未接听
+    private static final int CLOUD_CALL_TIME_OUT = 21;//呼叫超时，未接听
     private static final int APP_ANSWER = 22;//App接听
     private static final int PHONE_ANSWER = 23;//电话接听
     private static final int APP_UNLOCK = 1;//App开锁

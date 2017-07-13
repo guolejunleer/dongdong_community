@@ -1,18 +1,16 @@
 package com.dongdong.app.widget;
 
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 
-import com.dongdong.app.adapter.BulletinViewPagerAdapter;
 import com.dongdong.app.util.TDevice;
+
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.dongdong.app.adapter.BulletinViewPagerAdapter.isEnableRefresh;
 

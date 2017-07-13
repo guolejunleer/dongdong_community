@@ -93,7 +93,6 @@ public class TitleBar extends LinearLayout implements OnClickListener {
 
     public void setBackArrowShowing(boolean show) {
         mBtnMyBack.setVisibility(show ? View.VISIBLE : View.GONE);
-
     }
 
     public void setAddArrowShowing(boolean show) {

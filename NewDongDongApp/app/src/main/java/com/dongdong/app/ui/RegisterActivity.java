@@ -24,7 +24,7 @@ import com.dongdong.app.util.TDevice;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
-import static com.dongdong.app.util.PhoneMessUtils.isMobile;
+import static com.dongdong.app.util.PhoneUtils.isMobile;
 
 public class RegisterActivity extends BaseActivity implements OnTitleBarClickListener,
         OnClickListener {

@@ -24,216 +24,215 @@ import java.util.List;
 @SuppressLint("InflateParams")
 public class BaseApplication extends Application {
 
-	/**
-	 * 根据厂家不同，控制编译功能模块 0 : 默认值 ;1 : xxx ;2 : yyy ; 3 : zzz; 4 : aaa ;5 : bbb ;6
-	 * : ccc
-	 */
-	public static final int FUNCTION_MESSAGE = 1;
-	public static final int FUNCTION_MONITOR = 2;
-	public static final int FUNCTION_APPLYKEY = 3;
-	public static final int FUNCTION_SHAPEOPENDOOR = 4;
-	public static final int FUNCTION_REPAIR = 5;
-	public static final int FUNCTION_VISITORPHOTO = 6;
-	public static final int FUNCTION_OPENDOOR = 7;
-	public static final int FUNCTION_PHONE = 8;
-	public static final int FUNCTION_DD_FUNCTION_FINANCE = 9;
-	public static final int FUNCTION_DD_FUNCTION_PARKING = 10;
-	// public static final int FUNCTION_DD_FUNCTION_MORE = 11;
-	// public static final int FUNCTION_DD_FUNCTION_CARCAR =;
-	// public static final int FUNCTION_DD_FUNCTION_CAR = 10;
-	// public static final int FUNCTION_DD_FUNCTION_AMUSE = 11;
-	private static final String[][] mVenderInfoArray = {
-			{ "com.dongdong.app", "www.dd121.com", "123" },
-			{ "com.dd121.community", "www.dd121.com", "123" },
-			{ "com.dongdong.app.test002", "www.dd121.com", "123" } };
+    /**
+     * 根据厂家不同，控制编译功能模块 0 : 默认值 ;1 : xxx ;2 : yyy ; 3 : zzz; 4 : aaa ;5 : bbb ;6
+     * : ccc
+     */
+    public static final int FUNCTION_DD_FUNCTION_MESSAGE = 1;
+    public static final int FUNCTION_DD_FUNCTION_MONITOR = 2;
+    public static final int FUNCTION_DD_FUNCTION_APPLYKEY = 3;
+    public static final int FUNCTION_DD_FUNCTION_SHAPEOPENDOOR = 4;
+    public static final int FUNCTION_DD_FUNCTION_REPAIR = 5;
+    public static final int FUNCTION_DD_FUNCTION_VISITORPHOTO = 6;
+    public static final int FUNCTION_DD_FUNCTION_OPENDOOR = 7;
+    public static final int FUNCTION_DD_FUNCTION_PHONE = 8;
+    public static final int FUNCTION_DD_FUNCTION_FINANCE = 9;
+    public static final int FUNCTION_DD_FUNCTION_PARKING = 10;
+    public static final int FUNCTION_DD_FUNCTION_MYDEVICE = 11;
 
-	private static Context mContext;
-	private static Resources mResource;
+    // public static final int FUNCTION_DD_FUNCTION_MORE = 11;
+    // public static final int FUNCTION_DD_FUNCTION_CARCAR =;
+    // public static final int FUNCTION_DD_FUNCTION_CAR = 10;
+    // public static final int FUNCTION_DD_FUNCTION_AMUSE = 11;
+    private static final String[][] mVenderInfoArray = {
+            {"com.dongdong.app", "www.dd121.com", "123"},
+            {"com.dd121.community", "www.dd121.com", "123"},
+            {"com.dongdong.app.test002", "www.dd121.com", "123"}};
 
-	private static String mLastToast = "";
-	private static long mLastToastTime;
+    private static Context mContext;
+    private static Resources mResource;
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		mContext = getApplicationContext();
-		mResource = mContext.getResources();
-	}
+    private static String mLastToast = "";
+    private static long mLastToastTime;
 
-	public static synchronized BaseApplication context() {
-		return (BaseApplication)mContext;
-	}
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mContext = getApplicationContext();
+        mResource = mContext.getResources();
+    }
 
-	public static Resources resources() {
-		return mResource;
-	}
+    public static synchronized BaseApplication context() {
+        return (BaseApplication) mContext;
+    }
 
-	// long
-	public static void showToastLongInBottom(int message) {
-		showToastInBottom(message, Toast.LENGTH_LONG, 0);
-	}
+    public static Resources resources() {
+        return mResource;
+    }
 
-	public static void showToastLongInBottom(int message, int icon) {
-		showToastInBottom(message, Toast.LENGTH_LONG, icon);
-	}
+    // long
+    public static void showToastLongInBottom(int message) {
+        showToastInBottom(message, Toast.LENGTH_LONG, 0);
+    }
 
-	public static void showToastLongInBottom(String message) {
-		showToast(message, Toast.LENGTH_LONG, 0, Gravity.BOTTOM);
-	}
+    public static void showToastLongInBottom(int message, int icon) {
+        showToastInBottom(message, Toast.LENGTH_LONG, icon);
+    }
 
-	public static void showToastLongInCenter(int message) {
-		showToast(message, Toast.LENGTH_LONG, 0, Gravity.CENTER);
-	}
+    public static void showToastLongInBottom(String message) {
+        showToast(message, Toast.LENGTH_LONG, 0, Gravity.BOTTOM);
+    }
 
-	// short
-	public static void showToastShortInBottom(int message) {
-		showToastInBottom(message, Toast.LENGTH_SHORT, 0);
-	}
+    public static void showToastLongInCenter(int message) {
+        showToast(message, Toast.LENGTH_LONG, 0, Gravity.CENTER);
+    }
 
-	public static void showToastShortInBottom(int message, Object... args) {
-		showToast(message, Toast.LENGTH_SHORT, 0, Gravity.BOTTOM, args);
-	}
+    // short
+    public static void showToastShortInBottom(int message) {
+        showToastInBottom(message, Toast.LENGTH_SHORT, 0);
+    }
 
-	public static void showToastShortInBottom(String message) {
-		showToast(message, Toast.LENGTH_SHORT, 0, Gravity.BOTTOM);
-	}
+    public static void showToastShortInBottom(int message, Object... args) {
+        showToast(message, Toast.LENGTH_SHORT, 0, Gravity.BOTTOM, args);
+    }
 
-	public static void showToastInBottom(int message, int duration, int icon) {
-		showToast(message, duration, icon, Gravity.BOTTOM);
-	}
+    public static void showToastShortInBottom(String message) {
+        showToast(message, Toast.LENGTH_SHORT, 0, Gravity.BOTTOM);
+    }
 
-	public static void showToastShortInCenter(int message) {
-		showToast(message, Toast.LENGTH_SHORT, 0, Gravity.CENTER);
-	}
+    public static void showToastInBottom(int message, int duration, int icon) {
+        showToast(message, duration, icon, Gravity.BOTTOM);
+    }
 
-	public static void showToastShortInTop(int message) {
-		showToast(message, Toast.LENGTH_SHORT, 0, Gravity.TOP);
-	}
+    public static void showToastShortInCenter(int message) {
+        showToast(message, Toast.LENGTH_SHORT, 0, Gravity.CENTER);
+    }
 
-	public static void showToast(int message, int duration, int icon,
-			int gravity) {
-		showToast(context().getString(message), duration, icon, gravity);
-	}
+    public static void showToastShortInTop(int message) {
+        showToast(message, Toast.LENGTH_SHORT, 0, Gravity.TOP);
+    }
 
-	public static void showToast(int message, int duration, int icon,
-			int gravity, Object... args) {
-		showToast(context().getString(message, args), duration, icon, gravity);
-	}
+    public static void showToast(int message, int duration, int icon,
+                                 int gravity) {
+        showToast(context().getString(message), duration, icon, gravity);
+    }
 
-	public static void showToast(String message, int duration, int icon,
-			int gravity) {
-		if (!TextUtils.isEmpty(message) && !message.equalsIgnoreCase("")) {
-			long time = System.currentTimeMillis();
-			if (!message.equalsIgnoreCase(mLastToast)
-					|| Math.abs(time - mLastToastTime) > 2000) {
-				View view = LayoutInflater.from(context()).inflate(
-						R.layout.view_toast, null);
-				((TextView) view.findViewById(R.id.tv_title)).setText(message);
-				if (icon != 0) {
-					((ImageView) view.findViewById(R.id.icon_iv))
-							.setImageResource(icon);
-					(view.findViewById(R.id.icon_iv))
-							.setVisibility(View.VISIBLE);
-				}
-				Toast toast = new Toast(context());
-				toast.setView(view);
-				if (gravity == Gravity.CENTER) {
-					toast.setGravity(gravity, 0, 0);
-				} else if (gravity == Gravity.TOP) {
-					toast.setGravity(gravity, 0,
-							TDevice.dp2px(BaseApplication.context(), 50));
-				} else {
-					toast.setGravity(gravity, 0, 35);
-				}
+    public static void showToast(int message, int duration, int icon,
+                                 int gravity, Object... args) {
+        showToast(context().getString(message, args), duration, icon, gravity);
+    }
 
-				toast.setDuration(duration);
-				toast.show();
-				mLastToast = message;
-				mLastToastTime = System.currentTimeMillis();
-			}
-		}
-	}
+    public static void showToast(String message, int duration, int icon,
+                                 int gravity) {
+        if (!TextUtils.isEmpty(message) && !message.equalsIgnoreCase("")) {
+            long time = System.currentTimeMillis();
+            if (!message.equalsIgnoreCase(mLastToast)
+                    || Math.abs(time - mLastToastTime) > 2000) {
+                View view = LayoutInflater.from(context()).inflate(
+                        R.layout.view_toast, null);
+                ((TextView) view.findViewById(R.id.tv_title)).setText(message);
+                if (icon != 0) {
+                    ((ImageView) view.findViewById(R.id.icon_iv))
+                            .setImageResource(icon);
+                    (view.findViewById(R.id.icon_iv))
+                            .setVisibility(View.VISIBLE);
+                }
+                Toast toast = new Toast(context());
+                toast.setView(view);
+                if (gravity == Gravity.CENTER) {
+                    toast.setGravity(gravity, 0, 0);
+                } else if (gravity == Gravity.TOP) {
+                    toast.setGravity(gravity, 0,
+                            TDevice.dp2px(BaseApplication.context(), 50));
+                } else {
+                    toast.setGravity(gravity, 0, 35);
+                }
 
-	// 登录，注册，忘记密码
-	public static void showMyToast(int message) {
-		WindowManager wm = (WindowManager) context().getSystemService(Context.WINDOW_SERVICE);
-		// 获得屏幕的宽和高
-		int width = wm.getDefaultDisplay().getWidth();
-		int height = wm.getDefaultDisplay().getHeight();
+                toast.setDuration(duration);
+                toast.show();
+                mLastToast = message;
+                mLastToastTime = System.currentTimeMillis();
+            }
+        }
+    }
 
-		LayoutInflater inflater = (LayoutInflater) context().getSystemService(
-				Context.LAYOUT_INFLATER_SERVICE);
-		// 设置toast的宽和高
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-				(width / 100) * 99, height / 12);
+    // 登录，注册，忘记密码
+    public static void showMyToast(int message) {
+        WindowManager wm = (WindowManager) context().getSystemService(Context.WINDOW_SERVICE);
+        // 获得屏幕的宽和高
+        int width = wm.getDefaultDisplay().getWidth();
+        int height = wm.getDefaultDisplay().getHeight();
 
-		View view = inflater.inflate(R.layout.view_mytoast, null);
-		LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.ll_mytoastlayout);
-		linearLayout.setLayoutParams(layoutParams);
-		ImageView imageView = (ImageView) view.findViewById(R.id.iv_mytoastimg);
-		imageView.setBackgroundResource(R.mipmap.warning_sign);
-		TextView textView = (TextView) view.findViewById(R.id.tv_mytoasttxt);
-		textView.setText(message);
+        LayoutInflater inflater = (LayoutInflater) context().getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
+        // 设置toast的宽和高
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                (width / 100) * 99, height / 12);
 
-		Toast toast = new Toast(context());
-		toast.setDuration(Toast.LENGTH_SHORT);
-		toast.setGravity(Gravity.TOP, 0, 0);
-		toast.setView(view);
-		toast.show();
-	}
+        View view = inflater.inflate(R.layout.view_mytoast, null);
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.ll_mytoastlayout);
+        linearLayout.setLayoutParams(layoutParams);
+        ImageView imageView = (ImageView) view.findViewById(R.id.iv_mytoastimg);
+        imageView.setBackgroundResource(R.mipmap.warning_sign);
+        TextView textView = (TextView) view.findViewById(R.id.tv_mytoasttxt);
+        textView.setText(message);
 
-	public static List<FunctionBean> getFunctionsDatasInit() {
-		List<FunctionBean> list = new ArrayList<>();
-		String nowPackageName = mContext.getPackageName();
+        Toast toast = new Toast(context());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP, 0, 0);
+        toast.setView(view);
+        toast.show();
+    }
 
-		if (nowPackageName.equals(mVenderInfoArray[0][0])) {
-			// list.add(new Function("", 0, -1));// 对应广告页
-			list.add(new FunctionBean(mContext.getString(R.string.message),
-					R.mipmap.ic_dd_message, 0));
-			list.add(new FunctionBean(mContext.getString(R.string.phone),
-					R.mipmap.ic_dd_phone, 1));
-			list.add(new FunctionBean(mContext.getString(R.string.monitor),
-					R.mipmap.ic_dd_monitor, 2));
-			list.add(new FunctionBean(mContext.getString(R.string.applykey),
-					R.mipmap.ic_dd_applykey, 3));
-			list.add(new FunctionBean(mContext.getString(R.string.opendoor),
-					R.mipmap.ic_dd_visitorrecord, 4));
-			list.add(new FunctionBean(mContext.getString(R.string.visitorphoto),
-					R.mipmap.ic_dd_homesafe, 5));
-			list.add(new FunctionBean(mContext.getString(R.string.repair),
-					R.mipmap.ic_dd_repair, 6));
-			list.add(new FunctionBean(mContext
-					.getString(R.string.shapeopendoor),
-					R.mipmap.ic_dd_shapeopendoor, 7));
-		} else if (nowPackageName.equals(mVenderInfoArray[1][0])) {
-			list.add(new FunctionBean(mContext.getString(R.string.message),
-					FUNCTION_MESSAGE, 1));
-			list.add(new FunctionBean(mContext.getString(R.string.phone),
-					FUNCTION_PHONE, 2));
-			list.add(new FunctionBean(mContext.getString(R.string.monitor),
-					FUNCTION_MONITOR, 3));
-			list.add(new FunctionBean(mContext.getString(R.string.applykey),
-					FUNCTION_APPLYKEY, 4));
-			list.add(new FunctionBean(mContext
-					.getString(R.string.opendoor), FUNCTION_OPENDOOR,
-					5));
-			list.add(new FunctionBean(mContext.getString(R.string.visitorphoto),
-					FUNCTION_VISITORPHOTO, 6));
-			list.add(new FunctionBean(mContext
-					.getString(R.string.dd_function_parking),
-					FUNCTION_DD_FUNCTION_PARKING, 7));
-			list.add(new FunctionBean(mContext
-					.getString(R.string.dd_function_finance),
-					FUNCTION_DD_FUNCTION_FINANCE, 8));
-			list.add(new FunctionBean(mContext.getString(R.string.repair),
-					FUNCTION_REPAIR, 9));
-			list.add(new FunctionBean(mContext
-					.getString(R.string.shapeopendoor), FUNCTION_SHAPEOPENDOOR,
-					10));
-		}
+    public static List<FunctionBean> getFunctionsDataInit() {
+        List<FunctionBean> list = new ArrayList<>();
+        String nowPackageName = mContext.getPackageName();
+
+        if (nowPackageName.equals(mVenderInfoArray[0][0])) {
+            // list.add(new Function("", 0, -1));// 对应广告页
+            list.add(new FunctionBean(mContext.getString(R.string.message),
+                    R.mipmap.ic_dd_message, 0));
+            list.add(new FunctionBean(mContext.getString(R.string.phone),
+                    R.mipmap.ic_dd_phone, 1));
+            list.add(new FunctionBean(mContext.getString(R.string.monitor),
+                    R.mipmap.ic_dd_monitor, 2));
+            list.add(new FunctionBean(mContext.getString(R.string.applykey),
+                    R.mipmap.ic_dd_applykey, 3));
+            list.add(new FunctionBean(mContext.getString(R.string.opendoor),
+                    R.mipmap.ic_dd_visitorrecord, 4));
+            list.add(new FunctionBean(mContext.getString(R.string.visitorphoto),
+                    R.mipmap.ic_dd_homesafe, 5));
+            list.add(new FunctionBean(mContext.getString(R.string.repair),
+                    R.mipmap.ic_dd_repair, 6));
+            list.add(new FunctionBean(mContext.getString(R.string.shapeopendoor),
+                    R.mipmap.ic_dd_shapeopendoor, 7));
+        } else if (nowPackageName.equals(mVenderInfoArray[1][0])) {
+            list.add(new FunctionBean(mContext.getString(R.string.message),
+                    FUNCTION_DD_FUNCTION_MESSAGE, 1));
+            list.add(new FunctionBean(mContext.getString(R.string.phone),
+                    FUNCTION_DD_FUNCTION_PHONE, 2));
+            list.add(new FunctionBean(mContext.getString(R.string.monitor),
+                    FUNCTION_DD_FUNCTION_MONITOR, 3));
+            list.add(new FunctionBean(mContext.getString(R.string.applykey),
+                    FUNCTION_DD_FUNCTION_APPLYKEY, 4));
+            list.add(new FunctionBean(mContext.getString(R.string.opendoor),
+                    FUNCTION_DD_FUNCTION_OPENDOOR, 5));
+            list.add(new FunctionBean(mContext.getString(R.string.visitorphoto),
+                    FUNCTION_DD_FUNCTION_VISITORPHOTO, 6));
+            list.add(new FunctionBean(mContext.getString(R.string.dd_function_parking),
+                    FUNCTION_DD_FUNCTION_PARKING, 7));
+            list.add(new FunctionBean(mContext.getString(R.string.my_device),
+                    FUNCTION_DD_FUNCTION_MYDEVICE, 8));
+            list.add(new FunctionBean(mContext.getString(R.string.dd_function_finance),
+                    FUNCTION_DD_FUNCTION_FINANCE, 9));
+            list.add(new FunctionBean(mContext.getString(R.string.repair),
+                    FUNCTION_DD_FUNCTION_REPAIR, 10));
+            list.add(new FunctionBean(mContext.getString(R.string.shapeopendoor),
+                    FUNCTION_DD_FUNCTION_SHAPEOPENDOOR, 11));
+        }
 //		else if (nowPackageName.equals(mVenderInfoArray[2][0])) {
 //
 //		}
-		return list;
-	}
+        return list;
+    }
 }

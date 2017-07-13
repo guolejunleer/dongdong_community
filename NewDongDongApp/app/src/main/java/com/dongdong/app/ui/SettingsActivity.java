@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.dd121.community.R;
 import com.ddclient.configuration.DongConfiguration;
 import com.ddclient.dongsdk.DongSDKProxy;
+import com.ddclient.dongsdk.PushInfo;
 import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.AppManager;
@@ -123,6 +124,7 @@ public class SettingsActivity extends BaseActivity implements
                                 boolean initDongAccount = DongConfiguration.mUserInfo != null;
                                 // 2.清空SDK信息
                                 if (initDongAccount) {
+                                    DongSDKProxy.requestSetPushInfo(PushInfo.PUSHTYPE_DEL);
                                     DongSDKProxy.loginOut();
                                     DongConfiguration.clearAllData();
                                     AppContext.mAppConfig.remove(

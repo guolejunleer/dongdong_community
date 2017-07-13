@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000">
+
+    <LinearLayout
+        android:id="@+id/ll_function"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#a0000000"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_10"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_unlock"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/function_lock"
+                android:text="@string/lock"/>
+
+            <TextView
+                android:id="@+id/tv_take_picture"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/function_takephoto"
+                android:text="@string/picture"/>
+
+            <TextView
+                android:id="@+id/tv_hand_free"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/function_handfree"
+                android:text="@string/handsFree"/>
+
+            <TextView
+                android:id="@+id/tv_spk"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/function_speak"
+                android:text="@string/spk"/>
+
+            <TextView
+                android:id="@+id/tv_video"
+                style="@style/video_view_function_style"
+                android:drawableTop="@drawable/function_video"
+                android:text="@string/video"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_10"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_hangup_portrait"
+                style="@style/video_view_function_style"
+                android:contentDescription="@null"
+                android:src="@mipmap/hangup"/>
+
+            <ImageView
+                android:id="@+id/iv_accept_portrait"
+                style="@style/video_view_function_style"
+                android:contentDescription="@null"
+                android:src="@mipmap/answer"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_screen_add"
+        android:layout_width="@dimen/space_40"
+        android:layout_height="@dimen/space_40"
+        android:layout_above="@id/ll_function"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/space_20"
+        android:src="@mipmap/screen_add"/>
+</RelativeLayout>

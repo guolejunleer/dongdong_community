@@ -5,15 +5,6 @@ import java.util.concurrent.CountDownLatch;
 import android.os.Handler;
 import android.os.Looper;
 
-/**
- * 作�??: 陈涛(1076559197@qq.com)
- * 
- * 时间: 2014�??5�??9�?? 下午12:24:34
- *
- * 版本: V_1.0.0
- *
- * 描述: 解码线程
- */
 final class DecodeThread extends Thread {
 
 	CaptureActivity activity;

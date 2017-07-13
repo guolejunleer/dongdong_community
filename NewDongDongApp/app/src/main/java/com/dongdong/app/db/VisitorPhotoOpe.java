@@ -31,6 +31,22 @@ public class VisitorPhotoOpe {
     }
 
     /**
+     * 通过userId和deviceId
+     *
+     * @param context 上下文
+     * @param userId  用户ID
+     */
+    public static List<VisitorPhotoBean> queryDataByUserIdAndDevId(
+            Context context, int userId, int deviceId) {
+        VisitorPhotoBeanDao dao = DBManager.getDaoSession(context).getVisitorPhotoBeanDao();
+        QueryBuilder<VisitorPhotoBean> qb = dao.queryBuilder();
+        qb.where(VisitorPhotoBeanDao.Properties.UserId.eq(userId));
+        qb.where(VisitorPhotoBeanDao.Properties.DeviceId.eq(deviceId));
+        qb.orderAsc(VisitorPhotoBeanDao.Properties.PhotoTimestamp);
+        return qb.build().list();
+    }
+
+    /**
      * 查询所有数据（按时间倒序）
      *
      * @param context 上下文

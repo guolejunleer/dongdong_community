@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#a0000000"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_unlock"
+                style="@style/video_view_function_style"
+                android:contentDescription="@null"
+                android:src="@drawable/function_lock"/>
+
+            <ImageView
+                android:id="@+id/iv_take_picture"
+                style="@style/video_view_function_style"
+                android:contentDescription="@null"
+                android:src="@drawable/function_takephoto"/>
+
+            <ImageView
+                android:id="@+id/iv_hand_free"
+                style="@style/video_view_function_style"
+                android:contentDescription="@null"
+                android:src="@drawable/function_handfree"/>
+
+            <ImageView
+                android:id="@+id/iv_spk"
+                style="@style/video_view_function_style"
+                android:contentDescription="@null"
+                android:src="@drawable/function_speak"/>
+
+            <ImageView
+                android:id="@+id/iv_video"
+                style="@style/video_view_function_style"
+                android:contentDescription="@null"
+                android:src="@drawable/function_video"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/iv_hangup_landscape"
+                style="@style/video_view_function_style"
+                android:contentDescription="@null"
+                android:src="@mipmap/hangup"/>
+
+            <ImageView
+                android:id="@+id/iv_accept_landscape"
+                style="@style/video_view_function_style"
+                android:contentDescription="@null"
+                android:src="@mipmap/answer"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/iv_screen_reduce"
+                android:layout_width="@dimen/space_40"
+                android:layout_height="@dimen/space_40"
+                android:contentDescription="@null"
+                android:src="@mipmap/screen_reduce"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

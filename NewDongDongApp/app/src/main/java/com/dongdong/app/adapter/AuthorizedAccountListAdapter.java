@@ -11,8 +11,12 @@ import android.widget.TextView;
 
 import com.dd121.community.R;
 import com.ddclient.jnisdk.InfoUser;
+import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.PhoneMessBean;
 import com.dongdong.app.bean.UserInfoBean;
+import com.dongdong.app.util.LogUtils;
+import com.dongdong.app.util.PhoneUtils;
+import com.dongdong.app.util.TDevice;
 
 public class AuthorizedAccountListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
@@ -26,18 +30,6 @@ public class AuthorizedAccountListAdapter extends BaseAdapter {
         mList.clear();
         for (InfoUser infoUser : userList) {
             mList.add(new UserInfoBean(infoUser, null));
-        }
-    }
-
-    public void setConnectUsernameAndPhoneNum(
-            ArrayList<PhoneMessBean> phoneMessObjectList) {
-        for (UserInfoBean userInfo : mList) {
-            for (PhoneMessBean phoneMess : phoneMessObjectList) {
-                if ((userInfo.getUserInfo().userName).equals(phoneMess.getPhoneNum())) {
-                    userInfo.setPhoneMessObject(phoneMess);
-                    break;
-                }
-            }
         }
     }
 
@@ -74,7 +66,7 @@ public class AuthorizedAccountListAdapter extends BaseAdapter {
         }
         UserInfoBean userInfoBean = getData().get(position);
         hold.userName.setText(userInfoBean.getUserInfo().userName);
-        hold.nickname.setText(userInfoBean.getPhoneMessObject().getPhoneName());
+        hold.nickname.setText(PhoneUtils.getContactNameByPhoneNum(userInfoBean.getUserInfo().userName));
         return convertView;
     }
 

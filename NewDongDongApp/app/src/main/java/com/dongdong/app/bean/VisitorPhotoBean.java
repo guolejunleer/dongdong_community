@@ -4,11 +4,13 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.io.Serializable;
+
 /**
  * 访客留影实体类
  */
 @Entity(generateConstructors = false)
-public class VisitorPhotoBean implements Comparable<VisitorPhotoBean> {
+public class VisitorPhotoBean implements Comparable<VisitorPhotoBean>, Serializable {
     @Id(autoincrement = true)
     private Long id;
 

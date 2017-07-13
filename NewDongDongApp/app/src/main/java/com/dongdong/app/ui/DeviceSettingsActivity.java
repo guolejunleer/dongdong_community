@@ -34,10 +34,8 @@ public class DeviceSettingsActivity extends BaseActivity implements
     private TitleBar mTitleBar;
     private TextView mDeviceSer;
     private EditText mEtDeviceName;
-    private TextView mTvDefaultDevice;
     private TextView mTvAuthorizedAccount;
     private TextView mTvDeleteDevice;
-    private RelativeLayout mRlDefaultDevice;
     private Button mBtUpdateDeviceName;
 
     private CommonDialog mUpdateDialog, mDeleteDialog;
@@ -56,8 +54,6 @@ public class DeviceSettingsActivity extends BaseActivity implements
         mDeviceSer = (TextView) findViewById(R.id.tv_device_serial);
         mTvAuthorizedAccount = (TextView) findViewById(R.id.tv_authorizationaccount);
         mEtDeviceName = (EditText) findViewById(R.id.tv_device_name);
-        mRlDefaultDevice = (RelativeLayout) findViewById(R.id.rl_default_device);
-        mTvDefaultDevice = (TextView) findViewById(R.id.tv_defaultText);
         mBtUpdateDeviceName = (Button) findViewById(R.id.bt_update);
         mTvDeleteDevice = (TextView) findViewById(R.id.tv_delete_device);
     }
@@ -77,23 +73,11 @@ public class DeviceSettingsActivity extends BaseActivity implements
         mEtDeviceName.setText(mDeviceInfo.deviceName);
         mTitleBar.setTitleBarContent(mDeviceInfo.deviceName);
 
-        int defaultDeviceId = (int) AppContext.mAppConfig.getConfigValue(
-                AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                DongConfiguration.mUserInfo.userID + "", 0);
-        if (defaultDeviceId == mDeviceInfo.dwDeviceID) {
-            mTvDefaultDevice.setText(DeviceSettingsActivity.this.getResources().
-                    getString(R.string.yes));
-        } else {
-            mTvDefaultDevice.setText(DeviceSettingsActivity.this.getResources().
-                    getString(R.string.no));
-        }
         mBtUpdateDeviceName.setOnClickListener(this);
         mTvDeleteDevice.setOnClickListener(this);
-        mRlDefaultDevice.setOnClickListener(this);
         mTvAuthorizedAccount.setOnClickListener(this);
 
-        LogUtils.i("DeviceSettingsActivity.clazz--->>>initData mDeviceInfo:"
-                + mDeviceInfo + ",defaultDeviceId:" + defaultDeviceId);
+        LogUtils.i("DeviceSettingsActivity.clazz--->>>initData mDeviceInfo:" + mDeviceInfo);
     }
 
     @Override
@@ -181,25 +165,6 @@ public class DeviceSettingsActivity extends BaseActivity implements
                         });
                 mUpdateDialog.setNegativeButton(getString(R.string.cancel), null);
                 mUpdateDialog.show();
-                break;
-            case R.id.rl_default_device:
-                // 可以优化用户体验,提示用户是否确认
-                int deviceId = mDeviceInfo.dwDeviceID;
-                int localDeviceId = (int) AppContext.mAppConfig
-                        .getConfigValue(AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                                DongConfiguration.mUserInfo.userID + "", 0);
-                if (localDeviceId == deviceId) {
-                    mTvDefaultDevice.setText(DeviceSettingsActivity.this
-                            .getResources().getString(R.string.no));
-                    deviceId = 0;
-                } else {
-                    mTvDefaultDevice.setText(DeviceSettingsActivity.this
-                            .getResources().getString(R.string.yes));
-                    DongConfiguration.mDeviceInfo = mDeviceInfo;
-                }
-                AppContext.mAppConfig.setConfigValue(
-                        AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
-                        DongConfiguration.mUserInfo.userID + "", deviceId);
                 break;
             case R.id.tv_authorizationaccount:
                 if (TDevice.getNetworkType() == 0) {

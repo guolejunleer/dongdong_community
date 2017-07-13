@@ -8,8 +8,8 @@ android {
         applicationId "com.dd121.community"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.1.1.1"
+        versionCode 8
+        versionName "1.1.1.7"
     }
     buildTypes {
         release {
@@ -56,6 +56,12 @@ dependencies {
     compile files('libs/fastjson-1.2.8.jar')
     compile files('libs/pushservice-5.1.0.48.jar')
     compile files('libs/xgcameralib.jar')
+    compile files('libs/DongDongSDK-1.1.1.0.jar')
+    compile files('libs/recyclerview-v7-22.2.1-sources.jar')
+    compile files('libs/GetuiSDK2.9.5.0.jar')
+    compile files('libs/MiPush_SDK_Client_3_4_3.jar')
+    compile files('libs/jpush-android_v3.0.1.jar')
+    compile files('libs/jcore-android_v1.1.0.jar')
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:support-v4:22.2.1'
@@ -63,18 +69,13 @@ dependencies {
     compile 'org.greenrobot:greendao:3.1.0'
     compile 'com.android.support:recyclerview-v7:22.2.1'
     compile 'com.android.support:cardview-v7:22.2.1'
-    compile files('libs/DongDongSDK-1.1.1.0.jar')
-    compile files('libs/recyclerview-v7-22.2.1-sources.jar')
-    compile files('libs/GetuiSDK2.9.5.0.jar')
-    compile files('libs/MiPush_SDK_Client_3_1_2.jar')
-    compile files('libs/jpush-android_v3.0.1.jar')
-    compile files('libs/jcore-android_v1.1.0.jar')
     compile 'com.meizu.flyme.internet:push-internal-publish:3.3.170110'
     compile(name: 'HMS-SDK-2.4.0.300', ext: 'aar')
 }
 
 greendao {
-    schemaVersion 1
+    //数据库升级，要设置schemaVersion+1和MySQLiteOpenHelper中的dao.class添加
+    schemaVersion 2
     targetGenDir 'src/main/java'
     daoPackage 'com.dongdong.app.db.gen'
 }

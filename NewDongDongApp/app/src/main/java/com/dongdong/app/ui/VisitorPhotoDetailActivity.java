@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.dd121.community.R;
 import com.dongdong.app.base.BaseActivity;
+import com.dongdong.app.bean.VisitorPhotoBean;
+import com.dongdong.app.cache.CacheHelper;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
@@ -37,36 +39,34 @@ public class VisitorPhotoDetailActivity extends BaseActivity implements
 
     @Override
     public void initData() {
-        Bitmap photo = this.getIntent().getParcelableExtra(VisitorPhotoActivity.INTENT_PHOTO_KEY);
-        String deviceName = this.getIntent().getStringExtra(VisitorPhotoActivity.INTENT_DEVICE_NAME_KEY);
-        String roomNum = this.getIntent().getStringExtra(VisitorPhotoActivity.INTENT_ROOM_NUMBER_KEY);
-        String photoTimestamp = this.getIntent().getStringExtra(VisitorPhotoActivity.INTENT_TIMESTAMP_KEY);
-        String type = this.getIntent().getStringExtra(VisitorPhotoActivity.INTENT_TYPE_KEY);
-
-        if (photo != null) {
+        VisitorPhotoBean visitorPhotoBean = (VisitorPhotoBean) this.getIntent().getSerializableExtra
+                (VisitorPhotoActivity.INTENT_VISITOR_PHOTO_BEAN);
+        if (!TextUtils.isEmpty(visitorPhotoBean.getPhotoUrl())) {
+            Bitmap photo = new CacheHelper().getBitmapFromMemoryCache(
+                    visitorPhotoBean.getPhotoUrl(), VisitorPhotoActivity.mVisitorPhotoAdapter.getMemoryCache());
             mIvVisitorPhoto.setImageBitmap(photo);
         }
 
-        if (!TextUtils.isEmpty(deviceName)) {
-            mTvDeviceName.setText(String.format("%s", getString(R.string.device) + deviceName));
+        if (!TextUtils.isEmpty(visitorPhotoBean.getDeviceName())) {
+            mTvDeviceName.setText(String.format("%s", getString(R.string.device) + visitorPhotoBean.getDeviceName()));
         } else {
             mTvDeviceName.setText(getString(R.string.unKnow));
         }
 
-        if (!TextUtils.isEmpty(roomNum)) {
-            mTvRoomNum.setText(String.format("%s", getString(R.string.room_number) + roomNum));
+        if (!TextUtils.isEmpty(visitorPhotoBean.getRoomValue())) {
+            mTvRoomNum.setText(String.format("%s", getString(R.string.room_number) + visitorPhotoBean.getRoomValue()));
         } else {
             mTvRoomNum.setText(getString(R.string.unKnow));
         }
 
-        if (!TextUtils.isEmpty(photoTimestamp)) {
-            mTvPhotoTimestamp.setText(String.format("%s", getString(R.string.time) + photoTimestamp));
+        if (!TextUtils.isEmpty(visitorPhotoBean.getPhotoTimestamp())) {
+            mTvPhotoTimestamp.setText(String.format("%s", getString(R.string.time) + visitorPhotoBean.getPhotoTimestamp()));
         } else {
             mTvPhotoTimestamp.setText(getString(R.string.unKnow));
         }
 
-        if (!TextUtils.isEmpty(type)) {
-            mTvType.setText(String.format("%s", getString(R.string.type) + type));
+        if (!TextUtils.isEmpty(visitorPhotoBean.getType())) {
+            mTvType.setText(String.format("%s", getString(R.string.type) + visitorPhotoBean.getType()));
         } else {
             mTvType.setText(getString(R.string.unKnow));
         }

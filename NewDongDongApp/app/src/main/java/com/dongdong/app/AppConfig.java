@@ -16,6 +16,7 @@ public class AppConfig {
     public static final String DONG_CONFIG_SHARE_PREF_NAME = "dd_configs";
 
     // all sharedPreferences key name
+    public static final String KEY_VERSION_CODE="KEY_VERSION_CODE";
     public static final String KEY_FRITST_START = "KEY_FRIST_START";
     public static final String KEY_CONF_APP_UNIQUEID = "KEY_APP_UNIQUEID";
     public static final String KEY_DOUBLE_CLICK_EXIT = "KEY_DOUBLE_CLICK_EXIT";
@@ -47,13 +48,18 @@ public class AppConfig {
     public static final int MAX_VISITOR_PHOTO_COUNT = 40;
     public static final int MAX_BULLETIN_COUNT = 100;
 
-    //正式服务器
-    public static final String BASE_URL = "http://wuye.dd121.com/dd/wuye_api/2.0/";
-    // 测试服务器
-    //public static final String BASE_URL = "http://192.168.68.55/web/wuye_api/apiserver/2.0/";
-    //新服务器
-    //public static final String BASE_URL = "http://wuye.dd121.com/dd/wuye_api_d/2.0/";
+    //公用JSON字符串(物业API交互)
+    public static final String JSON_RESULT_CODE="result_code";
+    public static final String JSON_RESPONSE_PARAMS="response_params";
+    public static final String JSON_CORRECT_RESULT_CODE="200";
+    public static final String JSON_ERROR_RESULT_CODE="201";
+    public static final String JSON_EMPTY_DATA="[]";
 
+    //访问API地址
+//    public static final String BASE_URL = "http://wuye.dd121.com/dd/wuye_api_d/2.0/";
+    public static final String BASE_URL = "http://wuye.dd121.com/dd/wuye_api/2.0/";
+    // 55测试服务器
+    //public static final String BASE_URL = "http://192.168.68.55/web/wuye_api/apiserver/2.0/";
     private Context mContext;
     private static AppConfig mAppConfig;
 

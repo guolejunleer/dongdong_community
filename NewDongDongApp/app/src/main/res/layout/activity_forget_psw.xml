@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <com.dongdong.app.widget.TitleBar
         android:id="@+id/tb_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,19 +23,25 @@
             android:drawableLeft="@mipmap/phonenumber"
             android:drawablePadding="@dimen/space_10"
             android:hint="@string/pleaseInputPhone"
-            android:maxLength="11"
             android:inputType="numberSigned"
+            android:maxLength="11"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16" />
+            android:textSize="@dimen/text_size_16"
+            android:visibility="gone"/>
 
-        <View style="@style/h_line" />
+        <View
+            android:id="@+id/h1"
+            style="@style/h_line"
+            android:visibility="gone"/>
 
         <LinearLayout
+            android:id="@+id/ll_smush"
             android:layout_width="match_parent"
             android:layout_height="@dimen/space_0"
             android:layout_marginTop="@dimen/space_20"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/et_smush"
@@ -46,10 +52,10 @@
                 android:drawableLeft="@mipmap/smush"
                 android:drawablePadding="@dimen/space_10"
                 android:hint="@string/pleaseInputVerificationCode"
-                android:maxLength="6"
                 android:inputType="numberSigned"
+                android:maxLength="6"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_16"/>
 
             <Button
                 android:id="@+id/bt_smush"
@@ -60,10 +66,33 @@
                 android:padding="@dimen/space_4"
                 android:text="@string/get_verification_code"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_14" />
+                android:textSize="@dimen/text_size_14"/>
         </LinearLayout>
 
-        <View style="@style/h_line" />
+        <View
+            android:id="@+id/h2"
+            style="@style/h_line"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/et_old_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_0"
+            android:layout_marginTop="@dimen/space_20"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableLeft="@mipmap/password"
+            android:drawablePadding="@dimen/space_10"
+            android:hint="@string/inputOldPassword"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/h3"
+            style="@style/h_line"
+            android:visibility="gone"/>
 
         <EditText
             android:id="@+id/et_pwd"
@@ -77,9 +106,9 @@
             android:hint="@string/inputNewPassword"
             android:inputType="textPassword"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16" />
+            android:textSize="@dimen/text_size_16"/>
 
-        <View style="@style/h_line" />
+        <View style="@style/h_line"/>
 
         <EditText
             android:id="@+id/et_again_pwd"
@@ -93,7 +122,7 @@
             android:hint="@string/confirmPassword"
             android:inputType="textPassword"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16" />
+            android:textSize="@dimen/text_size_16"/>
 
         <Button
             android:id="@+id/bt_ok"
@@ -103,7 +132,7 @@
             android:background="@drawable/btn_background"
             android:text="@string/sure"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_20" />
+            android:textSize="@dimen/text_size_20"/>
     </LinearLayout>
 
 </RelativeLayout>

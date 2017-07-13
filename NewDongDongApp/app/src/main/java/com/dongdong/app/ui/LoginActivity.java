@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.dd121.community.R;
 import com.ddclient.configuration.DongConfiguration;
 import com.ddclient.dongsdk.AbstractDongCallbackProxy;
+import com.ddclient.dongsdk.DongSDK;
 import com.ddclient.dongsdk.DongSDKProxy;
 import com.ddclient.dongsdk.PushInfo;
 import com.ddclient.jnisdk.InfoUser;
@@ -44,6 +45,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.dongdong.app.fragment.MyPagerFragment.INTENT_IS_FORGET_KEY;
 
 public class LoginActivity extends BaseActivity implements
         OnClickListener, AdapterView.OnItemClickListener {
@@ -101,7 +104,7 @@ public class LoginActivity extends BaseActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        DongSDKProxy.unRegisterAccountCallback(mDongAccountProxy);
+//        DongSDKProxy.unRegisterAccountCallback(mDongAccountProxy);
     }
 
     @Override
@@ -121,7 +124,7 @@ public class LoginActivity extends BaseActivity implements
                 finish();
                 break;
             case R.id.tv_forget_pwd:
-                startActivity(new Intent(this, ForgetPwdActivity.class));
+                startActivity(new Intent(this, ForgetPwdActivity.class).putExtra(INTENT_IS_FORGET_KEY, true));
                 break;
             case R.id.tv_register:
                 startActivity(new Intent(this, RegisterActivity.class));
@@ -205,7 +208,7 @@ public class LoginActivity extends BaseActivity implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        LogUtils.i("log6", "LoginActivity.clazz-->>onItemClick position:" + position);
+        LogUtils.i("LoginActivity.clazz-->>onItemClick position:" + position);
         UserBean userBean = (UserBean) parent.getAdapter().getItem(position);
         mEtName.setText(userBean.getUserName());
         mEtPwd.setText(userBean.getPassWord());
@@ -231,7 +234,6 @@ public class LoginActivity extends BaseActivity implements
             mPopupWindow.dismiss();
     }
 
-
     private class MyTimerTask extends TimerTask implements TipDialogManager.OnTipDialogButtonClick {
 
         boolean shouldStop;
@@ -256,7 +258,7 @@ public class LoginActivity extends BaseActivity implements
 
         @Override
         public void onPositiveButtonClick() {
-            //DongSDK.reInitDongSDK();
+//            DongSDK.reInitDongSDK();
             mIvLogin.performClick();
         }
 
@@ -267,12 +269,6 @@ public class LoginActivity extends BaseActivity implements
     }
 
     private class LoginActivityDongAccountProxy extends AbstractDongCallbackProxy.DongAccountCallbackImp {
-
-        @Override
-        public int onConnect() {
-            LogUtils.i("LoginActivity.clazz--->>>onConnect........");
-            return super.onConnect();
-        }
 
         @Override
         public int onAuthenticate(InfoUser tInfo) {
@@ -297,6 +293,10 @@ public class LoginActivity extends BaseActivity implements
                     } else {
                         //原来数据库就有这个账号
                         isOldUser = true;
+                        //解决了重置密码后第二次登陆时没有保存密码
+                        if (TextUtils.isEmpty(temUserBean.getPassWord())) {
+                            temUserBean.setPassWord(enUserPwd);
+                        }
                         temUserBean.setIndex(UserOpe.FIRST_INDEX);
                     }
                     UserOpe.updateDataByUserBean(BaseApplication.context(), temUserBean);
@@ -313,7 +313,7 @@ public class LoginActivity extends BaseActivity implements
             PushManager.getInstance().turnOnPush(LoginActivity.this);
             com.baidu.android.pushservice.PushManager.resumeWork(LoginActivity.this);
             DongSDKProxy.requestSetPushInfo(PushInfo.PUSHTYPE_FORCE_ADD);
-//            DongSDKProxy.requestGetDeviceListFromPlatform();
+            DongSDKProxy.requestGetDeviceListFromPlatform();
             mDialog.dismiss();
             // 保存用户登录信息
             AppContext.mAppConfig.setConfigValue(

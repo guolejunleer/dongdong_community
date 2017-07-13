@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <com.dongdong.app.widget.TitleBar
         android:id="@+id/tb_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,9 +20,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/my_information_head" />
+            <include layout="@layout/my_information_head"/>
 
-            <View style="@style/h_line" />
+            <View style="@style/h_line"/>
 
             <LinearLayout
                 android:id="@+id/ll_myfamily"
@@ -31,14 +31,14 @@
                 <ImageView
                     style="@style/option_item_img"
                     android:background="@mipmap/myfamily"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"/>
 
                 <TextView
                     style="@style/option_item_text"
-                    android:text="@string/myfamily" />
+                    android:text="@string/myfamily"/>
             </LinearLayout>
 
-            <View style="@style/h_line" />
+            <View style="@style/h_line"/>
 
             <LinearLayout
                 android:id="@+id/ll_myhouse"
@@ -47,14 +47,14 @@
                 <ImageView
                     style="@style/option_item_img"
                     android:background="@mipmap/myhome"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"/>
 
                 <TextView
                     style="@style/option_item_text"
-                    android:text="@string/myhouse" />
+                    android:text="@string/myhouse"/>
             </LinearLayout>
 
-            <View style="@style/h_line" />
+            <View style="@style/h_line"/>
 
             <LinearLayout
                 android:id="@+id/ll_myvillage"
@@ -63,30 +63,30 @@
                 <ImageView
                     style="@style/option_item_img"
                     android:background="@mipmap/myvillage"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"/>
 
                 <TextView
                     style="@style/option_item_text"
-                    android:text="@string/myvillage" />
+                    android:text="@string/myvillage"/>
             </LinearLayout>
 
-            <View style="@style/h_line" />
+            <View style="@style/h_line"/>
 
             <LinearLayout
-                android:id="@+id/ll_mycaller"
+                android:id="@+id/ll_reset_password"
                 style="@style/option_item_rl">
 
                 <ImageView
                     style="@style/option_item_img"
-                    android:background="@mipmap/myvisitors"
-                    android:contentDescription="@null" />
+                    android:background="@mipmap/password"
+                    android:contentDescription="@null"/>
 
                 <TextView
                     style="@style/option_item_text"
-                    android:text="@string/mycaller" />
+                    android:text="@string/reset_password"/>
             </LinearLayout>
 
-            <View style="@style/h_line" />
+            <View style="@style/h_line"/>
 
             <LinearLayout
                 android:id="@+id/ll_mypicture"
@@ -95,14 +95,14 @@
                 <ImageView
                     style="@style/option_item_img"
                     android:background="@mipmap/myalbum"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"/>
 
                 <TextView
                     style="@style/option_item_text"
-                    android:text="@string/mypicture" />
+                    android:text="@string/mypicture"/>
             </LinearLayout>
 
-            <View style="@style/h_line" />
+            <View style="@style/h_line"/>
 
             <LinearLayout
                 android:id="@+id/ll_settings"
@@ -111,14 +111,14 @@
                 <ImageView
                     style="@style/option_item_img"
                     android:background="@mipmap/settings"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"/>
 
                 <TextView
                     style="@style/option_item_text"
-                    android:text="@string/settings" />
+                    android:text="@string/settings"/>
             </LinearLayout>
 
-            <View style="@style/h_line" />
+            <View style="@style/h_line"/>
         </LinearLayout>
     </ScrollView>
 

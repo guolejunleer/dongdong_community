@@ -4,25 +4,27 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.io.Serializable;
+
 /**
  * 开门记录实体类
  */
 @Entity(generateConstructors = false)
-public class OpenDoorRecordBean implements Comparable<OpenDoorRecordBean>{
+public class OpenDoorRecordBean implements Comparable<OpenDoorRecordBean>, Serializable {
     @Id(autoincrement = true)
     private Long id;
 
-    private String deviceId;
-    private String roomId;
-    private String userId;
-    private String comNumber;
-    private String type;
-    private String timestamp;
-    private String deviceName;
-    private String roomNumber;
-    private String memberName;
-    private String mobilePhone;
-    private String idNumber;
+    private String deviceId;   //设备ID
+    private String roomId; //房号ID
+    private String userId; //用户ID
+    private String comNumber; // 卡号/电话号
+    private String type;  //开门类型
+    private String timestamp; //开门时间
+    private String deviceName; //设备名称
+    private String roomNumber; //房号
+    private String memberName; //用户名
+    private String mobilePhone; // 手机号
+    private String idNumber; //身份证号
 
     public OpenDoorRecordBean() {
 
@@ -126,7 +128,7 @@ public class OpenDoorRecordBean implements Comparable<OpenDoorRecordBean>{
 
     @Override
     public int compareTo(OpenDoorRecordBean o) {
-        if(o != null){
+        if (o != null) {
             return this.getTimestamp().compareTo(o.getTimestamp());
         }
         return 0;
@@ -140,8 +142,9 @@ public class OpenDoorRecordBean implements Comparable<OpenDoorRecordBean>{
 
     @Override
     public String toString() {
-        return "(deviceId:" + deviceId + ",roomId:" + roomId + ",userId:" + userId + ",comNumber:" + comNumber
-                + ",type:" + type + ",timestamp:" + timestamp + ",deviceName:" + deviceName + ",roomNumber:" +
-                roomNumber + ",memberName:" + memberName + ",mobilePhone:" + mobilePhone + ",idNumber" + idNumber+")";
+        return "(deviceId:" + deviceId + ",roomId:" + roomId + ",userId:" + userId +
+                ",comNumber:" + comNumber + ",type:" + type + ",timestamp:" + timestamp +
+                ",deviceName:" + deviceName + ",roomNumber:" + roomNumber + ",memberName:" +
+                memberName + ",mobilePhone:" + mobilePhone + ",idNumber" + idNumber + ")";
     }
 }

@@ -10,6 +10,7 @@ import com.dd121.community.R;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.util.LogUtils;
+import com.dongdong.app.util.SystemUtils;
 import com.dongdong.app.util.TDevice;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
@@ -73,6 +74,7 @@ public class AboutActivity extends BaseActivity implements OnTitleBarClickListen
     @Override
     public void initData() {
         setCurrentVersion();
+        LogUtils.i("AboutActivity.clazz->initData()->systemModel:" + SystemUtils.getSystemModel());
     }
 
     @Override

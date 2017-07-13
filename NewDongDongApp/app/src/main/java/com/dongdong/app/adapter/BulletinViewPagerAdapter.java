@@ -99,10 +99,9 @@ public class BulletinViewPagerAdapter extends PagerAdapter implements OnPageChan
         View view = LayoutInflater.from(mContext).inflate(R.layout.bulletin_view_pager_item, null);
         TextView tvViewTitle = (TextView) view.findViewById(R.id.tv_view_title);
         TextView tvViewTime = (TextView) view.findViewById(R.id.tv_view_time);
-        LogUtils.i("BulletinViewPagerAdapter.clazz-->>>instantiateItem position:"
-                + position + ",mBulletinBeanList.size():" + mBulletinBeanList.size());
+
         if (mBulletinBeanList.size() == 0) {
-            tvViewTitle.setText("暂无物业公告");
+            tvViewTitle.setText(R.string.no_bulletins);
             tvViewTime.setVisibility(View.GONE);
             mViewPager.setIsRefresh(false);
             mViewPager.setIsScroll(false);

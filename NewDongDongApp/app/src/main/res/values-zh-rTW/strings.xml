@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">雲社區</string>
+    <string name="linkman">社區門禁</string>
+    <string name="opendoorrecorddetail">開門記錄詳情</string>
+    <string name="visitorphotodetail">訪客留影詳情</string>
+    <string name="App">App</string>
+    <string name="accesscards">刷卡</string>
+
+    <string name="WIFI">WIFI</string>
+    <string name="TemporaryPassword">臨時密碼</string>
+    <string name="Householdpassword">住戶密碼</string>
+    <string name="bluetooth">藍牙</string>
+    <string name="phonecall">電話</string>
+
+    <string name="versionupdate">版本更新</string>
+    <string name="functionintroduction">功能介紹</string>
+    <string name="help">說明</string>
+    <string name="message">訊息公告</string>
+    <string name="phone">常用電話</string>
+
+    <string name="monitor">門禁影像</string>
+    <string name="applykey">申請鑰匙</string>
+    <string name="opendoor">開門記錄</string>
+    <string name="visitorphoto">訪客留影</string>
+    <string name="dd_function_parking">停車場</string>
+
+    <string name="dd_function_finance">金融理財</string>
+    <string name="repair">報修</string>
+    <string name="shapeopendoor">搖一搖開門</string>
+    <string name="dd_function_more"></string>
+    <string name="pushservice">推送通知</string>
+
+    <string name="nightmode">夜間模式</string>
+    <string name="attendedmode">連接方式（WIFI/藍牙）</string>
+    <string name="openvideo_in_data_network">資料網路下不啟用影像</string>
+    <string name="about">關於軟體</string>
+    <string name="isexit">確定要退出嗎?</string>
+
+    <string name="exit">退出</string>
+    <string name="cancel">取消</string>
+    <string name="callphone">你確定撥打此電話?</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="copy_success">複製成功</string>
+
+    <string name="tip_double_click_exit">再次點擊退出</string>
+    <string name="main_tab_name_home">首頁</string>
+    <string name="main_tab_name_my">我的</string>
+    <string name="building">暫未開通</string>
+    <string name="back">返回</string>
+
+    <string name="title_info">主題資訊</string>
+    <string name="myfamily">我的家庭成員</string>
+    <string name="myhouse">我的房屋</string>
+    <string name="myvillage">我的社區</string>
+    <string name="reset_password">重置密碼</string>
+
+    <string name="mypicture">我的相冊</string>
+    <string name="newversion">新版本檢查</string>
+    <string name="defaults">預設</string>
+    <string name="settings">設定</string>
+    <string name="loginout">退出目前帳號</string>
+    <string name="cleansession">清除緩存</string>
+
+    <string name="autosettings">智能設定</string>
+    <string name="othersettings">其它設定</string>
+    <string name="loginup">登入</string>
+
+    <string name="regeist">註冊新帳號</string>
+    <string name="refrush">重新整理</string>
+    <string name="regeistAcount">註冊</string>
+    <string name="pleaseInputUsernmae">請輸入用戶名</string>
+    <string name="pleaseInputPassword">請輸入密碼</string>
+
+    <string name="confirmPassword">請確認密碼</string>
+    <string name="pleaseInputPhone">請輸入手機號</string>
+    <string name="pleaseInputVerificationCode">請輸入驗證碼</string>
+    <string name="get_verification_code">驗證碼</string>
+    <string name="sure">確定</string>
+
+    <string name="user_name_can_not_empty">輸入手機號為空</string>
+    <string name="verification_code_can_not_empty">驗證碼不能為空</string>
+    <string name="verification_code_mistake">驗證碼不正確!</string>
+    <string name="user_pwd_can_not_empty">密碼不能為空</string>
+    <string name="old_pwd_can_not_empty">舊密碼不能為空</string>
+    <string name="old_pwd_mistake">舊密碼不正確!</string>
+    <string name="phone_not_registered">該手機號未註冊!</string>
+
+    <string name="phone_registered">該手機號已經被註冊!</string>
+    <string name="pwd_not_same">2次密碼輸入不一致!</string>
+    <string name="old_new_same">新密碼與舊密碼一致</string>
+    <string name="confrim_pwd_can_not_empty">確認密碼不能為空!</string>
+    <string name="get_verification_coding">正在取得驗證碼</string>
+    <string name="pwd_failed">密碼設定失敗!</string>
+
+    <string name="tip">提示</string>
+    <string name="regeist_success">註冊成功!</string>
+    <string name="loginging">立即登入</string>
+    <string name="verifaction_failed">認證失敗!</string>
+    <string name="reset_pwd">重置密碼</string>
+
+    <string name="inputNewPassword">請輸入新密碼</string>
+    <string name="inputOldPassword">請輸入舊密碼</string>
+    <string name="update_pwd_succ">修改密碼成功</string>
+    <string name="update_pwd_failed">修改密碼失敗</string>
+    <string name="login_wait">登入中•••</string>
+    <string name="list">列表</string>
+
+    <string name="handsFree">免持</string>
+    <string name="spk">對講</string>
+    <string name="picture">拍照</string>
+    <string name="lock">開鎖</string>
+    <string name="video">影像</string>
+    <string name="reboot">重啟</string>
+
+    <string name="stop">掛斷</string>
+    <string name="reject">拒絕</string>
+    <string name="waiting_connection_30">緩衝30%</string>
+    <string name="waiting_certification_60">緩衝60%</string>
+    <string name="waiting_media_90">緩衝90%</string>
+
+    <string name="errorCode">錯誤碼:</string>
+    <string name="mistake">發生錯誤</string>
+    <string name="video1">流暢</string>
+    <string name="video2">標清</string>
+    <string name="video3">高清</string>
+
+    <string name="warn">提示</string>
+    <string name="no_permissions">您沒有許可權!</string>
+    <string name="device_offline">設備離線</string>
+    <string name="pleaseLogin">請先登入</string>
+    <string name="captureSuccess">拍照已保存到目錄</string>
+
+    <string name="islogin">該帳號已登入</string>
+    <string name="handup">對方已掛斷</string>
+    <string name="device_busy">設備占線中!(%1$ds)後關閉</string>
+    <string name="vistor">有新訪客,是否接聽?</string>
+    <string name="accept">接聽</string>
+
+    <string name="Ignore">忽略</string>
+    <string name="Notice">通知</string>
+    <string name="my_device">我的設備</string>
+    <string name="auth_device">授權設備</string>
+
+    <string name="warning">警告!</string>
+    <string name="login_other_plach_warning">分鐘您的帳號在另外一台設備登入。如非本人操作，可能是密碼洩露!</string>
+    <string name="login">登入/註冊</string>
+    <string name="relogin">重新登入</string>
+
+    <string name="loginSucc">登入成功</string>
+    <string name="my_information_unlogin_tips">未登入</string>
+    <string name="myuname">帳號</string>
+    <string name="mypsw">密碼</string>
+    <string name="server_connection_failed">伺服器連接失敗!</string>
+
+    <string name="device_connection_failed">設備連接失敗!</string>
+    <string name="server_disconnected">伺服器連接斷開!</string>
+    <string name="server_login_failed">伺服器登入失敗!</string>
+    <string name="invalid_user_name">無效的用戶名!</string>
+    <string name="incorrect_pwd">密碼錯誤!</string>
+
+    <string name="device_disconnected">設備連接斷開!</string>
+    <string name="server_busy">伺服器繁忙!</string>
+    <string name="database_server_error">資料庫伺服器錯誤!</string>
+    <string name="Systemerror">系統錯誤!</string>
+    <string name="login_overtime">登入超時,是否重新登入?</string>
+
+    <string name="no_network">無法連接到網路，請檢查網路設定</string>
+    <string name="network_settings">網路設定</string>
+    <string name="switchWIFI">WLAN</string>
+    <string name="tip_choose_net">目前處於3G/4G網路,觀看影像會產生大量流量費,建議使用WLAN網路!</string>
+    <string name="continues">繼續</string>
+
+    <string name="no_camera">已經沒有下一個設備了</string>
+    <string name="first_camera">現在是第一個設備</string>
+    <string name="deviceName">設備名稱</string>
+    <string name="update">修改</string>
+    <string name="deviceMan">設備授權帳號管理</string>
+
+    <string name="def">預設操作設備</string>
+    <string name="delete_device">刪除設備</string>
+    <string name="device_serial">序號</string>
+    <string name="wait">請稍後•••</string>
+    <string name="suc">成功!</string>
+
+    <string name="fail">失敗!</string>
+    <string name="deldeteDevice">確定要刪除該設備嗎?</string>
+    <string name="authorizationSer">請輸入需要授權的帳號</string>
+    <string name="authorization">授權</string>
+    <string name="empty_tip">設備名或序號不能為空!</string>
+
+    <string name="yesOrNo">已經被授權!</string>
+    <string name="deleteAuthorization">是否刪除該授權?</string>
+    <string name="openlock">門開了</string>
+    <string name="add">新增</string>
+    <string name="deviceSer">設備序號</string>
+
+    <string name="wifiSearch">局域網搜索</string>
+    <string name="qrCode">二維碼</string>
+    <string name="addDevice">新增設備</string>
+    <string name="serial_invalidate">無效的設備!</string>
+    <string name="device_added">新增設備成功!</string>
+    <string name="device_already_added">該設備已經被(%s)新增!</string>
+    <string name="serial_failed">新增設備失敗!</string>
+
+    <string name="scan_tips">請將二維碼圖片對準掃描框即可自動掃描</string>
+    <string name="not_open_service">該社區暫未開通此項服務</string>
+    <string name="OPENFILE_ERROR">開啟檔案夾失敗!請檢查SD卡!</string>(
+    <string name="rootDir">返回根目錄</string>
+    <string name="upperDir">返回上層</string>
+
+    <string name="wifi">目前wifi是</string>
+    <string name="recordSetting">錄影設定</string>
+    <string name="researtDivece">重啟設備</string>
+    <string name="deviceMessage">設備資訊</string>
+    <string name="alreadyconn">已經連接</string>
+
+    <string name="connectSucc">連接成功!</string>
+    <string name="ConFailed">連接失敗!</string>
+    <string name="apName">熱點名稱</string>
+    <string name="newPassword">新密碼</string>
+    <string name="againInput">再次輸入</string>
+
+    <string name="spk_can_not_close">通話中無法關閉對講!</string>
+    <string name="video_get_data_error">影像取得失敗,你可以繼續左右滑動選擇觀看其它設備.</string>
+    <string name="video_stop_phone_comming">門禁影像已掛斷</string>
+    <string name="video_play_error">播放錯誤:</string>
+    <string name="add_devcie_error">新增設備錯誤:</string>
+
+    <string name="register_error">註冊帳號錯誤:</string>
+    <string name="no_device">暫無設備</string>
+    <string name="video_connect_quality_error">目前影像連接品質不佳,(%1$ds)後關閉此介面</string>
+    <string name="audio_busy">音訊已經被其它用戶佔用</string>
+    <string name="please_talking">請通話</string>
+
+    <string name="tip_delete_user">你確定刪除帳號:%s?</string>
+    <string name="tip_push_time">在%s時,有人呼叫過您</string>
+    <string name="forget_pwd">忘記密碼</string>
+    <string name="i_know">知道了</string>
+    <string name="no_message">暫無訊息</string>
+
+    <string name="no_phone">暫無常用電話</string>
+    <string name="unKnow">未知</string>
+    <string name="cloud_call_time_out">呼叫超時</string>
+    <string name="app_answer">App接聽</string>
+    <string name="phone_answer">電話接聽</string>
+
+    <string name="app_unlock">App開鎖</string>
+    <string name="phone_unlock">電話開鎖</string>
+    <string name="card_unlock">刷卡開鎖</string>
+    <string name="password_unlock">密碼開鎖</string>
+    <string name="loading">載入中•••</string>
+
+    <string name="get_data_failed">取得資料失敗</string>
+    <string name="is_the_latest_data">已是最新資料!</string>
+    <string name="device">設&#160;&#160;備&#160;&#160;&#160;&#160;</string>
+    <string name="room_number">房&#160;&#160;號&#160;&#160;&#160;&#160;</string>
+    <string name="time">時&#160;&#160;間&#160;&#160;&#160;&#160;</string>
+
+    <string name="type">類&#160;&#160;型&#160;&#160;&#160;&#160;</string>
+    <string name="detail">詳情</string>
+    <string name="owner">業&#160;&#160;主</string>
+    <string name="door_card_or_mobile_phone">門卡/手機</string>
+    <string name="no_door_record">暫無開門記錄,下拉介面獲取最新資料</string>
+    <string name="no_common_phone">暫無常用電話，下拉介面獲取最新資料</string>
+
+    <string name="no_visitor_photo">暫無訪客留影,下拉介面獲取最新資料</string>
+    <string name="no_more_data">沒有更多資料了</string>
+    <string name="load_fail">載入數據失敗了</string>
+    <string name="ignore">未接聽</string>
+    <string name="unignore">已接聽</string>
+
+    <string name="no_bulletin">暫無訊息公告，下拉介面取得最新資料</string>
+    <string name="no_bulletins">暫無訊息公告</string>
+    <string name="bulletin_detail">訊息公告詳情</string>
+    <string name="empty_device_name">設備名稱不能為空</string>
+    <string name="un_know_user_name">非法手機號</string>
+
+    <string name="device_name_too_length">設備名稱過長</string>
+    <string name="empty_authorization">授權帳號不能為空</string>
+    <string name="authorization_too_length">授權帳號過長</string>
+    <string name="equipment_call">設備呼叫</string>
+    <string name="call_answered">呼叫已接聽</string>
+
+    <string name="call_over">呼叫已結束</string>
+    <string name="openLockFail">開門失敗</string>
+    <string name="network_error">您的網路狀況不佳!</string>
+    <string name="unanswered">您長時間未接聽!</string>
+    <string name="init_system">系統正在初始化，請稍後</string>
+
+    <string name="call_user">您確定要呼叫:%s?</string>
+    <string name="join_device_list">請點擊“我的設備”查看設備清單</string>
+    <string name="reboot_device_tip">設備重啟後，請您稍等2分鐘後再觀看</string>
+    <string name="address">地址:&#160;&#160;</string>
+    <string name="phone_number">電話:&#160;&#160;</string>
+    <string name="are_you_sure_to_add_device">你確定要新增此設備</string>
+    <string name="please_input_add_device_info">請輸入新增設備資訊</string>
+    <string name="play_init_error">播放初始化出錯!</string>
+    <string name="already_add">已新增</string>
+</resources>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#a0000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_reboot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/reboot"
+                android:gravity="center"
+                android:text="@string/reboot"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <View
+            style="@style/h_line_video"
+            android:layout_margin="@dimen/space_10"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_fluency_definition"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:gravity="center"
+                android:text="@string/video1"
+                android:textColor="@color/status_color"/>
+
+            <Button
+                android:id="@+id/btn_standard_definition"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:gravity="center"
+                android:text="@string/video2"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/btn_high_definition"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:gravity="center"
+                android:text="@string/video3"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <View
+            style="@style/h_line_video"
+            android:layout_margin="@dimen/space_20"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@mipmap/light_min"/>
+
+            <SeekBar
+                android:id="@+id/sb_light"
+                android:layout_width="@dimen/space_200"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#0000"
+                android:centerColor="#85B0E9"
+                android:endColor="#165CBC"
+                android:max="99"
+                android:maxHeight="@dimen/space_5"
+                android:minHeight="@dimen/space_5"
+                android:paddingRight="@dimen/space_20"
+                android:progress="0"
+                android:startColor="#85B0E9"
+                android:thumb="@mipmap/myseekbar"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@mipmap/light_max"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@mipmap/sound_min"/>
+
+            <SeekBar
+                android:id="@+id/sb_sound"
+                android:layout_width="@dimen/space_200"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#0000"
+                android:centerColor="#85B0E9"
+                android:endColor="#165CBC"
+                android:max="99"
+                android:maxHeight="@dimen/space_5"
+                android:minHeight="@dimen/space_5"
+                android:paddingRight="@dimen/space_20"
+                android:progress="0"
+                android:startColor="#85B0E9"
+                android:thumb="@mipmap/myseekbar"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@mipmap/sound_max"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

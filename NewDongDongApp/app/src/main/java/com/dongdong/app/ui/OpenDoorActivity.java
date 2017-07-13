@@ -17,10 +17,11 @@ import com.dongdong.app.api.ApiHttpClient;
 import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.OpenDoorRecordBean;
+import com.dongdong.app.bean.UserRoomBean;
 import com.dongdong.app.db.OpenDoorOpe;
+import com.dongdong.app.db.UserRoomOpe;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.ProcessDataUtils;
-import com.dongdong.app.util.TDevice;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -31,18 +32,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
 public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickListener,
         OnRefreshListener {
-    public static final String INTENT_TYPE_KEY = "type";
-    public static final String INTENT_ROOM_NUMBER_KEY = "roomNumber";
-    public static final String INTENT_TIMESTAMP_KEY = "timestamp";
-    public static final String INTENT_DEVICE_NAME_KEY = "deviceName";
-    public static final String INTENT_MEMBER_NAME_KEY = "memberName";
-    public static final String INTENT_COM_NUMBER_KEY = "comNumber";
+    private static final String JSON_OPEN_DOOR_RECORD_METHOD = "unlockrecords3";
+
+    public static final String INTENT_OPEN_DOOR_RECORDER_BEAN = "OPEN_DOOR_RECORDER_BEAN";
 
     private static final int LOAD_NO_DATA = 1;
     private static final int DO_NOT_LOAD = 2;
@@ -101,32 +100,41 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
 
     @Override
     public void initData() {
-        //1.查询本地数据库
-        List<OpenDoorRecordBean> localList = OpenDoorOpe.queryAllDesc(BaseApplication.context());
-        if (localList.size() > 0) {//1.1有本地数据，先在界面显示
+        //通过userId获取用户房间关系
+        List<UserRoomBean> userRoomBeanList = UserRoomOpe.queryDataByUserIdAndDevId(
+                BaseApplication.context(), DongConfiguration.mUserInfo.userID,
+                DongConfiguration.mDeviceInfo.dwDeviceID);
+        LogUtils.i("OpenDoorActivity.clazz->initData()->userRoomBeanListSize:"
+                + userRoomBeanList.size());
+
+        if (userRoomBeanList.size() > 0) {//用户下有房号信息
             mAdapterList.clear();
-            for (OpenDoorRecordBean localBean : localList) {
-                if (Integer.parseInt(localBean.getDeviceId()) == (DongConfiguration.
-                        mDeviceInfo.dwDeviceID) && DongConfiguration.mUserInfo.userID
-                        == Integer.parseInt(localBean.getUserId())) {
-                    mAdapterList.add(localBean);
+            for (UserRoomBean userRoomBean : userRoomBeanList) {
+                //通过roomId获取开门记录
+                List<OpenDoorRecordBean> openDoorRecordBeanList = OpenDoorOpe.queryAllByRoomId(
+                        BaseApplication.context(), userRoomBean.getRoomId());
+                LogUtils.i("OpenDoorActivity.clazz->initData()->openDoorRecordBeanList:"
+                        + openDoorRecordBeanList);
+                if (openDoorRecordBeanList.size() > 0) {
+                    for (OpenDoorRecordBean openDoorRecordBean : openDoorRecordBeanList) {
+                        mAdapterList.add(openDoorRecordBean);
+                    }
+                } else {
+                    //本地无数据就下拉刷新
+                    getDataFromNet(mStartIndex);
                 }
             }
             notifyDataSetChanged();
+        } else {
+            //本地无数据就下拉刷新
+            getDataFromNet(mStartIndex);
         }
-        //默认进来就下拉刷新
-        getDataFromNet(mStartIndex);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         ApiHttpClient.cancelAll(BaseApplication.context());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     /**
@@ -190,14 +198,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
                 public void onItemClick(View view, int position) {
                     OpenDoorRecordBean openDoorRecordBean = mAdapterList.get(position);
                     Intent intent = new Intent(OpenDoorActivity.this, OpenDoorDetailActivity.class);
-                    intent.putExtra(INTENT_TYPE_KEY, openDoorRecordBean.getType());
-                    intent.putExtra(INTENT_ROOM_NUMBER_KEY, openDoorRecordBean.getRoomNumber());
-                    intent.putExtra(INTENT_TIMESTAMP_KEY, openDoorRecordBean.getTimestamp());
-                    intent.putExtra(INTENT_DEVICE_NAME_KEY, openDoorRecordBean.getDeviceName());
-                    intent.putExtra(INTENT_MEMBER_NAME_KEY, openDoorRecordBean.getMemberName());
-                    //intent.putExtra("idNumber", openDoorRecordBean.getIdNumber());
-                    intent.putExtra(INTENT_COM_NUMBER_KEY, openDoorRecordBean.getComNumber());
-                    //intent.putExtra("mobilePhone", openDoorRecordBean.getMobilePhone());
+                    intent.putExtra(INTENT_OPEN_DOOR_RECORDER_BEAN, openDoorRecordBean);
                     startActivity(intent);
                 }
             };
@@ -225,17 +226,20 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
                 setSwipeRefreshLoadedState();
                 try {
                     JSONObject receiveDataJson = new JSONObject(new String(responseBody));
-                    LogUtils.i("BulletinActivity.clazz-->getBulletinFromNet()-->receiveDataJson:" + receiveDataJson);
-                    String resultCode = receiveDataJson.getString("result_code");
-                    if (resultCode.equals("200")) {
+                    LogUtils.i("OpenDoorActivity.clazz-->getDataOpenDoorRecord()-->" +
+                            "receiveDataJson:" + receiveDataJson);
+                    String resultCode = receiveDataJson.getString(AppConfig.JSON_RESULT_CODE);
+                    if (resultCode.equals(AppConfig.JSON_CORRECT_RESULT_CODE)) {
                         String jsonInitData = new JSONObject(new String(responseBody)).
-                                getString("response_params");
-                        String jsonData = new JSONObject(jsonInitData).getString("unlockrecords3");
-                        if (jsonData.equals("[]")) {//2.1这里只会在平台没有数据了时候才会进来
+                                getString(AppConfig.JSON_RESPONSE_PARAMS);
+                        String jsonData = new JSONObject(jsonInitData).
+                                getString(JSON_OPEN_DOOR_RECORD_METHOD);
+                        if (jsonData.equals(AppConfig.JSON_EMPTY_DATA)) {
+                            //2.1这里只会在平台没有数据了时候才会进来
                             mIsNoMoreData = true;
                             mOpenDoorAdapter.changeLoadStatus(LOAD_NO_DATA);
-                            if (mStartIndex == 0)
-                                BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
+//                            if (mStartIndex == 0)
+//                                BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
                             return;
                         }
                         processJsonData(jsonData);//2.1平台数据处理
@@ -289,6 +293,68 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
     }
 
     /**
+     * 处理用户与房号的关系
+     *
+     * @param netDataList 新的数据
+     */
+    private boolean processUserRoom(List<OpenDoorRecordBean> netDataList) {
+        //获取所有roomId
+        HashSet<String> hashSet = new HashSet<>();
+        for (OpenDoorRecordBean openDoorRecordBean : netDataList) {
+            hashSet.add(openDoorRecordBean.getRoomId());
+        }
+        LogUtils.i("OpenDoorActivity.clazz-->processUserRoom hashSet:"
+                + hashSet + ",netDataList.size:" + netDataList.size());
+        //通过userId和deviceId获取
+        List<UserRoomBean> userRoomBeen = UserRoomOpe.queryDataByUserIdAndDevId(
+                BaseApplication.context(), DongConfiguration.mUserInfo.userID,
+                DongConfiguration.mDeviceInfo.dwDeviceID);
+
+        LogUtils.i("OpenDoorActivity.clazz-->processUserRoom userRoomBeen:"
+                + userRoomBeen);
+        if (userRoomBeen == null || userRoomBeen.size() == 0) {
+            //1 先在界面显示
+            for (OpenDoorRecordBean openDoorRecordBean : netDataList) {
+                mAdapterList.add(openDoorRecordBean);
+            }
+            notifyDataSetChanged();
+
+            //2 将userId插入数据库
+            for (String roomId : hashSet) {
+                UserRoomBean userRoomBean = new UserRoomBean();
+                userRoomBean.setDeviceId(DongConfiguration.mDeviceInfo.dwDeviceID);
+                userRoomBean.setUserId(DongConfiguration.mUserInfo.userID);
+                userRoomBean.setRoomId(Integer.parseInt(roomId));
+                UserRoomOpe.insertDataByUserRoomBean(BaseApplication.context(), userRoomBean);
+            }
+            return true;
+        }
+        return false;
+    }
+
+//        LogUtils.i("OpenDoorActivity.clazz->processUserRoom()->hashSet:" + hashSet);
+//        UserRoomBean userRoomBean = new UserRoomBean();
+//        userRoomBean.setDeviceId(DongConfiguration.mDeviceInfo.dwDeviceID);
+//        userRoomBean.setUserId(DongConfiguration.mUserInfo.userID);
+//
+//        for (String roomId : hashSet) {
+//            //查询对应本地数据
+//            List<UserRoomBean> userRoomBeanList = UserRoomOpe.queryDataByRoomId(
+//                    BaseApplication.context(), Integer.parseInt(roomId));
+//            if (userRoomBeanList.size() > 0) {//有对应关系
+//                for (UserRoomBean userRoom : userRoomBeanList) {
+//                    if (userRoom.getUserId() != DongConfiguration.mUserInfo.userID) {
+//                        userRoomBean.setRoomId(Integer.parseInt(roomId));
+//                        UserRoomOpe.insertDataByUserRoomBean(BaseApplication.context(), userRoomBean);
+//                    }
+//                }
+//            } else {//无对应关系
+//                userRoomBean.setRoomId(Integer.parseInt(roomId));
+//                UserRoomOpe.insertDataByUserRoomBean(BaseApplication.context(), userRoomBean);
+//            }
+//        }
+
+    /**
      * 处理开门记录JSON数据
      *
      * @param jsonData 开门记录json数据
@@ -297,17 +363,21 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
         //1.获取本地数据
         List<OpenDoorRecordBean> localList = OpenDoorOpe.queryAllDesc(BaseApplication.context());
         List<OpenDoorRecordBean> netDataList = JSON.parseArray(jsonData, OpenDoorRecordBean.class);
-
+        //处理用户与房号的关系
+        boolean isFirstLoad = processUserRoom(netDataList);
+        LogUtils.i("OpenDoorActivity.clazz-->processJsonData()->isFirstLoad:" + isFirstLoad);
         //2对比本地和平台数据
         boolean isAllSame = localList.containsAll(netDataList);
-        LogUtils.i("OpenDoorActivity.clazz-->processJsonData()%%%%%%%%%%%%% isAllSame:"
-                + isAllSame + ",localList.size:" + localList.size() + ",mStartIndex:" + mStartIndex);
+        LogUtils.i("OpenDoorActivity.clazz-->processJsonData()->isAllSame:" + isAllSame);
+
+        LogUtils.i("OpenDoorActivity.clazz-->processJsonData()->mStartIndex:" + mStartIndex);
         if (isAllSame) {//2.1如果本地数据库包含下拉刷新获取到的最新数据，那么返回
             if (mStartIndex != 0 && mStartIndex > localList.size()) {//2.1.1上拉加载发现本地有平台数据
                 mIsNoMoreData = true;
                 return;
             } else if (mStartIndex != 0 && mStartIndex < localList.size()) {
-                LogUtils.i("OpenDoorActivity.clazz-->processData notifyItemRemoved mStartIndex:" + mStartIndex);
+                LogUtils.i("OpenDoorActivity.clazz-->processData notifyItemRemoved mStartIndex:"
+                        + mStartIndex);
                 mOpenDoorAdapter.changeLoadStatus(OpenDoorAdapter.LOAD_NO_DATA);
             } else {
                 BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
@@ -318,13 +388,16 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
                 netBean.setType(ProcessDataUtils.openDoorType(Integer.parseInt(netBean.getType())));
                 //2.1.1将本地数据库中的数据与平台返回数据对比
                 for (OpenDoorRecordBean localBean : localList) {
-                    if (localBean.getTimestamp().trim().equals(netBean.getTimestamp().trim()))
+                    if (localBean.getTimestamp().trim().equals(netBean.getTimestamp().trim()) &&
+                            localBean.getRoomId().trim().equals(netBean.getRoomId().trim()))
                         isSame = true;
                 }
                 //2.1.2不相同就添加到本地并且更新界面数据
                 if (!isSame) {
+                    if (!isFirstLoad) {
+                        mAdapterList.add(netBean);
+                    }
                     OpenDoorOpe.insert(BaseApplication.context(), netBean);
-                    mAdapterList.add(netBean);
                 }
             }
         }

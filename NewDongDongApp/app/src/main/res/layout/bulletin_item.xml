@@ -36,14 +36,12 @@
                 android:maxLength="10"
                 android:maxLines="1"
                 android:paddingBottom="@dimen/space_10"
-                android:text="物业公告"
                 android:textColor="#555"
                 android:textSize="@dimen/text_size_16"/>
 
             <TextView
                 android:id="@+id/tv_created"
                 style="@style/option_item_text"
-                android:text="2016-08-09 20:00:10"
                 android:textSize="@dimen/text_size_12"/>
         </LinearLayout>
 
@@ -67,7 +65,7 @@
                 android:layout_marginRight="@dimen/space_10"
                 android:layout_toRightOf="@id/detail"
                 android:gravity="center"
-                android:text="详情"
+                android:text="@string/detail"
                 android:textColor="@color/status_color"
                 android:textSize="@dimen/text_size_12"/>
         </RelativeLayout>

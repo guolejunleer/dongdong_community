@@ -27,6 +27,7 @@ import com.dongdong.app.ui.LoginActivity;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.ui.dialog.TipDialogManager.OnTipDialogButtonClick;
 import com.dongdong.app.util.LogUtils;
+import com.dongdong.app.util.PhoneUtils;
 import com.dongdong.app.util.StatusBarCompatUtils;
 import com.dongdong.app.util.TDevice;
 import com.igexin.sdk.PushManager;
@@ -35,9 +36,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity implements OnClickListener,
         OnTipDialogButtonClick {
-
-    //加密串：ucilZA4JfMuw4YraheTQyFCJATjEx1QXsqsaiimFC7JS1P/0CLK9ZPVchVyzhfUJ
-
     public static boolean mIsPushStarted = false;
 
     private DoubleClickExitHelper mDoubleClickExit;
@@ -61,11 +59,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         super.onCreate(savedInstanceState);
         DongSDK.initializePush(this, DongPushMsgManager.PUSH_TYPE_ALL);// 1.初始化推送
 //        PushManager.getInstance().turnOffPush(this);
-//        com.baidu.android.pushservice.PushManager.stopWork(this);
+        com.baidu.android.pushservice.PushManager.stopWork(this);
         AppManager.getAppManager().addActivity(this);
         setContentView(R.layout.activity_main);
         StatusBarCompatUtils.compat(this);
-
         Bundle bundle = getIntent().getBundleExtra(AppConfig.INTENT_BUNDLE_KEY);
         if (bundle != null) {// 离线推送
             mIsPushStarted = true;
@@ -93,8 +90,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
                 bundleFrag.putString(AppConfig.BUNDLE_KEY_DEVICE_ID, mDeviceID);
                 mHomeFragment.setArguments(bundleFrag);
             } else {//3.提示用户离线推送曾经呼叫过
-                TipDialogManager.showTipDialog(this,
-                        BaseApplication.context().getString(R.string.tip),
+                TipDialogManager.showTipDialog(this, BaseApplication.context().getString(R.string.tip),
                         BaseApplication.context().getString(R.string.tip_push_time, mPushTime));
             }
         }
@@ -124,18 +120,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        LogUtils.i("MainActivity.clazz--->>>onResume......");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LogUtils.i("MainActivity.clazz--->>>onPause......");
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         mIsPushStarted = false;
@@ -151,12 +135,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
 
     private void checkContacts() {
         try {
-            String contactName = TDevice.getContactFromPhone(BaseApplication.context(),
-                    AppConfig.COMPANY_PHONE);
+            String contactName = PhoneUtils.getContactNameByPhoneNum(AppConfig.COMPANY_PHONE);
             String nickName = getString(R.string.linkman);
             if (!contactName.equals(nickName)) {
-                TDevice.insertContact2Phone(BaseApplication.context(),
-                        nickName, AppConfig.COMPANY_PHONE);
+                PhoneUtils.insertContact2Phone(
+                        BaseApplication.context(), nickName, AppConfig.COMPANY_PHONE);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -32,7 +32,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="#00000000"
-        android:drawableRight="@drawable/add_click"/>
+        android:drawableRight="@mipmap/add_nor"/>
 
     <Button
         android:id="@+id/btn_finish"
@@ -43,5 +43,4 @@
         android:background="#00000000"
         android:drawableRight="@drawable/finish_click"
         android:visibility="gone"/>
-
 </RelativeLayout>

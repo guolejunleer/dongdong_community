@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/space_10">
+        android:layout_margin="@dimen/space_10">
 
         <Button
             android:id="@+id/bt_back"

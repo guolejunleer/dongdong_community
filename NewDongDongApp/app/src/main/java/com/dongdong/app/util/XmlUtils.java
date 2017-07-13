@@ -90,7 +90,7 @@ public class XmlUtils {
 		}
 	}
 
-	public static List<FunctionBean> getFunctionsDatasByProp(File file) {
+	public static List<FunctionBean> getFunctionsDataByProp(File file) {
 		List<FunctionBean> list = null;
 		FileInputStream fis = null;
 		FunctionBean function = null;

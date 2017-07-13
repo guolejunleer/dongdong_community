@@ -55,10 +55,8 @@ public class TipDialogManager {
 
     public static void showOtherLoginDialog(final Context context, String time) {
         final CommonDialog tipDialog = new CommonDialog(context);
-        String tip = time
-                + BaseApplication.context().getString(
+        String tip = time + BaseApplication.context().getString(
                 R.string.login_other_plach_warning);
-
         tipDialog.setTitle(BaseApplication.context()
                 .getString(R.string.warning));
         tipDialog.setMessage(tip);
@@ -72,6 +70,7 @@ public class TipDialogManager {
                 boolean initDongAccount = DongConfiguration.mUserInfo != null;
                 // 2.清空SDK信息
                 if (initDongAccount) {
+                    DongSDKProxy.requestSetPushInfo(PushInfo.PUSHTYPE_DEL);
                     DongSDKProxy.loginOut();
                     DongConfiguration.clearAllData();
                     AppContext.mAppConfig.remove(

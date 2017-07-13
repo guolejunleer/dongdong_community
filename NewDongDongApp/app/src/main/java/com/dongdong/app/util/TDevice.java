@@ -521,7 +521,7 @@ public class TDevice {
      * 获取包名对应的VersionCode
      */
     public static int getVersionCode(String packageName) {
-        int versionCode = 0;
+        int versionCode;
         try {
             versionCode = BaseApplication.context().getPackageManager()
                     .getPackageInfo(packageName, 0).versionCode;
@@ -556,7 +556,6 @@ public class TDevice {
 
     /**
      * 安装File目录下的应用
-     *
      */
     public static void installAPK(Context context, File file) {
         if (file == null || !file.exists())
@@ -854,46 +853,7 @@ public class TDevice {
         return hh + ":" + mm + ":" + ss;
     }
 
-    /**
-     * 根据一个已知的电话号码，从通讯录中获取相对应的联系人姓名的代码
-     */
-    public static String getContactFromPhone(Context context, String phoneNum) {
-        String contactName = "";
-        ContentResolver cr = context.getContentResolver();
-        Cursor pCur = cr.query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                ContactsContract.CommonDataKinds.Phone.NUMBER + " = ?",
-                new String[]{phoneNum}, null);
-        if (pCur.moveToFirst()) {
-            contactName = pCur
-                    .getString(pCur
-                            .getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            pCur.close();
-        }
-        return contactName;
-    }
 
-    public static void insertContact2Phone(Context context, String nickName,
-                                           String phoneNum) {
-        /* 往 raw_contacts 中添加数据，并获取添加的id号 */
-        Uri uri = Uri.parse("content://com.android.contacts/raw_contacts");
-        ContentResolver resolver = context.getContentResolver();
-        ContentValues values = new ContentValues();
-        long contactId = ContentUris.parseId(resolver.insert(uri, values));
-        uri = Uri.parse("content://com.android.contacts/data");
-        values.put("raw_contact_id", contactId);
-        values.put("mimetype", "vnd.android.cursor.item/name");
-        values.put("data2", nickName);
-        resolver.insert(uri, values);
-
-        // 添加电话
-        values.clear();
-        values.put("raw_contact_id", contactId);
-        values.put("mimetype", "vnd.android.cursor.item/phone_v2");
-        values.put("data2", "2");
-        values.put("data1", phoneNum);
-        resolver.insert(uri, values);
-    }
 
     public static boolean deviceType(DeviceInfo deviceInfo, int i) {// 23判断设备是授权设备还是我的设备
         if (deviceInfo == null)

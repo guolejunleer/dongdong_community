@@ -2,7 +2,6 @@ package com.push.message;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.dd121.community.R;
 import com.ddclient.configuration.DongConfiguration;
@@ -16,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import static com.dongdong.app.util.PhoneUtils.isTelephonyCalling;
 
 /**
  * 必须拷贝这个类到应用中去，此类用于离线推送处理的中转站,已过时
@@ -51,7 +52,7 @@ public class ProcessPushMsgProxy {
             mpushTimeList.add(pushTime);
         }
 
-        //1.这里比较当前时间和离线推送消息的时候是否超过3分钟
+        //1.这里比较当前时间和离线推送消息的时候是否超过1小时
         Date date;
         if (TextUtils.isEmpty(pushTime)) {
             date = new Date();
@@ -75,9 +76,13 @@ public class ProcessPushMsgProxy {
             BaseApplication.showToastShortInCenter(R.string.call_over);
             return;
         }
-        if (delSecond > 10) {//2.如果离线推送大于3分钟，那么我们就在首页提示用户多少分钟前有人呼叫过
+        if (delSecond > 3600) {//2.如果离线推送大于1小时，那么我们就在首页提示用户多少分钟前有人呼叫过
             UIHelper.showMainActivityWithPushTime(context, deviceID, pushTime);
         } else {//3.如果离线推送在规定时间内，那么跳转到对应界面
+            if (isTelephonyCalling(BaseApplication.context())){//正在通话中或正在拨打电话不进视频界面
+                BaseApplication.showToastShortInBottom(R.string.video_stop_phone_comming);
+                return;
+            }
             if (DongConfiguration.mUserInfo != null) {//3.1在线推送进入监视界面
                 LogUtils.i("ProcessPushMsgProxy.clazz-->>is login will" +
                         "showVideoViewActivity push time is 0 and deviceID:" + deviceID);

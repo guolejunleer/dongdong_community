@@ -36,6 +36,8 @@ public class HomePagerFragmentLayout extends FrameLayout {
 
     private static final String TAG = "leer";
     private static final boolean DEBUG = false;
+    public static final String KEY_VIEW_PAGER="viewPager";
+    public static final String KEY_VIEW_GROUP="viewGroup";
 
     /*
      * 默认4列
@@ -880,8 +882,8 @@ public class HomePagerFragmentLayout extends FrameLayout {
                 LogUtils.i("LinkRoomDynamicLayout.clazz-->getBulletinViewPager()-->ViewPager:" + pager);
 
                 Map<String, Object> map = new HashMap<>();
-                map.put("viewPager", pager);
-                map.put("viewGroup", points);
+                map.put(KEY_VIEW_PAGER, pager);
+                map.put(KEY_VIEW_GROUP, points);
                 return map;
             }
         }
@@ -904,8 +906,8 @@ public class HomePagerFragmentLayout extends FrameLayout {
                 ViewGroup points = (ViewGroup) a.findViewById(R.id.ll_point);
                 LogUtils.i("LinkRoomDynamicLayout.clazz-->getADViewPager()-->ViewPager:" + pager);
                 Map<String, Object> map = new HashMap<>();
-                map.put("viewPager", pager);
-                map.put("viewGroup", points);
+                map.put(KEY_VIEW_PAGER, pager);
+                map.put(KEY_VIEW_GROUP, points);
                 return map;
             }
         }

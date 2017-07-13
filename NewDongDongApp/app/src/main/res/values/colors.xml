@@ -30,4 +30,5 @@
     <!--<color name="pressed_color">#0abdfc</color>-->
     <color name="pressed_color">#80cef3</color>
     <color name="normal_gray">#eee</color>
+    <color name="function_press">#17abe3</color>
 </resources>

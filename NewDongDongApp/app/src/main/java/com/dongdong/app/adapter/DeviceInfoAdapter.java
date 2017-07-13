@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.util.LruCache;
@@ -17,8 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dd121.community.R;
+import com.ddclient.configuration.DongConfiguration;
 import com.ddclient.dongsdk.DeviceInfo;
 import com.dongdong.app.AppConfig;
+import com.dongdong.app.AppContext;
 import com.dongdong.app.ui.DeviceSettingsActivity;
 import com.dongdong.app.util.BitmapUtil;
 import com.dongdong.app.util.TDevice;
@@ -29,7 +32,7 @@ import static com.dongdong.app.util.BitmapUtil.zoom;
 
 public class DeviceInfoAdapter extends BaseAdapter {
 
-    private static final int ROUND_VALUE_PX = (int) (10 * TDevice.getDensity());
+    private static final int ROUND_VALUE_PX = (int) (5 * TDevice.getDensity());
 
     private Context mContext;
     private LayoutInflater mInflate;
@@ -94,19 +97,17 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Holder mHold;
+        final Holder mHold;
         if (convertView == null) {
             mHold = new Holder();
             convertView = mInflate.inflate(R.layout.info_item, null);
             convertView.setTag(mHold);
-            mHold.deviceName = (TextView) convertView
-                    .findViewById(R.id.tv_device_name);
-            mHold.deviceState = (TextView) convertView
-                    .findViewById(R.id.tv_device_state);
-            mHold.deviceSettings = (TextView) convertView
-                    .findViewById(R.id.tv_device_setting);
-            mHold.backGround = (ImageView) convertView
-                    .findViewById(R.id.iv_backgroud);
+            mHold.deviceState = (ImageView) convertView.findViewById(R.id.iv_device_state);
+            mHold.deviceName = (TextView) convertView.findViewById(R.id.tv_device_name);
+            mHold.deviceType = (TextView) convertView.findViewById(R.id.tv_device_type);
+            mHold.defaultDevice = (TextView) convertView.findViewById(R.id.tv_default_device);
+            mHold.deviceSettings = (TextView) convertView.findViewById(R.id.tv_device_setting);
+            mHold.backGround = (ImageView) convertView.findViewById(R.id.iv_background);
         } else {
             mHold = (Holder) convertView.getTag();
         }
@@ -115,22 +116,26 @@ public class DeviceInfoAdapter extends BaseAdapter {
         mHold.backGround.setTag(deviceInfo.deviceSerialNO);
         setImageView(deviceInfo.deviceSerialNO, mHold.backGround);
         mHold.deviceName.setText(deviceInfo.deviceName);
+        //设备状态
         if (deviceInfo.isOnline) {
-            if (TDevice.deviceType(deviceInfo, 23)) {
-                mHold.deviceState.setText(mContext
-                        .getString(R.string.auth_device_on));
-            } else {
-                mHold.deviceState.setText(mContext
-                        .getString(R.string.my_device_on));
-            }
+            mHold.deviceState.setImageResource(R.drawable.online);
         } else {
-            if (TDevice.deviceType(deviceInfo, 23)) {
-                mHold.deviceState.setText(mContext
-                        .getString(R.string.auth_device_off));
-            } else {
-                mHold.deviceState.setText(mContext
-                        .getString(R.string.my_device_off));
-            }
+            mHold.deviceState.setImageResource(R.drawable.offline);
+        }
+        //设备类型
+        if (TDevice.deviceType(deviceInfo, 23)) {
+            mHold.deviceType.setText(mContext.getString(R.string.auth_device));
+        } else {
+            mHold.deviceType.setText(mContext.getString(R.string.my_device));
+        }
+
+        int defaultDeviceId = (int) AppContext.mAppConfig.getConfigValue(
+                AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
+                DongConfiguration.mUserInfo.userID + "", 0);
+        if (defaultDeviceId == deviceInfo.dwDeviceID) {
+            mHold.defaultDevice.setTextColor(Color.parseColor("#00A2E9"));
+        } else {
+            mHold.defaultDevice.setTextColor(Color.parseColor("#a9a9a9"));
         }
         // 设置点击事件
         mHold.deviceSettings.setOnClickListener(new OnClickListener() {
@@ -139,6 +144,26 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 Intent intent = new Intent(mContext, DeviceSettingsActivity.class);
                 intent.putExtra(AppConfig.BUNDLE_KEY_DEVICE_INFO, deviceInfo);
                 mContext.startActivity(intent);
+            }
+        });
+
+        mHold.defaultDevice.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int deviceId = deviceInfo.dwDeviceID;
+                int localDeviceId = (int) AppContext.mAppConfig
+                        .getConfigValue(AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
+                                DongConfiguration.mUserInfo.userID + "", 0);
+                if (localDeviceId == deviceId) {
+                    mHold.defaultDevice.setTextColor(Color.parseColor("#a9a9a9"));
+                    deviceId = 0;
+                } else {
+                    mHold.defaultDevice.setTextColor(Color.parseColor("#00A2E9"));
+                    DongConfiguration.mDeviceInfo = deviceInfo;
+                }
+                AppContext.mAppConfig.setConfigValue(
+                        AppConfig.DONG_CONFIG_SHARE_PREF_NAME,
+                        DongConfiguration.mUserInfo.userID + "", deviceId);
             }
         });
         return convertView;
@@ -207,8 +232,10 @@ public class DeviceInfoAdapter extends BaseAdapter {
     }
 
     private static class Holder {
+        ImageView deviceState;
         TextView deviceName;
-        TextView deviceState;
+        TextView deviceType;
+        TextView defaultDevice;
         TextView deviceSettings;
         ImageView backGround;
     }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_add_tip"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_40"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_16"/>
+
+    <View style="@style/h_line"/>
+
+    <EditText
+        android:id="@+id/et_device_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_40"
+        android:background="@drawable/background_write_drawable"
+        android:gravity="center"
+        android:hint="@string/deviceName"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textCursorDrawable="@null"
+        android:textSize="@dimen/text_size_16"/>
+
+    <View style="@style/h_line"/>
+
+    <EditText
+        android:id="@+id/et_device_serial"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_40"
+        android:background="@drawable/background_write_drawable"
+        android:gravity="center"
+        android:hint="@string/device_serial"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textCursorDrawable="@null"
+        android:textSize="@dimen/text_size_16"/>
+
+    <View style="@style/h_line"/>
+</LinearLayout>

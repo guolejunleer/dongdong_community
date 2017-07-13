@@ -82,7 +82,6 @@
                 android:layout_height="@dimen/space_1"
                 android:background="#eee" />
 
-
             <TextView
                 android:id="@+id/tv_authorizationaccount"
                 android:layout_width="match_parent"
@@ -94,39 +93,8 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14" />
 
-
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/space_1"
-                android:background="#eee" />
-
-            <RelativeLayout
-                android:id="@+id/rl_default_device"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/widget_list_item_bg_selector"
-                android:padding="@dimen/space_10">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/def"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/text_size_14" />
-
-                <TextView
-                    android:id="@+id/tv_defaultText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:drawablePadding="@dimen/space_5"
-                    android:drawableRight="@mipmap/space_favor_item_arrow"
-                    android:textSize="@dimen/text_size_14" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="fill_parent"
                 android:layout_height="@dimen/space_1"
                 android:background="#eee" />
 

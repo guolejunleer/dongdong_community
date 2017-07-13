@@ -138,52 +138,56 @@ public class HomePagerFragmentAdapter extends BaseAdapter {
 
     private int getIconResIdByFunFuncId(int funcId) {
         switch (funcId) {
-            case BaseApplication.FUNCTION_MESSAGE:
+            case BaseApplication.FUNCTION_DD_FUNCTION_MESSAGE:
                 return R.mipmap.ic_dd_message;
-            case BaseApplication.FUNCTION_MONITOR:
+            case BaseApplication.FUNCTION_DD_FUNCTION_MONITOR:
                 return R.mipmap.ic_dd_monitor;
-            case BaseApplication.FUNCTION_APPLYKEY:
+            case BaseApplication.FUNCTION_DD_FUNCTION_APPLYKEY:
                 return R.mipmap.ic_dd_applykey;
-            case BaseApplication.FUNCTION_SHAPEOPENDOOR:
+            case BaseApplication.FUNCTION_DD_FUNCTION_SHAPEOPENDOOR:
                 return R.mipmap.ic_dd_shapeopendoor;
-            case BaseApplication.FUNCTION_REPAIR:
+            case BaseApplication.FUNCTION_DD_FUNCTION_REPAIR:
                 return R.mipmap.ic_dd_repair;
-            case BaseApplication.FUNCTION_VISITORPHOTO:
+            case BaseApplication.FUNCTION_DD_FUNCTION_VISITORPHOTO:
                 return R.mipmap.ic_dd_homesafe;
-            case BaseApplication.FUNCTION_OPENDOOR:
+            case BaseApplication.FUNCTION_DD_FUNCTION_OPENDOOR:
                 return R.mipmap.ic_dd_visitorrecord;
-            case BaseApplication.FUNCTION_PHONE:
+            case BaseApplication.FUNCTION_DD_FUNCTION_PHONE:
                 return R.mipmap.ic_dd_phone;
             case BaseApplication.FUNCTION_DD_FUNCTION_FINANCE:
                 return R.mipmap.ic_dd_finance;
             case BaseApplication.FUNCTION_DD_FUNCTION_PARKING:
                 return R.mipmap.ic_dd_carstop;
+            case BaseApplication.FUNCTION_DD_FUNCTION_MYDEVICE:
+                return R.mipmap.ic_dd_monitor;
         }
         return R.mipmap.ic_dd_more_service;
     }
 
     private int getStringIdByFunFuncId(int funcId) {
         switch (funcId) {
-            case BaseApplication.FUNCTION_MESSAGE:
+            case BaseApplication.FUNCTION_DD_FUNCTION_MESSAGE:
                 return R.string.message;
-            case BaseApplication.FUNCTION_MONITOR:
+            case BaseApplication.FUNCTION_DD_FUNCTION_MONITOR:
                 return R.string.monitor;
-            case BaseApplication.FUNCTION_APPLYKEY:
+            case BaseApplication.FUNCTION_DD_FUNCTION_APPLYKEY:
                 return R.string.applykey;
-            case BaseApplication.FUNCTION_SHAPEOPENDOOR:
+            case BaseApplication.FUNCTION_DD_FUNCTION_SHAPEOPENDOOR:
                 return R.string.shapeopendoor;
-            case BaseApplication.FUNCTION_REPAIR:
+            case BaseApplication.FUNCTION_DD_FUNCTION_REPAIR:
                 return R.string.repair;
-            case BaseApplication.FUNCTION_VISITORPHOTO:
+            case BaseApplication.FUNCTION_DD_FUNCTION_VISITORPHOTO:
                 return R.string.visitorphoto;
-            case BaseApplication.FUNCTION_OPENDOOR:
+            case BaseApplication.FUNCTION_DD_FUNCTION_OPENDOOR:
                 return R.string.opendoor;
-            case BaseApplication.FUNCTION_PHONE:
+            case BaseApplication.FUNCTION_DD_FUNCTION_PHONE:
                 return R.string.phone;
             case BaseApplication.FUNCTION_DD_FUNCTION_FINANCE:
                 return R.string.dd_function_finance;
             case BaseApplication.FUNCTION_DD_FUNCTION_PARKING:
                 return R.string.dd_function_parking;
+            case BaseApplication.FUNCTION_DD_FUNCTION_MYDEVICE:
+                return R.string.my_device;
         }
         return R.string.dd_function_more;
     }

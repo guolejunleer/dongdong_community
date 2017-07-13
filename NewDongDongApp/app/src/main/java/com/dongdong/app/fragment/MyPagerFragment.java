@@ -14,16 +14,19 @@ import com.dongdong.app.AppConfig;
 import com.dongdong.app.AppContext;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.base.BaseFragment;
+import com.dongdong.app.ui.ForgetPwdActivity;
 import com.dongdong.app.ui.MyAlbumActivity;
 import com.dongdong.app.ui.LoginActivity;
 import com.dongdong.app.ui.SettingsActivity;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.TDevice;
+import com.dongdong.app.util.UIHelper;
 import com.dongdong.app.widget.AvatarView;
 import com.dongdong.app.widget.TitleBar;
 
 public class MyPagerFragment extends BaseFragment {
+    public static final String INTENT_IS_FORGET_KEY = "IsForget";
 
     private TextView mTvName;
 
@@ -77,7 +80,7 @@ public class MyPagerFragment extends BaseFragment {
         view.findViewById(R.id.ll_myfamily).setOnClickListener(this);
         view.findViewById(R.id.ll_myhouse).setOnClickListener(this);
         view.findViewById(R.id.ll_myvillage).setOnClickListener(this);
-        view.findViewById(R.id.ll_mycaller).setOnClickListener(this);
+        view.findViewById(R.id.ll_reset_password).setOnClickListener(this);
         view.findViewById(R.id.ll_mypicture).setOnClickListener(this);
         view.findViewById(R.id.ll_settings).setOnClickListener(this);
     }
@@ -140,7 +143,7 @@ public class MyPagerFragment extends BaseFragment {
                 }
                 BaseApplication.showToastShortInCenter(R.string.building);
                 break;
-            case R.id.ll_mycaller:
+            case R.id.ll_reset_password:
                 if (TDevice.getNetworkType() == 0) {
                     TipDialogManager.showWithoutNetworDialog(getActivity(), null);
                     return;
@@ -149,7 +152,7 @@ public class MyPagerFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
-                BaseApplication.showToastShortInCenter(R.string.building);
+                startActivity(new Intent(getActivity(), ForgetPwdActivity.class).putExtra(INTENT_IS_FORGET_KEY, false));
                 break;
             case R.id.ll_mypicture:
                 if (Environment.MEDIA_REMOVED.equals(Environment.getExternalStorageState())) {

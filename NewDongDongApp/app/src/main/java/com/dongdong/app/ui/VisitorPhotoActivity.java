@@ -34,12 +34,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClickListener {
-
-    public static final String INTENT_PHOTO_KEY = "photo";
-    public static final String INTENT_DEVICE_NAME_KEY = "device_name";
-    public static final String INTENT_ROOM_NUMBER_KEY = "room_num";
-    public static final String INTENT_TIMESTAMP_KEY = "timestamp";
-    public static final String INTENT_TYPE_KEY = "type";
+    public static final String INTENT_VISITOR_PHOTO_BEAN = "VISITOR_PHOTO_BEAN";
 
     private static final int LOAD_NO_DATA = 1;
     private static final int DO_NOT_LOAD = 2;
@@ -50,7 +45,7 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private List<VisitorPhotoBean> mAdapterList = new ArrayList<>();
-    private VisitorPhotoAdapter mVisitorPhotoAdapter;
+    public static VisitorPhotoAdapter mVisitorPhotoAdapter;
     private CacheHelper mCacheHelper = new CacheHelper();
 
     //上拉加载所需要的最小高度
@@ -103,22 +98,21 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
 
     @Override
     public void initData() {
-        DongSDKProxy.registerAccountCallback(mAccountProxy);
         //1查询本地数据库
-        List<VisitorPhotoBean> localDataList = VisitorPhotoOpe.queryAllDesc(BaseApplication.context());
+        List<VisitorPhotoBean> localDataList = VisitorPhotoOpe.queryDataByUserIdAndDevId(
+                BaseApplication.context(), DongConfiguration.mUserInfo.userID,
+                DongConfiguration.mDeviceInfo.dwDeviceID);
         if (localDataList.size() > 0) {//1.1有本地数据，先在界面显示
             mAdapterList.clear();
             for (VisitorPhotoBean localBean : localDataList) {
-                if (localBean.getDeviceId() == (DongConfiguration.mDeviceInfo.dwDeviceID)
-                        && DongConfiguration.mUserInfo.userID == localBean.getUserId()) {
-                    mAdapterList.add(localBean);
-                }
+                mAdapterList.add(localBean);
             }
             notifyDataSetChanged();
+        } else {
+            //向云平台请求访客留影
+            DongSDKProxy.requestGetDownloadUrlsWithParams(DongConfiguration.mDeviceInfo.dwDeviceID,
+                    0, MAX_DATA_COUNT);
         }
-        //向云平台请求访客留影
-        DongSDKProxy.requestGetDownloadUrlsWithParams(DongConfiguration.mDeviceInfo.dwDeviceID,
-                0, MAX_DATA_COUNT);
         mTimer = new Timer();
         mShouldStop = false;
         mTimeCount = 0;
@@ -178,6 +172,12 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
     };
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        DongSDKProxy.registerAccountCallback(mAccountProxy);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         mVisitorPhotoAdapter.flushCache();
@@ -188,6 +188,7 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
         super.onDestroy();
         // 退出程序时结束所有的下载任务
         mVisitorPhotoAdapter.cancelAllTasks();
+        LogUtils.i("VisitorPhotoActivity.clazz->onDestroy()");
         DongSDKProxy.unRegisterAccountCallback(mAccountProxy);
         if (mTimer != null) {
             mTimer.cancel();
@@ -203,15 +204,9 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
                 @Override
                 public void onItemClick(View view, int position) {
                     VisitorPhotoBean visitorPhotoBean = mAdapterList.get(position);
-                    Bitmap photo = mCacheHelper.getBitmapFromMemoryCache(
-                            visitorPhotoBean.getPhotoUrl(), mVisitorPhotoAdapter.getMemoryCache());
                     Intent intent = new Intent(VisitorPhotoActivity.this,
                             VisitorPhotoDetailActivity.class);
-                    intent.putExtra(INTENT_PHOTO_KEY, photo);
-                    intent.putExtra(INTENT_DEVICE_NAME_KEY, visitorPhotoBean.getDeviceName());
-                    intent.putExtra(INTENT_ROOM_NUMBER_KEY, visitorPhotoBean.getRoomValue());
-                    intent.putExtra(INTENT_TIMESTAMP_KEY, visitorPhotoBean.getPhotoTimestamp());
-                    intent.putExtra(INTENT_TYPE_KEY, visitorPhotoBean.getType());
+                    intent.putExtra(INTENT_VISITOR_PHOTO_BEAN, visitorPhotoBean);
                     startActivity(intent);
                 }
 
@@ -263,13 +258,14 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
             } else if (mStartIndex != 0 && mStartIndex < localList.size()) {
                 LogUtils.i("VisitorPhotoActivity.clazz-->processData notifyItemRemoved mStartIndex:" + mStartIndex);
                 mVisitorPhotoAdapter.changeLoadStatus(VisitorPhotoAdapter.LOAD_NO_DATA);
-            } else {
-                BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
             }
+//            else {
+//                BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
+//            }
         } else {
             for (VisitorPhotoBean netBean : netList) {
                 boolean isSame = false;
-                //2.1.1将本地数据库中的数据与平台返回数据对比
+                //2.1.1将本地数据库中的数据与平台返回getPhotoTimestamp数据对比
                 for (VisitorPhotoBean localBean : localList) {
                     if (localBean.getPhotoTimestamp().equals(netBean.getPhotoTimestamp()))
                         isSame = true;
@@ -304,7 +300,7 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
                     DongConfiguration.mDeviceInfo.dwDeviceID, mStartIndex, MAX_DATA_COUNT);
             mShouldStop = false;
             mTimeCount = 0;
-            LogUtils.i("VisitorPhotoActivity.clazz-->requestGetDownloadUrlsWithParams-->");
+            LogUtils.i("VisitorPhotoActivity.clazz-->requestGetDownloadUrlsWithParams");
         }
     }
 
@@ -385,7 +381,7 @@ public class VisitorPhotoActivity extends BaseActivity implements OnTitleBarClic
                 netData.add(visitorPhoto);
             }
             processData(netData);
-            return 1;
+            return 0;
         }
 
         @Override

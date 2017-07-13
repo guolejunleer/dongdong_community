@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.dd121.community.R;
 import com.dongdong.app.base.BaseActivity;
+import com.dongdong.app.bean.OpenDoorRecordBean;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
 
@@ -38,39 +39,33 @@ public class OpenDoorDetailActivity extends BaseActivity implements
 
     @Override
     public void initData() {
-        String roomNumber = this.getIntent().getStringExtra(OpenDoorActivity.INTENT_ROOM_NUMBER_KEY);
-        String type = this.getIntent().getStringExtra(OpenDoorActivity.INTENT_TYPE_KEY);
-        String timestamp = this.getIntent().getStringExtra(OpenDoorActivity.INTENT_TIMESTAMP_KEY);
-        String deviceName = this.getIntent().getStringExtra(OpenDoorActivity.INTENT_DEVICE_NAME_KEY);
-        String memberName = this.getIntent().getStringExtra(OpenDoorActivity.INTENT_MEMBER_NAME_KEY);
-//        String idNumber = this.getIntent().getStringExtra("idNumber");
-        String comNumber = this.getIntent().getStringExtra(OpenDoorActivity.INTENT_COM_NUMBER_KEY);
-//        String mobilePhone = this.getIntent().getStringExtra("mobilePhone");
+        OpenDoorRecordBean openDoorRecordBean = (OpenDoorRecordBean) this.getIntent().
+                getSerializableExtra(OpenDoorActivity.INTENT_OPEN_DOOR_RECORDER_BEAN);
 
-        if (TextUtils.isEmpty(roomNumber)) {
+        if (TextUtils.isEmpty(openDoorRecordBean.getRoomNumber())) {
             mTvRoomNumber.setText("");
         } else {
-            mTvRoomNumber.setText(roomNumber);
+            mTvRoomNumber.setText(openDoorRecordBean.getRoomNumber());
         }
-        if (TextUtils.isEmpty(type)) {
+        if (TextUtils.isEmpty(openDoorRecordBean.getType())) {
             mTvType.setText("");
         } else {
-            mTvType.setText(type);
+            mTvType.setText(openDoorRecordBean.getType());
         }
-        if (TextUtils.isEmpty(timestamp)) {
+        if (TextUtils.isEmpty(openDoorRecordBean.getTimestamp())) {
             mTvTimeStamp.setText("");
         } else {
-            mTvTimeStamp.setText(timestamp);
+            mTvTimeStamp.setText(openDoorRecordBean.getTimestamp());
         }
-        if (TextUtils.isEmpty(deviceName)) {
+        if (TextUtils.isEmpty(openDoorRecordBean.getDeviceName())) {
             mTvDeviceName.setText("");
         } else {
-            mTvDeviceName.setText(deviceName);
+            mTvDeviceName.setText(openDoorRecordBean.getDeviceName());
         }
-        if (TextUtils.isEmpty(memberName)) {
+        if (TextUtils.isEmpty(openDoorRecordBean.getMemberName())) {
             mTvMemberName.setText("");
         } else {
-            mTvMemberName.setText(memberName);
+            mTvMemberName.setText(openDoorRecordBean.getMemberName());
         }
 //        if (TextUtils.isEmpty(idNumber)) {
 //            mTvIdNumber.setText("");
@@ -78,10 +73,10 @@ public class OpenDoorDetailActivity extends BaseActivity implements
 //            //用于显示的加*身份证
 //            mTvIdNumber.setText(idNumber.substring(0, 5) + "*******" + idNumber.substring(14));
 //        }
-        if (TextUtils.isEmpty(comNumber)) {
+        if (TextUtils.isEmpty(openDoorRecordBean.getComNumber())) {
             mTvComNumber.setText("");
         } else {
-            mTvComNumber.setText(comNumber);
+            mTvComNumber.setText(openDoorRecordBean.getComNumber());
         }
 //        if (TextUtils.isEmpty(mobilePhone)) {
 //            mTvPhone.setText("");

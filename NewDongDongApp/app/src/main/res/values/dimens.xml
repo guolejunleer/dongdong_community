@@ -35,6 +35,7 @@
     <dimen name="space_300">300.0dip</dimen>
     <dimen name="space_250">250.0dip</dimen>
     <dimen name="space_230">230.0dip</dimen>
+    <dimen name="space_200">200.0dip</dimen>
     <dimen name="space_180">180.0dip</dimen>
     <dimen name="space_160">160.0dip</dimen>
     <dimen name="space_150">150.0dip</dimen>

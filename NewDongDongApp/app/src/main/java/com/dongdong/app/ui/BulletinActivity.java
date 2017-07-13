@@ -18,7 +18,7 @@ import com.dongdong.app.base.BaseActivity;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.bean.BulletinBean;
 import com.dongdong.app.db.BulletinOpe;
-import com.dongdong.app.db.VillageOpe;
+import com.dongdong.app.db.DeviceVillageOpe;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.widget.TitleBar;
 import com.dongdong.app.widget.TitleBar.OnTitleBarClickListener;
@@ -38,6 +38,13 @@ import cz.msebera.android.httpclient.Header;
 import static com.dongdong.app.api.ApiHttpClient.getDVNotices;
 
 public class BulletinActivity extends BaseActivity implements OnTitleBarClickListener, OnRefreshListener {
+    private static final String JSON_BULLETIN_METHOD = "villagenotices";
+    public static final String INTENT_KEY_TITLE = "title";
+    public static final String INTENT_KEY_NOTICE = "notice";
+    public static final String INTENT_KEY_CREATED = "created";
+    public static final String INTENT_KEY_VILLAGE_ID = "villageid";
+
+
     private static final int LOAD_NO_DATA = 1;
     private static final int DO_NOT_LOAD = 2;
     private static final int LOADING = 3;
@@ -84,7 +91,7 @@ public class BulletinActivity extends BaseActivity implements OnTitleBarClickLis
 
     @Override
     public void initData() {
-        String villageId = VillageOpe.queryDataByDeviceId(BaseApplication.context(),
+        String villageId = DeviceVillageOpe.queryDataByDeviceId(BaseApplication.context(),
                 String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
         if (!TextUtils.isEmpty(villageId)) {
             List<BulletinBean> localList = BulletinOpe.queryDataByVillageId(BaseApplication.context(), villageId);
@@ -180,27 +187,30 @@ public class BulletinActivity extends BaseActivity implements OnTitleBarClickLis
                 try {
                     List<BulletinBean> netDataList = new ArrayList<>();
                     JSONObject receiveDataJson = new JSONObject(new String(responseBody));
-                    LogUtils.i("BulletinActivity.clazz-->getBulletinFromNet()-->receiveDataJson:" + receiveDataJson);
-                    String resultCode = receiveDataJson.getString("result_code");
-                    if (resultCode.equals("200")) {
-                        String jsonInitData = receiveDataJson.getString("response_params");
-                        if (jsonInitData.equals("[]")) {
+                    LogUtils.i("BulletinActivity.clazz-->getBulletinFromNet()-->receiveDataJson:" +
+                            receiveDataJson);
+                    String resultCode = receiveDataJson.getString(AppConfig.JSON_RESULT_CODE);
+                    if (resultCode.equals(AppConfig.JSON_CORRECT_RESULT_CODE)) {
+                        String jsonInitData = receiveDataJson.getString(AppConfig.JSON_RESPONSE_PARAMS);
+                        if (jsonInitData.equals(AppConfig.JSON_EMPTY_DATA)) {
                             mIsNoMoreData = true;
                             mBulletinAdapter.changeLoadStatus(LOAD_NO_DATA);
-                            if (mStartIndex == 0)
-                                BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
+//                            if (mStartIndex == 0)
+//                                BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
                             return;
                         }
-                        LogUtils.i("BulletinActivity.clazz-->getBulletinFromNet()-->jsonInitData:" + jsonInitData);
-                        JSONArray jsonArray = new JSONObject(jsonInitData).getJSONArray("villagenotices");
+                        LogUtils.i("BulletinActivity.clazz-->getBulletinFromNet()-->jsonInitData:" +
+                                jsonInitData);
+                        JSONArray jsonArray = new JSONObject(jsonInitData).getJSONArray(
+                                JSON_BULLETIN_METHOD);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             BulletinBean bulletinBean = new BulletinBean();
-                            bulletinBean.setTitle(jsonObject.getString("title"));
-                            bulletinBean.setNotice(jsonObject.getString("notice"));
-                            bulletinBean.setCreated(jsonObject.getString("created"));
+                            bulletinBean.setTitle(jsonObject.getString(INTENT_KEY_TITLE));
+                            bulletinBean.setNotice(jsonObject.getString(INTENT_KEY_NOTICE));
+                            bulletinBean.setCreated(jsonObject.getString(INTENT_KEY_CREATED));
                             bulletinBean.setDeviceId(String.valueOf(DongConfiguration.mDeviceInfo.dwDeviceID));
-                            bulletinBean.setVillageId(jsonObject.getString("villageid"));
+                            bulletinBean.setVillageId(jsonObject.getString(INTENT_KEY_VILLAGE_ID));
                             netDataList.add(bulletinBean);
                         }
                         processJsonData(netDataList);
@@ -264,9 +274,10 @@ public class BulletinActivity extends BaseActivity implements OnTitleBarClickLis
             } else if (mStartIndex != 0 && mStartIndex < localList.size()) {
                 LogUtils.i("BulletinActivity.clazz-->processData notifyItemRemoved mStartIndex:" + mStartIndex);
                 mBulletinAdapter.changeLoadStatus(BulletinAdapter.LOAD_NO_DATA);
-            } else {
-                BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
             }
+//          else {
+//                BaseApplication.showToastShortInBottom(R.string.is_the_latest_data);
+//            }
         } else {
             for (BulletinBean netBean : netDataList) {
                 boolean isSame = false;

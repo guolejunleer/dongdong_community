@@ -33,8 +33,8 @@ public class DeviceListActivity extends BaseActivity implements OnTitleBarClickL
     private ListView mLvInfo;
     private TitleBar mTitleBar;
     private DeviceInfoAdapter mInfoAdapter;
-    private DeviceListActivityDongAccountProxy mAccountProxy
-            = new DeviceListActivityDongAccountProxy();
+    private DeviceListActivityDongAccountProxy mAccountProxy =
+            new DeviceListActivityDongAccountProxy();
 
     @Override
     protected int getLayoutId() {
@@ -109,7 +109,7 @@ public class DeviceListActivity extends BaseActivity implements OnTitleBarClickL
 
     @Override
     public void onBackClick() {
-        finish();
+        DeviceListActivity.this.finish();
     }
 
     @Override
@@ -141,17 +141,16 @@ public class DeviceListActivity extends BaseActivity implements OnTitleBarClickL
         }
 
         @Override
-        public int onCall(ArrayList<DeviceInfo> infos) {
-            LogUtils.i("DeviceListActivity.clazz -->>OnCall infos:" + infos);
-            int size = infos.size();
+        public int onCall(ArrayList<DeviceInfo> list) {
+            LogUtils.i("DeviceListActivity.clazz -->>OnCall infos:" + list);
+            int size = list.size();
             if (size > 0) {
-                DeviceInfo deviceInfo = infos.get(0);
+                DeviceInfo deviceInfo = list.get(0);
                 String message = deviceInfo.msg;
-                LogUtils.i("DeviceListActivity.clazz-->>OnCall() deviceName:"
-                        + deviceInfo.deviceName + ",dwDeviceID："
-                        + deviceInfo.dwDeviceID + ",msg:" + deviceInfo.msg);
-                DongPushMsgManager.pushMessageChange(DeviceListActivity.this,
-                        message);
+                LogUtils.i("DeviceListActivity.clazz-->>OnCall() deviceName:" +
+                        deviceInfo.deviceName + ",dwDeviceID：" + deviceInfo.dwDeviceID + ",msg:" +
+                        deviceInfo.msg);
+                DongPushMsgManager.pushMessageChange(DeviceListActivity.this, message);
             }
             return 0;
         }
@@ -161,7 +160,8 @@ public class DeviceListActivity extends BaseActivity implements OnTitleBarClickL
             ArrayList<DeviceInfo> deviceList = DongSDKProxy.requestGetDeviceListFromCache();
             mInfoAdapter.setData(deviceList);
             mInfoAdapter.notifyDataSetChanged();
-            LogUtils.i("DeviceListActivity.clazz -->>>OnNewListInfo deviceList.size:" + deviceList.size());
+            LogUtils.e("DeviceListActivity.clazz->OnNewListInfo deviceList.size:"
+                    + deviceList.size() + ",deviceList:" + deviceList);
             return 0;
         }
 
