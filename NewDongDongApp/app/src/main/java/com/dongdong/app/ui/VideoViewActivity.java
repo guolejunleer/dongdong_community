@@ -397,6 +397,9 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         if (mConnDeviceStateDialog != null) {
             mConnDeviceStateDialog.dismiss();
         }
+        if (mTipDialog != null) {
+            mTipDialog.dismiss();
+        }
         LogUtils.i("VideoViewActivity.clazz-->>onDestroy...");
     }
 
