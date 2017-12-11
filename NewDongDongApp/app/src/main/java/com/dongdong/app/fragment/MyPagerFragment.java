@@ -102,7 +102,7 @@ public class MyPagerFragment extends BaseFragment {
         switch (v.getId()) {
             case R.id.iv_avatar:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                    TipDialogManager.showWithoutNetDialog(getActivity(), null);
                     return;
                 }
                 if (DongConfiguration.mUserInfo == null) {
@@ -112,7 +112,7 @@ public class MyPagerFragment extends BaseFragment {
                 break;
             case R.id.ll_myfamily:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                    TipDialogManager.showWithoutNetDialog(getActivity(), null);
                     return;
                 }
                 if (DongConfiguration.mUserInfo == null) {
@@ -123,7 +123,7 @@ public class MyPagerFragment extends BaseFragment {
                 break;
             case R.id.ll_myhouse:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                    TipDialogManager.showWithoutNetDialog(getActivity(), null);
                     return;
                 }
                 if (DongConfiguration.mUserInfo == null) {
@@ -134,7 +134,7 @@ public class MyPagerFragment extends BaseFragment {
                 break;
             case R.id.ll_myvillage:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                    TipDialogManager.showWithoutNetDialog(getActivity(), null);
                     return;
                 }
                 if (DongConfiguration.mUserInfo == null) {
@@ -145,7 +145,7 @@ public class MyPagerFragment extends BaseFragment {
                 break;
             case R.id.ll_reset_password:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                    TipDialogManager.showWithoutNetDialog(getActivity(), null);
                     return;
                 }
                 if (DongConfiguration.mUserInfo == null) {

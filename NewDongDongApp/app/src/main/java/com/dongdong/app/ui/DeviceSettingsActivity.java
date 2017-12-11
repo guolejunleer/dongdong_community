@@ -115,7 +115,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
         switch (id) {
             case R.id.bt_update:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(DeviceSettingsActivity.this, null);
+                    TipDialogManager.showWithoutNetDialog(DeviceSettingsActivity.this, null);
                     return;
                 }
                 String deviceNick = mEtDeviceName.getText().toString().trim();
@@ -141,7 +141,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
                 break;
             case R.id.tv_delete_device:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(DeviceSettingsActivity.this, null);
+                    TipDialogManager.showWithoutNetDialog(DeviceSettingsActivity.this, null);
                     return;
                 }
                 mUpdateDialog.setMessage(R.string.deldeteDevice);
@@ -168,7 +168,7 @@ public class DeviceSettingsActivity extends BaseActivity implements
                 break;
             case R.id.tv_authorizationaccount:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(DeviceSettingsActivity.this, null);
+                    TipDialogManager.showWithoutNetDialog(DeviceSettingsActivity.this, null);
                     return;
                 }
                 if (TDevice.deviceType(mDeviceInfo, 23)) {

@@ -145,7 +145,7 @@ public class ForgetPwdActivity extends BaseActivity implements OnTitleBarClickLi
         int id = v.getId();
         String phoneNumber = mEtPhone.getText().toString().trim();
         if (TDevice.getNetworkType() == 0) {
-            TipDialogManager.showWithoutNetworDialog(this, null);
+            TipDialogManager.showWithoutNetDialog(this, null);
             return;
         }
         if (mIsForget) {

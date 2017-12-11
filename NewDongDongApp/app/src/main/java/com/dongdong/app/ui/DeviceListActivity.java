@@ -71,7 +71,7 @@ public class DeviceListActivity extends BaseActivity implements OnTitleBarClickL
                 if (deviceInfo.isOnline) {
                     //判断网络，只有在观看设备的时候需要网
                     if (TDevice.getNetworkType() == 0) {
-                        TipDialogManager.showWithoutNetworDialog(DeviceListActivity.this, null);
+                        TipDialogManager.showWithoutNetDialog(DeviceListActivity.this, null);
                         return;
                     }
                     UIHelper.showVideoViewActivity(DeviceListActivity.this, true, "");

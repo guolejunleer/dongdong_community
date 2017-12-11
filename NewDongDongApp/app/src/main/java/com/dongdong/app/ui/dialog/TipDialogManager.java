@@ -108,7 +108,7 @@ public class TipDialogManager {
      *
      * @param context 上下文Activity
      */
-    public static void showWithoutNetworDialog(final Context context,
+    public static void showWithoutNetDialog(final Context context,
                                                final OnTipDialogButtonClick callback) {
         final CommonDialog tipDialog = new CommonDialog(context);
         tipDialog.setTitle(R.string.tip);

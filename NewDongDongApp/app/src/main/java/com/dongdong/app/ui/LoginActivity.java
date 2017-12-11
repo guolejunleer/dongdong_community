@@ -133,7 +133,7 @@ public class LoginActivity extends BaseActivity implements
                 break;
             case R.id.iv_login:
                 if (TDevice.getNetworkType() == 0) {
-                    TipDialogManager.showWithoutNetworDialog(this, null);
+                    TipDialogManager.showWithoutNetDialog(this, null);
                     return;
                 }
                 mEtUserName = mEtName.getText().toString().trim();

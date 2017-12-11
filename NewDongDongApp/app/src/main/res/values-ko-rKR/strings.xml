@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">운아파트</string>
+    <string name="linkman">아파트단지 접근 통제</string>
+    <string name="opendoorrecorddetail">문을 연 상세 기록</string>
+    <string name="visitorphotodetail">방문객 영상 세부 사항</string>
+    <string name="App">App</string>
+    <string name="accesscards">카드를 긁다</string>
+
+    <string name="WIFI">WIFI</string>
+    <string name="TemporaryPassword">임시 비번</string>
+    <string name="Householdpassword">입주자 비번</string>
+    <string name="bluetooth">블루투스</string>
+    <string name="phonecall">전화</string>
+
+    <string name="versionupdate">버전 업데이트</string>
+    <string name="functionintroduction">기능소계</string>
+    <string name="help">도움</string>
+    <string name="message">관리사무소 공고</string>
+    <string name="phone">상용전화</string>
+
+    <string name="monitor">접근 통제 영상</string>
+    <string name="applykey">키 신청</string>
+    <string name="opendoor">무을 연 기록</string>
+    <string name="visitorphoto">방문객 영상사항</string>
+    <string name="dd_function_parking">주차장</string>
+
+    <string name="dd_function_finance">금융관리</string>
+    <string name="repair">수리요청</string>
+    <string name="shapeopendoor">흔든후 문을 열다</string>
+    <string name="dd_function_more"></string>
+    <string name="pushservice">푸시 통지</string>
+
+    <string name="nightmode">야간모드</string>
+    <string name="attendedmode">연결방식（WIFI/블루투스）</string>
+    <string name="openvideo_in_data_network">데이트 네트워크시 영상을 허용하지 않는다</string>
+    <string name="about">프로그렘에 관하여</string>
+    <string name="isexit">종료하시겠습니까?</string>
+
+    <string name="exit">종료</string>
+    <string name="cancel">취소</string>
+    <string name="callphone">이전화를 연결할것을 확신합니까?</string>
+    <string name="yes">네</string>
+    <string name="no">아니요</string>
+    <string name="copy_success">복사 성공</string>
+
+    <string name="tip_double_click_exit">또 한번 누르면 종료합니다.</string>
+    <string name="main_tab_name_home">앞페지</string>
+    <string name="main_tab_name_my">my</string>
+    <string name="building">아직 개통이 안되다</string>
+    <string name="back">뒤로</string>
+
+    <string name="title_info">메시지 표제</string>
+    <string name="myfamily">나의 가족성원</string>
+    <string name="myhouse">나의방</string>
+    <string name="myvillage">나의 아파트</string>
+    <string name="reset_password">비번 제설정</string>
+
+    <string name="mypicture">나의 사진첩</string>
+    <string name="newversion">new version check</string>
+    <string name="defaults">묵인</string>
+    <string name="settings">설정</string>
+    <string name="loginout">본계좌를 탈퇴하다</string>
+    <string name="cleansession">캐시 지우다</string>
+
+    <string name="autosettings">지능 설정</string>
+    <string name="othersettings">기타 설정</string>
+    <string name="loginup">등록</string>
+
+    <string name="regeist">신계좌를 신청하다</string>
+    <string name="refrush">업데이트</string>
+    <string name="regeistAcount">등록</string>
+    <string name="pleaseInputUsernmae">사용자 이름을 입력하십시요</string>
+    <string name="pleaseInputPassword">비번을 입력하십시요</string>
+
+    <string name="confirmPassword">비번확인</string>
+    <string name="pleaseInputPhone">전번입력</string>
+    <string name="pleaseInputVerificationCode">인증번호 입력</string>
+    <string name="get_verification_code">인증번호</string>
+    <string name="sure">확인</string>
+
+    <string name="user_name_can_not_empty">입력하는 전번이 존제하지 않다. </string>
+    <string name="verification_code_can_not_empty">인증번호를 공백으로 할수 없다. </string>
+    <string name="verification_code_mistake">인증번호가 정확하지 않다.!</string>
+    <string name="user_pwd_can_not_empty">번번을 공백으로 할수 없다</string>
+    <string name="old_pwd_can_not_empty">구번번을 공백으로 할수 없다</string>
+    <string name="old_pwd_mistake">구비번이 정확하지 않다!</string>
+    <string name="phone_not_registered">이전번이 등록되지 않았다.!</string>
+
+    <string name="phone_registered">이 전번이 이미 등록되였다.!</string>
+    <string name="pwd_not_same">두번 입력한 비번이 일치하지 않다.!</string>
+    <string name="old_new_same">신비번과 구비번이 일치하다. </string>
+    <string name="confrim_pwd_can_not_empty">비밀번호를 확인할수 없다!</string>
+    <string name="get_verification_coding">인증번호를 얻고 있다.</string>
+    <string name="pwd_failed">비번설정 실페</string>
+
+    <string name="tip">제시</string>
+    <string name="regeist_success">회원가입 성공!</string>
+    <string name="loginging">바로 가입</string>
+    <string name="verifaction_failed">인증실페!</string>
+    <string name="reset_pwd">비번 제 신청</string>
+
+    <string name="inputNewPassword">신비번을 입력</string>
+    <string name="inputOldPassword">구비번을 입력</string>
+    <string name="update_pwd_succ">비번수정 성공</string>
+    <string name="update_pwd_failed">비번수정 실페</string>
+    <string name="login_wait">등록중···</string>
+    <string name="list">목록</string>
+
+    <string name="handsFree">스피커 모드</string>
+    <string name="spk">스피크</string>
+    <string name="picture">사진을 찍다</string>
+    <string name="lock">문을 열다</string>
+    <string name="video">영상</string>
+    <string name="reboot">재부팅</string>
+
+    <string name="stop">끊다</string>
+    <string name="reject">거절</string>
+    <string name="waiting_connection_30">완충30%</string>
+    <string name="waiting_certification_60">완충60%</string>
+    <string name="waiting_media_90">완충90%</string>
+
+    <string name="errorCode">잘못된 코드:</string>
+    <string name="mistake">오류가 발생</string>
+    <string name="video1">유창하다</string>
+    <string name="video2">표시를 정확히하다</string>
+    <string name="video3">고해상도</string>
+
+    <string name="warn">제시</string>
+    <string name="no_permissions">권한이 없다</string>
+    <string name="device_offline">오프라인 설치</string>
+    <string name="pleaseLogin">먼저 가입하다</string>
+    <string name="captureSuccess">화면캡쳐를 목록에 저장하다. </string>
+
+    <string name="islogin">본계좌는 이미 등록되였다该帐号已登录</string>
+    <string name="handup">상대방이끊다. </string>
+    <string name="device_busy">설비가 통화중!(%1$ds)후 닫다</string>
+    <string name="vistor">새로운 방문객이 있다,연결하겠습니까?</string>
+    <string name="accept">연결하다</string>
+
+    <string name="Ignore">간과하다</string>
+    <string name="Notice">통지</string>
+    <string name="my_device">나의 설비</string>
+    <string name="auth_device">권한을 부여하다</string>
+
+    <string name="warning">경고!</string>
+    <string name="login_other_plach_warning">계좌번호가 다른 설비에서 등록한다.본인이 아닌경우 비번을 루실했을수 있다.!</string>
+    <string name="login">등록/로그인</string>
+    <string name="relogin">다시 등록</string>
+
+    <string name="loginSucc">등록 성공</string>
+    <string name="my_information_unlogin_tips">미등록</string>
+    <string name="myuname">계좌</string>
+    <string name="mypsw">비번</string>
+    <string name="server_connection_failed">써보 연결 실페!</string>
+
+    <string name="device_connection_failed">설비 연결 실페!</string>
+    <string name="server_disconnected">써보 연결이 단절되다!</string>
+    <string name="server_login_failed">써보 로그인 실페!</string>
+    <string name="invalid_user_name">무효한사용자명!</string>
+    <string name="incorrect_pwd">비번이 정확하지 않다!</string>
+
+    <string name="device_disconnected">설비 연결이 단절!</string>
+    <string name="server_busy">써보가 바쁘다!</string>
+    <string name="database_server_error">데니터베이스 서보에 오류가 발생!</string>
+    <string name="Systemerror">시스템 오류误!</string>
+    <string name="login_overtime">로그인 시간 초과 다시 등록하겠습니까?</string>
+
+    <string name="no_network">인터넷을 연결할수 없습니다.인터넷 설치를 확인 하십시요</string>
+    <string name="network_settings">네트워크 설치</string>
+    <string name="switchWIFI">WLAN</string>
+    <string name="tip_choose_net">현제3G/4G네트워크,영상을 관람시 대량의 용량을 소비할수 있어WLAN연결할것을 건의!</string>
+    <string name="continues">계속</string>
+
+    <string name="no_camera">다음 설비가 없습니다. </string>
+    <string name="first_camera">현제 첫번쩨 설비 입니다. </string>
+    <string name="deviceName">설비명</string>
+    <string name="update">수정</string>
+    <string name="deviceMan">설비 권한 계좌 관리</string>
+
+    <string name="def">기본 조작 장치</string>
+    <string name="delete_device">설비 삭제</string>
+    <string name="device_serial">일련 번호</string>
+    <string name="wait">잠시후···</string>
+    <string name="suc">성공!</string>
+
+    <string name="fail">실페!</string>
+    <string name="deldeteDevice">본 설시를 삭제할것을 확실합니까?</string>
+    <string name="authorizationSer">수권할 계좌번호를 입력하십시요</string>
+    <string name="authorization">수권</string>
+    <string name="empty_tip">설비명혹은 일련번호를 비울우 없습니다.</string>
+
+    <string name="yesOrNo">이미 수권已经被授权!</string>
+    <string name="deleteAuthorization">수권을 삭제하겠습니까?</string>
+    <string name="openlock">열을 열다</string>
+    <string name="add">추가</string>
+    <string name="deviceSer">설비번호</string>
+
+    <string name="wifiSearch">랜을 검색하다</string>
+    <string name="qrCode">큐알코드</string>
+    <string name="addDevice">설비추가</string>
+    <string name="serial_invalidate">무효한 설비!</string>
+    <string name="device_added">설비추가 성공</string>
+    <string name="device_already_added">이설비는 추가하였다 (%s)!</string>
+    <string name="serial_failed">설비 추가 실페!</string>
+
+    <string name="scan_tips">큐알코드를 스켄창에 마추면 자동으로 스켄완성</string>
+    <string name="not_open_service">이 단지는 본기능을 개통하지 않았다. </string>
+    <string name="OPENFILE_ERROR">파일 오픈에 오류가 발생,sd카드를 확인!</string>(
+    <string name="rootDir">목록으로 이동</string>
+    <string name="upperDir">전단계로 이동</string>
+
+    <string name="wifi">현재wifi는</string>
+    <string name="recordSetting">영상설치</string>
+    <string name="researtDivece">설비를 리셋하다</string>
+    <string name="deviceMessage">설비정보</string>
+    <string name="alreadyconn">이미연결接</string>
+
+    <string name="connectSucc">연결성공!</string>
+    <string name="ConFailed">연결실페!</string>
+    <string name="apName">열점명</string>
+    <string name="newPassword">신비번</string>
+    <string name="againInput">다시한번입력</string>
+
+    <string name="spk_can_not_close">통화중 무전기를 끊을수 없다.!</string>
+    <string name="video_get_data_error">영상획득에 실페하다,좌우로이동하여 기타설비를 관람할수 있다</string>
+    <string name="video_stop_phone_comming">동영상이 이미 차단</string>
+    <string name="video_play_error">영상발송 오류:</string>
+    <string name="add_devcie_error">설비 추가 오휴:</string>
+
+    <string name="register_error">계정 등록 실페:</string>
+    <string name="no_device">설비가 없다</string>
+    <string name="video_connect_quality_error">본 영상이 화질이 좋지핞아 잠시후 닫긴다 (%1$ds) </string>
+    <string name="audio_busy">오디오가 기타 사용자에게 점유</string>
+    <string name="please_talking">통화</string>
+
+    <string name="tip_delete_user">계좌를 삭제할것을 확신합니까:%s?</string>
+    <string name="tip_push_time">%s떼,누군가 당신을 호출</string>
+    <string name="forget_pwd">비번분실</string>
+    <string name="i_know">일겠습니다</string>
+    <string name="no_message">기록이 없다</string>
+
+    <string name="no_phone">자주 사용하는 전화가 없다</string>
+    <string name="unKnow">모르다</string>
+    <string name="cloud_call_time_out">호출시간 초과</string>
+    <string name="app_answer">App받다</string>
+    <string name="phone_answer">전화를 받다</string>
+
+    <string name="app_unlock">App키를 열다</string>
+    <string name="phone_unlock">전화키를 열다电话开锁</string>
+    <string name="card_unlock">카드로 키를 열다</string>
+    <string name="password_unlock">비번으로 열다</string>
+    <string name="loading">다운로드중···</string>
+
+    <string name="get_data_failed">데이터 취득 실페</string>
+    <string name="is_the_latest_data">최신 데이트다!</string>
+    <string name="device">设&#160;&#160;备&#160;&#160;&#160;&#160;</string>
+    <string name="room_number">房&#160;&#160;号&#160;&#160;&#160;&#160;</string>
+    <string name="time">시&#160;&#160;간&#160;&#160;&#160;&#160;</string>
+
+    <string name="type">류&#160;&#160;형&#160;&#160;&#160;&#160;</string>
+    <string name="detail">세부사항</string>
+    <string name="owner">업&#160;&#160;주</string>
+    <string name="door_card_or_mobile_phone">카드/헨드폰</string>
+    <string name="no_door_record">문을 연 기록이 없다,아래로 이동하여 최신 수치를 얻다</string>
+    <string name="no_common_phone">상용 전화가 없다.아래로 이동하여 최신 수치를 얻다. </string>
+
+    <string name="no_visitor_photo">방문한 영상이 없다.아래로 이동하여 최신 수치를 얻다</string>
+    <string name="no_more_data">갱신한 수치가 없다</string>
+    <string name="load_fail">수치다운 실페</string>
+    <string name="ignore">미제 전화</string>
+    <string name="unignore">받았다</string>
+
+    <string name="no_bulletin">관리사무소 공고가 없다.아래로 이동하여 최신 수치를 얻다</string>
+    <string name="no_bulletins">관리사무소 공고가 없다</string>
+    <string name="bulletin_detail">관리사무소 공고</string>
+    <string name="empty_device_name">설비명을 비울수 없다</string>
+    <string name="un_know_user_name">불법 핸폰번호</string>
+
+    <string name="device_name_too_length">설비명이 너무 길다</string>
+    <string name="empty_authorization">수권번호를 비울수 없다</string>
+    <string name="authorization_too_length">수권 번호가 너무 길다</string>
+    <string name="equipment_call">설비 호출</string>
+    <string name="call_answered">호출 젒속</string>
+
+    <string name="call_over">호출이 끝나다</string>
+    <string name="openLockFail">문을 여는데 실페</string>
+    <string name="network_error">인터넷 연결이 좋지 않다.!</string>
+    <string name="unanswered">오래동안 접속하지 않았다</string>
+    <string name="init_system">시스템 초기화중,잠간후</string>
+
+    <string name="call_user">호출을 확신합니까%s?</string>
+    <string name="join_device_list">나의 설비를 클릭,설비목록을 보다</string>
+    <string name="reboot_device_tip">설비 재부팅후 2분후 다시 관찰</string>
+    <string name="address">주소:&#160;&#160;</string>
+    <string name="phone_number">전화:&#160;&#160;</string>
+    <string name="are_you_sure_to_add_device">이 설비를 추가할것을 확신합니까? </string>
+    <string name="please_input_add_device_info">추가 설비 정보를입력信息</string>
+    <string name="play_init_error">초기화 실페!</string>
+    <string name="already_add">추가</string>
+</resources>

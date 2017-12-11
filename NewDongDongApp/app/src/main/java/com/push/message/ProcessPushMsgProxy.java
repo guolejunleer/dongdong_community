@@ -2,6 +2,8 @@ package com.push.message;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.dd121.community.R;
 import com.ddclient.configuration.DongConfiguration;
@@ -83,6 +85,7 @@ public class ProcessPushMsgProxy {
                 BaseApplication.showToastShortInBottom(R.string.video_stop_phone_comming);
                 return;
             }
+
             if (DongConfiguration.mUserInfo != null) {//3.1在线推送进入监视界面
                 LogUtils.i("ProcessPushMsgProxy.clazz-->>is login will" +
                         "showVideoViewActivity push time is 0 and deviceID:" + deviceID);

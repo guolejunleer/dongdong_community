@@ -1,6 +1,5 @@
-package com.dongdong.app;
+package com.dongdong.app.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,24 +20,27 @@ import com.ddclient.dongsdk.DeviceInfo;
 import com.ddclient.dongsdk.DongSDK;
 import com.ddclient.dongsdk.DongSDKProxy;
 import com.ddclient.push.DongPushMsgManager;
+import com.dongdong.app.AppConfig;
+import com.dongdong.app.AppContext;
+import com.dongdong.app.AppManager;
 import com.dongdong.app.base.BaseApplication;
 import com.dongdong.app.fragment.HomePagerFragment;
 import com.dongdong.app.fragment.MyPagerFragment;
-import com.dongdong.app.ui.DoubleClickExitHelper;
-import com.dongdong.app.ui.LoginActivity;
 import com.dongdong.app.ui.dialog.TipDialogManager;
 import com.dongdong.app.ui.dialog.TipDialogManager.OnTipDialogButtonClick;
 import com.dongdong.app.util.LogUtils;
 import com.dongdong.app.util.PhoneUtils;
 import com.dongdong.app.util.StatusBarCompatUtils;
 import com.dongdong.app.util.TDevice;
-import com.igexin.sdk.PushManager;
 
 import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity implements OnClickListener,
         OnTipDialogButtonClick {
     public static boolean mIsPushStarted = false;
+
+
+//    private MediaPlayer mMediaPlayer = new MediaPlayer();
 
     private DoubleClickExitHelper mDoubleClickExit;
     // 底部标签图片
@@ -54,7 +56,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
     private String mDeviceID = "";
     private String mPushTime;
 
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,13 +70,16 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
             mIsPushStarted = true;
             mDeviceID = bundle.getString(AppConfig.BUNDLE_KEY_DEVICE_ID, "");
             mPushTime = bundle.getString(AppConfig.BUNDLE_KEY_PUSH_TIME);
-
-            //点亮屏幕
+            // 后台在线推送时，自动点亮屏幕
+//            TDevice.wakeUpAndUnlockScreen(this);暂时不用
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+//                    | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
             final Window win = getWindow();
             win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                     | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+            LogUtils.i("log5", "MainActivity.clazz-->>initView wakeUpAndUnlockScreen...");
         }
         mDoubleClickExit = new DoubleClickExitHelper(this);
         View homeLayout = findViewById(R.id.rl_home);
@@ -88,11 +92,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
         mHomeTv = (TextView) findViewById(R.id.tv_know);
         mMyTv = (TextView) findViewById(R.id.tv_me);
         View btUnlock = findViewById(R.id.iv_unclock);
+
         // 中间按键图片触发
         btUnlock.setOnClickListener(this);
         if (mHomeFragment == null) {
             mHomeFragment = new HomePagerFragment();
-            LogUtils.i("MainActivity.clazz--->>>onCreate......^^^^^^^^^^^....mPushTime:" + mPushTime);
+            LogUtils.i("MainActivity.clazz--->>>onCreate mPushTime:" + mPushTime);
             if (TextUtils.isEmpty(mPushTime)) {//2.配置进行进入监视界面参数
                 Bundle bundleFrag = new Bundle();
                 bundleFrag.putString(AppConfig.BUNDLE_KEY_DEVICE_ID, mDeviceID);
@@ -123,8 +128,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
                     R.string.tip, R.string.tip_choose_net,
                     R.string.continues, R.string.cancel);
         }
-        LogUtils.i("LoadActivity.clazz--->>>onCreate......networkType:" + networkType);
+        LogUtils.i("MainActivity.clazz--->>>onCreate......networkType:" + networkType);
         checkContacts();// 检查手机是否有公司电话
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override

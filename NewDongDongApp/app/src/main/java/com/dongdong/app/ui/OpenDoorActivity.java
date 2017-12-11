@@ -173,7 +173,7 @@ public class OpenDoorActivity extends BaseActivity implements OnTitleBarClickLis
                     mOpenDoorAdapter.changeLoadStatus(LOAD_NO_DATA);
                     return;
                 }
-                if (!mIsLoading) {//下拉加载
+                if (!mIsLoading) {//上拉加载
                     LogUtils.i("OpenDoorActivity.clazz-->onScrollStateChanged is down upload!!!");
                     mIsLoading = true;
                     mOpenDoorAdapter.changeLoadStatus(LOADING);

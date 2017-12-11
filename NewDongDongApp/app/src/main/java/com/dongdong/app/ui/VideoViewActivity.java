@@ -31,6 +31,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -170,7 +171,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
             switch (msg.what) {
                 case 1:
                     long sysTime = System.currentTimeMillis();
-                    CharSequence sysTimeStr = DateFormat.format("hh:mm", sysTime);
+                    CharSequence sysTimeStr = DateFormat.format("HH:mm", sysTime);
                     mTvCurrentTime.setText(sysTimeStr); //更新时间
                     break;
             }
@@ -273,13 +274,16 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         mTimer = new Timer();
         mTimer.schedule(new MyTimerTask(), new Date(), 1000);
 
-        mSoundPlay = new SoundPlay(VideoViewActivity.this);
         mAudioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
 
-        // 后台在线推送时，自动点亮屏幕
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+        //点亮屏幕
+        final Window win = getWindow();
+        win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        LogUtils.i("log5", "VideoViewActivity.clazz-->>initData...");
+
+        mSoundPlay = new SoundPlay(VideoViewActivity.this);
 
         boolean initDongAccountLan = DongSDKProxy.initCompleteDongAccountLan();
         if (initDongAccountLan) {
@@ -322,7 +326,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
             }
             playMusic(mMediaPlayer);
             isVideoOn = true;
-            setCompoundTopDrawables(mTvVideo, R.mipmap.function_speak_pre);
+            setCompoundTopDrawables(mTvVideo, R.mipmap.function_video_pre);
             setFunctionTextColors(mTvVideo, true);
             //推送进来是接听、挂断、视频(根据网络状态判断是否打开，未实现)按钮
             mTvSpeak.setVisibility(View.GONE);
@@ -331,7 +335,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 
             mIvSpeak.setVisibility(View.GONE);
             mIvVideo.setVisibility(View.VISIBLE);
-            mIvVideo.setImageResource(R.mipmap.function_speak_pre);
+            mIvVideo.setImageResource(R.mipmap.function_video_pre);
             mIvAcceptLandscape.setVisibility(View.VISIBLE);
         }
         LogUtils.i("VideoViewActivity.clazz--->>>onResume ... mPlayDevice:"
@@ -409,7 +413,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 
     private void startVideoPlay() {
         if (mDeviceInfo == null) {
-            BaseApplication.showToastShortInBottom(R.string.play_init_error);
+            BaseApplication.showToastShortInCenter(R.string.play_init_error);
             return;
         }
         DongSDKProxy.initDongDevice(mDongDeviceCallBackImpl);
@@ -625,14 +629,12 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
             return;
         }
         if (!isHandsFree) {
-//            mAudioManager.setMode(AudioManager.MODE_NORMAL);// 扬声器
             openSpeaker();
             setCompoundTopDrawables(mTvHandFree, R.mipmap.function_handfree_pre);
             setFunctionTextColors(mTvHandFree, true);
 
             mIvHandFree.setImageResource(R.mipmap.function_handfree_pre);
         } else {
-//            mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);// 听筒
             closeSpeaker();
             setCompoundTopDrawables(mTvHandFree, R.mipmap.function_handfree_nor);
             setFunctionTextColors(mTvHandFree, false);
@@ -680,7 +682,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //Toast.makeText(context,"揚聲器已經關閉",Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -693,7 +694,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         stopMusic(mMediaPlayer);
         if (!isMicroOn) {
             DongSDKProxy.requestRealtimePlay(DongSDKProxy.PLAY_TYPE_AUDIO + DongSDKProxy.PLAY_TYPE_AUDIO_USER);
-//                    DongSDKProxy.requestRealtimePlayWithChannelId(DongSDKProxy.PLAY_TYPE_AUDIO, channelId);// 打开设备音响
+//          DongSDKProxy.requestRealtimePlayWithChannelId(DongSDKProxy.PLAY_TYPE_AUDIO, channelId);// 打开设备音响
             DongSDKProxy.requestOpenPhoneMic();// 打开手机麦克风
             DongSDKProxy.requestOpenPhoneSound();// 打开手机音频
             isMicroOn = true;
@@ -719,7 +720,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
         }
         if (!isVideoOn) {
             DongSDKProxy.requestRealtimePlay(DongSDKProxy.PLAY_TYPE_VIDEO);
-//                    DongSDKProxy.requestRealtimePlayWithChannelId(DongSDKProxy.PLAY_TYPE_VIDEO, channelId);// 打开设备摄像头
+//DongSDKProxy.requestRealtimePlayWithChannelId(DongSDKProxy.PLAY_TYPE_VIDEO, channelId);// 打开设备摄像头
             mSurfaceView.setVisibility(View.VISIBLE);
             mIvDongIcon.setVisibility(View.INVISIBLE);
             setCompoundTopDrawables(mTvVideo, R.mipmap.function_video_pre);
@@ -1003,10 +1004,10 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                     if (pushState == 8) {
 //                      Toast.makeText(VideoViewActivity.this, "设备呼叫", Toast.LENGTH_LONG).show();
                     } else if (pushState == 11) {
-                        Toast.makeText(VideoViewActivity.this, getString(R.string.call_answered), Toast.LENGTH_LONG).show();
+                        Toast.makeText(VideoViewActivity.this, getString(R.string.call_answered), Toast.LENGTH_SHORT).show();
                         return 0;
                     } else if (pushState == 12) {
-                        Toast.makeText(VideoViewActivity.this, getString(R.string.call_over), Toast.LENGTH_LONG).show();
+                        Toast.makeText(VideoViewActivity.this, getString(R.string.call_over), Toast.LENGTH_SHORT).show();
                         return 0;
                     }
                 } catch (Exception e) {
@@ -1025,7 +1026,6 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                     public void onClick(DialogInterface dialog, int which) {
                         stopMusic(mMediaPlayer);
                         mShouldPlayNextDeviceCount = 0;
-//                        setButtonStatus(mBtnAudio, false);
                         mSurfaceView.setVisibility(View.INVISIBLE);
                         mIvDongIcon.setVisibility(View.VISIBLE);
                         mDeviceInfo = deviceInfo;
@@ -1269,10 +1269,10 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
                 if (mDeviceInfo.dwDeviceID == deviceInfo.dwDeviceID) {// 2.找到当前正在播放的设备位置
                     LogUtils.i("log5", "..............i:" + i);
                     if (i == 0 && isRight) {// 3.向右拉，此时设备是第一台
-                        BaseApplication.showToastShortInBottom(R.string.first_camera);
+                        BaseApplication.showToastShortInCenter(R.string.first_camera);
                         break;
                     } else if (i == dataSize - 1 && isLeft) {// 4.向左拉，此时设备是最后一台
-                        BaseApplication.showToastShortInBottom(R.string.no_camera);
+                        BaseApplication.showToastShortInCenter(R.string.no_camera);
                         break;
                     } else {
                         mShouldPlayNextDeviceCount = 0;
@@ -1356,7 +1356,7 @@ public class VideoViewActivity extends BaseActivity implements OnClickListener,
 //                        }
 //                        int networkType = TDevice.getNetworkType();
 //                        if (networkType == 0) {// 10s后发现无网
-//                            TipDialogManager.showWithoutNetworDialog(
+//                            TipDialogManager.showWithoutNetDialog(
 //                                    VideoViewActivity.this, null);
 //                        } else {// 10s后还没有视频数据
 //                            mTipDialog.setTitle(R.string.tip);

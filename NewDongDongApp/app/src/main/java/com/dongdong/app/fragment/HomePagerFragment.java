@@ -463,21 +463,23 @@ public class HomePagerFragment extends BaseFragment implements
             return;
         }
 
-        //判断有无设备
-        if (DongConfiguration.mDeviceInfo == null) {
-            BaseApplication.showToastShortInCenter(R.string.no_device);
-            return;
-        }
-
         DynamicItemContainView dynamicView = (DynamicItemContainView) view;
         String name = dynamicView.getName();
+
+        //判断有无设备
+        if (DongConfiguration.mDeviceInfo == null) {
+            if (!name.equals(getString(R.string.my_device))) {
+                BaseApplication.showToastShortInCenter(R.string.no_device);
+                return;
+            }
+        }
 
         if (name.equals(getString(R.string.message))) {
             UIHelper.showBulletinActivity(getActivity());
         } else if (name.equals(getString(R.string.monitor))) {
             //判断网络，只有在观看设备的时候需要网
             if (TDevice.getNetworkType() == 0) {
-                TipDialogManager.showWithoutNetworDialog(getActivity(), null);
+                TipDialogManager.showWithoutNetDialog(getActivity(), null);
                 return;
             }
             //解决第一次进入首页设备信息没及时更新的问题
